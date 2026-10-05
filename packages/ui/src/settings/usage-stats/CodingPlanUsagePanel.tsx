@@ -1,6 +1,6 @@
 /* eslint-disable max-lines -- Coding Plan usage 面板集中处理数据来源、额度卡片和用量图表，拆分会让账号级来源绑定状态更分散。 */
 import { Fragment, lazy, useCallback, useEffect, useMemo, useState } from "react";
-import { Check, InfoIcon, RefreshCw } from "lucide-react";
+import { Check, InfoIcon, RefreshCw } from "@zcode/lunar-icons";
 import type {
   CodingPlanModelData,
   CodingPlanToolData,

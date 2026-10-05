@@ -9,7 +9,7 @@ import { logger } from "@/logger.js";
 import { reportReactErrorToArms } from "@/lib/reactErrorArmsTelemetry.js";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
-import { AlertTriangleIcon, RefreshCw } from "lucide-react";
+import { AlertTriangleIcon, RefreshCw } from "@zcode/lunar-icons";
 
 interface AppErrorBoundaryProps {
   children: ReactNode;

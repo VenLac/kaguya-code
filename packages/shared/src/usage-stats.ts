@@ -79,7 +79,7 @@ export interface UsageEntitlementSnapshot {
   subscription: UsageEntitlementSubscription | null;
   quota: UsageQuotaSnapshot | null;
   /**
-   * ZCode 官方 Server MCP 的调用额度（`/api/v1/mcp/usage`）。
+   * Kaguya Code 官方 Server MCP 的调用额度（`/api/v1/mcp/usage`）。
    * 与 quota 同一份快照下发，是为了继承 entitlement 已有的缓存 / in-flight 合并 / TTL 策略；
    * 拉取失败、未开通 Coding Plan、或该额度不属于本次查询的连接时一律为 null（可选数据面）。
    */

@@ -43,7 +43,7 @@ export async function resolveAccountTeamPlanRuntimeApiKey(
   }
   const zcodeJwtToken = (await params.credentialService?.load(ZCODE_JWT_TOKEN_KEY))?.trim() ?? "";
   if (family === "bigmodel" && zcodeJwtToken && token === zcodeJwtToken) {
-    // BigModel /api/biz 只接受登录 access token，不能使用旧版本误存的 ZCode JWT。
+    // BigModel /api/biz 只接受登录 access token，不能使用旧版本误存的 Kaguya Code JWT。
     log.warn(undefined, "Team Plan runtime key projection skipped: stale zcode JWT token", {
       family,
       projectId,

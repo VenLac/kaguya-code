@@ -55,7 +55,7 @@ export async function runUpdateCommand(
   discardPreparedUpdate = "discard" in preparation ? preparation.discard : undefined;
   if (preparation.status === "up-to-date") {
     if (json) stdout(io, preparation);
-    else stdout(io, `ZCode Server ${preparation.version} is already up to date`);
+    else stdout(io, `Kaguya Code Server ${preparation.version} is already up to date`);
     return 0;
   }
   if (!force && discardPreparedUpdate) {

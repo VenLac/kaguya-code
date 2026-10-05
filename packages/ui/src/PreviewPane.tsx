@@ -19,7 +19,7 @@ import {
   ExternalLinkIcon,
   FileCode2Icon,
   CopyIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { nanoid } from "nanoid";
 import { Button } from "@/components/ui/button.js";
 import { toast } from "@/components/ui/toast.js";

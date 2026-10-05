@@ -234,7 +234,7 @@ function formatEditPermissionKindLabel(
   if (/\b(update|updating|updated)\b/u.test(normalizedText)) {
     return t(locale, "editUpdating");
   }
-  // Bugfix: edit 权限标题直接透传 ZCode Agent 的 "Edit <path>" 时，第三方消息无法像 UI kindLabel 一样区分写入/更新/删除。
+  // Bugfix: edit 权限标题直接透传 Kaguya Code Agent 的 "Edit <path>" 时，第三方消息无法像 UI kindLabel 一样区分写入/更新/删除。
   // 这里至少把泛化的 Edit 换成 edit kind label，具体操作能从 raw/fileChange 推断时再细分。
   return t(locale, "editEditing");
 }

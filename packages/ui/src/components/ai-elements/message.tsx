@@ -1,7 +1,7 @@
 /*
  * Derived from vercel/ai-elements (packages/elements/src/message.tsx).
  * Copyright 2023 Vercel, Inc. Licensed under Apache-2.0.
- * Modified by ZCode: local integration, formatting and adaptations.
+ * Modified by Kaguya Code: local integration, formatting and adaptations.
  * See THIRD-PARTY-NOTICES.md in the repository root for license and provenance.
  */
 "use client";
@@ -15,7 +15,7 @@ import { createMathPlugin } from "@streamdown/math";
 import { mermaid } from "@streamdown/mermaid";
 import type { EditorInfo, FileStat, OpenInEditorOptions } from "@zcode/shared";
 import type { UIMessage } from "ai";
-import { ChevronLeftIcon, ChevronRightIcon, CopyIcon, ExternalLinkIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, CopyIcon, ExternalLinkIcon } from "@zcode/lunar-icons";
 import remarkCjkFriendlyGfmStrikethrough from "remark-cjk-friendly-gfm-strikethrough";
 import type {
   ComponentProps,

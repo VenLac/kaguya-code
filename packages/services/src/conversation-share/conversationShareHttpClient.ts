@@ -333,7 +333,7 @@ export class ConversationShareHttpClient {
       this.jsonRequest("POST", body),
       conversationShareContinuationDataSchema,
       // public_importable 分享的 continuation 由 share code + client request id 授权，
-      // 不应因为 ZCode 本地没有登录态而在请求发出前被客户端拦截。
+      // 不应因为 Kaguya Code 本地没有登录态而在请求发出前被客户端拦截。
       "optional",
     );
     this.assertSupportedSchemaVersion(wire.schema_version, "continuation");
@@ -361,7 +361,7 @@ export class ConversationShareHttpClient {
   }
 
   /**
-   * 版本高于本端认知时不猜语义，也不混进 invalid_contract：用户该看到「请升级 ZCode」，
+   * 版本高于本端认知时不猜语义，也不混进 invalid_contract：用户该看到「请升级 Kaguya Code」，
    * 不是「分享格式无效」。低于或等于本端版本一律继续——新增 kind/enum 由逐行降级消化。
    */
   private assertSupportedSchemaVersion(version: number, endpoint: string): void {
@@ -372,7 +372,7 @@ export class ConversationShareHttpClient {
     });
     throw new ConversationShareClientError({
       kind: "unsupported_schema_version",
-      message: "Conversation share payload requires a newer ZCode version",
+      message: "Conversation share payload requires a newer Kaguya Code version",
     });
   }
 

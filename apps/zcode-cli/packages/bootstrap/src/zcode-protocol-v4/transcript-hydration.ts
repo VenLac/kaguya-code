@@ -48,7 +48,7 @@ import { HYDRATION_TRACE_ID } from "./projection-state.js";
 
 const SUBAGENT_TOOL_NAMES = new Set(["Agent", "Task", "subagent"]);
 const LEGACY_MODEL_REQUEST_CANCELLED_MESSAGE = "Model request was cancelled.";
-const LEGACY_PROTOCOL_SESSION_STOPPED_MESSAGE = "ZCode Protocol session stopped";
+const LEGACY_PROTOCOL_SESSION_STOPPED_MESSAGE = "Kaguya Code Protocol session stopped";
 const PERSISTED_CANCELLATION_CODES = new Set<string>([
   CoreErrorType.TurnCancelled,
   ModelErrorCode.ModelRequestCancelled,
@@ -228,7 +228,7 @@ function isPersistedAssistantCancellation(error: AssistantErrorInfo): boolean {
   }
 
   // 旧 transcript 的 AiSdkModelAdapterError 没有持久化 model error code，
-  // 只能用 ZCode 自身生成的标准 name/message 二元组兼容恢复；不泛化匹配 provider 文案。
+  // 只能用 Kaguya Code 自身生成的标准 name/message 二元组兼容恢复；不泛化匹配 provider 文案。
   return (
     code === undefined &&
     error.name === "AiSdkModelAdapterError" &&

@@ -5,7 +5,7 @@ import {
   Plus,
   RefreshCcw,
   SquareArrowRightEnter,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import {

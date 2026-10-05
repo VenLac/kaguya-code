@@ -181,7 +181,7 @@ function resolveMcpServerConfig(
   if (!isRecord(server)) throw new Error("MCP server config must be an object");
   const type = typeof server.type === "string" ? server.type : inferMcpType(server);
   if (!SUPPORTED_MCP_TYPES.has(type)) throw new Error(`Unsupported MCP transport: ${type}`);
-  // ZCode 官方市场同时包含随应用装载的 Builtin Plugin 与按需安装的 CDN Plugin；后者运行时
+  // Kaguya Code 官方市场同时包含随应用装载的 Builtin Plugin 与按需安装的 CDN Plugin；后者运行时
   // source 为 `cache`，因此必须按 marketplace 身份归类，不能只看 loader source。
   const source: McpServerRuntimeSource = {
     kind: context.loaded.marketplace === ZCODE_OFFICIAL_PLUGIN_MARKETPLACE ? "builtin" : "plugin",

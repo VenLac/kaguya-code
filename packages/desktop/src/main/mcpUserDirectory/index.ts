@@ -363,7 +363,7 @@ export async function loadCliMcpFromUserDirectory(
 ): Promise<LoadCliMcpFromUserDirectoryResult> {
   const servers: NativeMcpServerRecord[] = [];
 
-  // 去掉其他 provider 后，ZCode Agent 只按目录约定读取；先 workspace，再 user。
+  // 去掉其他 provider 后，Kaguya Code Agent 只按目录约定读取；先 workspace，再 user。
   if (request?.workspacePath) {
     servers.push(
       ...(await readDirectoryServersFromPreferredSources("workspace", request.workspacePath)),

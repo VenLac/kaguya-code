@@ -8,7 +8,7 @@ import {
   resolveModelProviderFamilyIdByProviderId,
   TID_SIDEBAR_CODING_PLAN_USAGE_BUTTON,
 } from "@zcode/shared";
-import { BarChart3Icon, RocketIcon } from "lucide-react";
+import { BarChart3Icon, RocketIcon } from "@zcode/lunar-icons";
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu.js";
 import {
   resolveCodingPlanUsageRemainingState,

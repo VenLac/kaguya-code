@@ -285,7 +285,7 @@ function causationFromState(
 
 export function contextFromCausation(causation: AgentTelemetryCausation): Context {
   // 显式 Causation 只传播保存下来的 SpanContext。不能以执行时碰巧活跃的 Context
-  // 为底，否则会把另一个异步任务的 Baggage 或 ZCode Writer 私有状态夹带进来。
+  // 为底，否则会把另一个异步任务的 Baggage 或 Kaguya Code Writer 私有状态夹带进来。
   return trace.setSpanContext(ROOT_CONTEXT, spanContextFromCausation(causation));
 }
 

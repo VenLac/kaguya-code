@@ -1,6 +1,6 @@
 /* eslint-disable max-lines -- 远端 Skill 同步弹窗集中维护加载、选择、预检和结果状态，拆分会增加跨状态传递复杂度。 */
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Loader2, UploadCloud } from "lucide-react";
+import { Loader2, UploadCloud } from "@zcode/lunar-icons";
 import {
   normalizeUnknownError,
   SKILL_SYNC_SIZE_LIMIT_ERROR_CODE,

@@ -1,4 +1,4 @@
-import { RefreshCcw } from "lucide-react";
+import { RefreshCcw } from "@zcode/lunar-icons";
 import { Fragment, lazy, useState } from "react";
 import { APP_USAGE_RANGES } from "@zcode/shared";
 import type { AppUsageRange, AppUsageSnapshot } from "@zcode/shared";

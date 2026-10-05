@@ -56,7 +56,7 @@ import {
   RotateCcwIcon,
   SquareIcon,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import {
   ChatErrorBanner,

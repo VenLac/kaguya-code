@@ -63,6 +63,9 @@ interface UseModelProviderNavigationOptions {
   intl: ReturnType<typeof useZCodeIntl>["intl"];
 }
 
+/** Codex 渠道在导航里的固定 key。 */
+export const CODEX_NAV_KEY = "channel:codex";
+
 export function useModelProviderNavigation({
   presetProviders,
   modelProviders,
@@ -178,38 +181,9 @@ export function useModelProviderNavigation({
   );
 
   const navigationGroups = useMemo<ModelProviderNavGroup[]>(() => {
+    // 智谱平台账号相关的预置来源（BigModel / Start Plan 编程套餐）已随登录功能整体移除，
+    // 这里只保留用户自己添加的来源（含 Codex 渠道注册出来的来源）。
     const groups: ModelProviderNavGroup[] = [
-      {
-        id: "preset",
-        title: intl.formatMessage({ id: "settings.modelProvider.presetTitle" }),
-        items: [
-          ...presetProviders.map(({ id, displayName, provider }) => {
-            const statusProvider = resolvePresetFamilyStatusProvider({
-              presetId: id,
-              provider,
-              connectionModeItems: connectionModeCodingPlanItems,
-              connectionSelections,
-              modelProviders,
-            });
-            return {
-              key: createPresetProviderNodeKey(id),
-              type: "preset" as const,
-              presetId: id,
-              label: displayName,
-              logo: modelProviders.find(
-                (candidate) =>
-                  candidate.providerId ===
-                  resolveModelProviderFamilySpecByProviderId(id)?.individualCodingPlanProviderId,
-              )?.config.logo,
-              provider,
-              displayName,
-              statusProvider,
-              statusActive: statusProvider?.executable === true,
-            };
-          }),
-          ...codingPlanItems.filter((item) => isStartPlanModelProviderId(item.presetId)),
-        ],
-      },
       {
         id: "custom",
         title: intl.formatMessage({ id: "settings.modelProvider.customTitle" }),
@@ -220,6 +194,18 @@ export function useModelProviderNavigation({
           provider,
           statusActive: provider.executable === true,
         })),
+      },
+      {
+        id: "channel",
+        title: intl.formatMessage({ id: "settings.modelProvider.channelTitle" }),
+        items: [
+          {
+            key: CODEX_NAV_KEY,
+            type: "codex" as const,
+            label: intl.formatMessage({ id: "codex.title" }),
+            statusActive: false,
+          },
+        ],
       },
     ];
 
@@ -238,13 +224,8 @@ export function useModelProviderNavigation({
   ]);
 
   const navigationItems = useMemo(() => {
-    const visibleItems = navigationGroups.flatMap((group) => group.items);
-    const visibleKeys = new Set(visibleItems.map((item) => item.key));
-    return [
-      ...visibleItems,
-      ...connectionModeCodingPlanItems.filter((item) => !visibleKeys.has(item.key)),
-    ];
-  }, [connectionModeCodingPlanItems, navigationGroups]);
+    return navigationGroups.flatMap((group) => group.items);
+  }, [navigationGroups]);
 
   const selectableNavigationItems = useMemo(
     () => navigationItems.filter((item) => item.type !== "codingPlanLoading"),
@@ -524,7 +505,7 @@ export function connectionSelectionMatchesNavigationItem(
   selection: ProviderFamilyConnectionSelection,
   item: Exclude<ModelProviderNavGroup["items"][number], { type: "codingPlanLoading" }>,
 ): boolean {
-  if (item.type === "custom") return false;
+  if (item.type === "custom" || item.type === "codex") return false;
   const familySpec = resolveModelProviderFamilySpecByProviderId(item.presetId ?? "");
   if (familySpec?.id !== family) return false;
   if (selection.kind === "start-plan") {

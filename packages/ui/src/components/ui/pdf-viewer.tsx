@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes, KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon, ZoomInIcon, ZoomOutIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, ZoomInIcon, ZoomOutIcon } from "@zcode/lunar-icons";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import pdfWorkerSrc from "pdfjs-dist/build/pdf.worker.min.mjs?url";

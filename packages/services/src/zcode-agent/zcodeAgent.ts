@@ -1,5 +1,5 @@
 import type { BackgroundBashOutputResult, SessionDebugSnapshot } from "@zcode/shared";
-/* eslint-disable max-lines -- ZCode agent service 接口集中声明 protocol/session/workspace 方法，拆分会增加 service descriptor 迁移成本。 */
+/* eslint-disable max-lines -- Kaguya Code agent service 接口集中声明 protocol/session/workspace 方法，拆分会增加 service descriptor 迁移成本。 */
 import type { Event, IDisposable } from "@zcode/rpc";
 import { ServiceChannels } from "@zcode/shared";
 import type { AppUsageRange, AppUsageSnapshot, ZCodeTaskTokenUsageResult } from "@zcode/shared";

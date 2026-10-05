@@ -1,4 +1,4 @@
-import { SquareTerminalIcon } from "lucide-react";
+import { SquareTerminalIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { ToolCallBlock } from "@/ToolCallBlocks.js";

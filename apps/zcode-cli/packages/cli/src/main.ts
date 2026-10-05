@@ -27,7 +27,7 @@ async function main(): Promise<void> {
     isProtocol && !argv.includes("--prepare-storage")
       ? createProtocolProcessLifecycle()
       : undefined;
-  // app-server/agent-server 的 stdout 是严格的 ZCode Protocol 帧通道，三方 SDK 的
+  // app-server/agent-server 的 stdout 是严格的 Kaguya Code Protocol 帧通道，三方 SDK 的
   // console.debug 等普通输出不能直接写入 stdout。必须在加载 run/bootstrap 之前将
   // 进程级 console 统一引导到 stderr，否则任意依赖的一行普通日志都会触发传输层 JSON 解析崩溃。
   // TUI 同样独占 stdout；AI SDK 的首条提示使用 console.info，不能绕过 stderr 捕获。

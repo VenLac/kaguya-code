@@ -185,7 +185,7 @@ export function buildRuntimeProcessEnvPatch(
     ...toolEnvPassthroughPatch,
     ...runtimeToolEnvPatch,
     // Python on Windows inherits the active code page (often GBK/936) when no explicit
-    // encoding is set. ZCode/Bash tool output is consumed as UTF-8, so force Python
+    // encoding is set. Kaguya Code/Bash tool output is consumed as UTF-8, so force Python
     // subprocesses spawned by agents to emit UTF-8.
     ...PYTHON_UTF8_ENV_PATCH,
   };

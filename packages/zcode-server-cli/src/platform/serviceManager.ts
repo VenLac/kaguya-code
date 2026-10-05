@@ -61,7 +61,7 @@ export function createServiceDescriptor(options: {
     return {
       kind: "systemd",
       name,
-      content: `[Unit]\nDescription=ZCode Server\n[Service]\nExecStart=${shellQuote(options.command)} ${args.map(shellQuote).join(" ")}\nRestart=on-failure\n[Install]\nWantedBy=default.target\n`,
+      content: `[Unit]\nDescription=Kaguya Code Server\n[Service]\nExecStart=${shellQuote(options.command)} ${args.map(shellQuote).join(" ")}\nRestart=on-failure\n[Install]\nWantedBy=default.target\n`,
     };
   }
   return {

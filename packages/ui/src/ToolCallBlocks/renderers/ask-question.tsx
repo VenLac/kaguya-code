@@ -1,4 +1,4 @@
-import { CircleHelpIcon } from "lucide-react";
+import { CircleHelpIcon } from "@zcode/lunar-icons";
 import { useCallback } from "react";
 import {
   getAskUserQuestionAnswerText,

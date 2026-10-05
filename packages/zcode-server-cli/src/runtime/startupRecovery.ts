@@ -9,7 +9,7 @@ export async function recoverSupervisorStartup(
 ): Promise<void> {
   await readFile(uninstalledFile, "utf8")
     .then(() => {
-      throw new Error(`ZCode Server has been uninstalled: ${serverRoot}`);
+      throw new Error(`Kaguya Code Server has been uninstalled: ${serverRoot}`);
     })
     .catch((error: unknown) => {
       if (!(error instanceof Error && "code" in error && error.code === "ENOENT")) throw error;

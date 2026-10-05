@@ -1,4 +1,4 @@
-import { MoonIcon } from "lucide-react";
+import { MoonIcon } from "@zcode/lunar-icons";
 import { TID_OFFPEAK_CREATE_CARD, TID_OFFPEAK_CREATE_OPEN } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";

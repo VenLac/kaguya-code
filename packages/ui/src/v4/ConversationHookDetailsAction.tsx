@@ -6,7 +6,7 @@ import {
   ClockAlertIcon,
   LoaderCircleIcon,
   ShieldAlertIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { TID_V4_HOOK_DETAILS_CONTENT, TID_V4_HOOK_DETAILS_TRIGGER, testId } from "@zcode/shared";
 import type { HookExecutionProjection, HookInvocationRow } from "@zcode/shared/zcode-protocol-v4";
 import { cn } from "@/components/lib/utils.js";

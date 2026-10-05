@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type DragEvent, type KeyboardEvent } from "react";
-import { PlusIcon, XIcon } from "lucide-react";
+import { PlusIcon, XIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 import { TECHNICAL_INPUT_ATTRIBUTES } from "@/lib/technicalInputAttributes.js";

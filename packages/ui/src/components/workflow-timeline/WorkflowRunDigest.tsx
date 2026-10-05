@@ -4,7 +4,7 @@ import {
   RotateCcwIcon,
   SlidersHorizontalIcon,
   SquareIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { TID_CHAT_WORKFLOW_RUN_DIGEST, testId } from "@zcode/shared";
 import type { WorkflowRunState } from "@zcode/shared/zcode-protocol-v4";
 import { cn } from "@/components/lib/utils.js";

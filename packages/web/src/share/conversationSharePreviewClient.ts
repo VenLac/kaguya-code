@@ -244,7 +244,7 @@ export class ConversationSharePreviewClient {
       });
       throw new ConversationSharePreviewClientError({
         kind: "unsupported_schema_version",
-        message: "Conversation share requires a newer ZCode version",
+        message: "Conversation share requires a newer Kaguya Code version",
         status: response.status,
       });
     }

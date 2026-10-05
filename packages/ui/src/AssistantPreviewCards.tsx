@@ -1,4 +1,4 @@
-import { FileTextIcon, GlobeIcon } from "lucide-react";
+import { FileTextIcon, GlobeIcon } from "@zcode/lunar-icons";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { MessageFileLinkTarget } from "@/components/ai-elements/message.js";
 import { useWorkspaceServices } from "@/hooks/useWorkspaceServices.js";

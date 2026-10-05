@@ -10,7 +10,7 @@ import {
   type OAuthProviderId,
   ZAI_PROVIDER_ID,
 } from "@zcode/shared";
-import { ChevronRightIcon, Loader2 } from "lucide-react";
+import { ChevronRightIcon, Loader2 } from "@zcode/lunar-icons";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

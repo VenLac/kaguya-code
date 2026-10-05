@@ -22,7 +22,7 @@ export interface EndpointScopedZCodeBuiltinSourceOptions {
 }
 
 /**
- * 让 Environment 的 ZCode 控制面 Endpoint 同时决定 Active/LKG 与刷新控制路径。
+ * 让 Environment 的 Kaguya Code 控制面 Endpoint 同时决定 Active/LKG 与刷新控制路径。
  * Endpoint 切换只替换当前 Source，不读取上一 Endpoint 的缓存。
  */
 export class EndpointScopedZCodeBuiltinSource implements ProviderSource<ProviderConfigLayerSnapshot> {

@@ -370,7 +370,7 @@ export async function deployServer(
 
     log("all uploads complete");
 
-    // 部署 ZCode Agent runtime 到远程，历史资源包选择已在入口统一忽略。
+    // 部署 Kaguya Code Agent runtime 到远程，历史资源包选择已在入口统一忽略。
     await deployZCodeAgentRuntime(
       backend,
       env,

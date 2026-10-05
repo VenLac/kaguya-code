@@ -15,7 +15,7 @@ import {
   ThumbsUpIcon,
   TrendingUpDownIcon,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import {
   TID_V4_EDIT,
   TID_V4_EDIT_ATTACHMENT_REMOVE,

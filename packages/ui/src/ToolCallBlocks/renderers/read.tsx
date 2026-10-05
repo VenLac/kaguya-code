@@ -1,4 +1,4 @@
-import { SearchIcon } from "lucide-react";
+import { SearchIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import {
   FileDisplayIcon,

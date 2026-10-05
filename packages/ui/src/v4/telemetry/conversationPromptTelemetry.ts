@@ -33,7 +33,7 @@ export function resolveLegacyRuntimeModelValue(params: {
   return `${legacyTelemetryProviderId(configProvider)}/${modelName}`;
 }
 
-/** V4 config.provider 是实际模型 provider id；agentProvider 表示 ZCode 运行时。 */
+/** V4 config.provider 是实际模型 provider id；agentProvider 表示 Kaguya Code 运行时。 */
 export function buildV4ConversationPromptTelemetryExtraDetail(params: {
   agentProvider?: ZCodeProvider;
   configProvider?: string | null;
@@ -57,7 +57,7 @@ export function buildV4ConversationPromptTelemetryExtraDetail(params: {
     model_provider: legacyTelemetryProviderId(
       params.configProvider?.trim() || base.model_provider || "",
     ),
-    // agent 表示 ZCode 运行时，不能用模型 provider id 替代。
+    // agent 表示 Kaguya Code 运行时，不能用模型 provider id 替代。
     agent: agentProvider,
   };
 }

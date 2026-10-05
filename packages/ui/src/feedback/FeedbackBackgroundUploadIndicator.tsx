@@ -7,7 +7,7 @@ import {
   PauseCircle,
   Upload,
   X,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 import {

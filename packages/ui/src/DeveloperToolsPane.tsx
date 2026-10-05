@@ -1,5 +1,5 @@
 /* oxlint-disable eslint(max-lines) -- 开发者工具面板集中展示 token 表和网络 headers，后续继续扩展时再按区块拆分。 */
-import { ActivityIcon, BugIcon, NetworkIcon } from "lucide-react";
+import { ActivityIcon, BugIcon, NetworkIcon } from "@zcode/lunar-icons";
 import type { SessionDebugNetworkEntry } from "@zcode/shared";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { useSessionDebug } from "@/hooks/useSessionDebug.js";

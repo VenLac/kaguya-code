@@ -48,7 +48,7 @@ export async function prepareTuiAppRuntime(
   const sessionId = await resolveResumeSession(request, workingDirectory, env, deps);
   const bootstrapModule = deps.createZCodeApp ? undefined : await loadBootstrapModule();
   const createAppFactory = deps.createZCodeApp ?? bootstrapModule?.createZCodeApp;
-  if (!createAppFactory) throw new Error("ZCode app factory is unavailable.");
+  if (!createAppFactory) throw new Error("Kaguya Code app factory is unavailable.");
   const prepareTelemetry =
     deps.prepareZCodeTelemetryEnv ?? bootstrapModule?.prepareZCodeTelemetryEnv;
   if (prepareTelemetry) {

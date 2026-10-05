@@ -73,7 +73,7 @@ function registerRuntimeBuiltInTools(runtime: AgentRuntimeInternal, deps: AgentR
     // 取值收在 tool-allowlist.ts，与分支刷新那个入口共用同一个推导。
     includeDynamicWorkflow: resolveRuntimeDynamicWorkflowToolsIncluded(runtime.config),
     // browserControlPort 只是宿主能力，不应隐式暴露高权限 node_repl。
-    // node_repl/browser-use 由 ZCode 官方 browser-use 插件启停推导出的 runtimeFeatures 控制。
+    // node_repl/browser-use 由 Kaguya Code 官方 browser-use 插件启停推导出的 runtimeFeatures 控制。
     includeNodeRepl: nodeReplEnabled,
     includeBrowserUse: browserUseEnabled,
     embeddedSearchEnabled: resolveRuntimeEmbeddedSearchEnabled(runtime),

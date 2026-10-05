@@ -309,7 +309,7 @@ export function createRemoteWorkspaceServiceCollection(params: {
 
   // Web 手机远控进入 SSH task 时只连到 remote workspace host，
   // 没有桌面 renderer 那层 `baseServices + remoteServices` 合并。
-  // 因此这里为 remote workspace host 补齐本地全局 channel；文件、终端、ZCode Agent 仍来自远端，
+  // 因此这里为 remote workspace host 补齐本地全局 channel；文件、终端、Kaguya Code Agent 仍来自远端，
   // 设置、凭据、OAuth、模型供应商和 settings-sync 继续读写本机配置。
   const services = new ServiceCollection()
     .register(IFileService, params.connectionServices.fileService)

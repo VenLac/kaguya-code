@@ -1,7 +1,7 @@
 /*
  * Derived from vercel/ai-elements (packages/elements/src/prompt-input.tsx).
  * Copyright 2023 Vercel, Inc. Licensed under Apache-2.0.
- * Modified by ZCode: split components and adapt local imports and behavior.
+ * Modified by Kaguya Code: split components and adapt local imports and behavior.
  * See THIRD-PARTY-NOTICES.md in the repository root for license and provenance.
  */
 "use client";
@@ -11,7 +11,7 @@ import { Spinner } from "../ui/spinner.js";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip.js";
 import { cn } from "../lib/utils.js";
 import type { ChatStatus } from "ai";
-import { CornerDownLeftIcon, SquareIcon, XIcon } from "lucide-react";
+import { CornerDownLeftIcon, SquareIcon, XIcon } from "@zcode/lunar-icons";
 import type { ComponentProps, ReactNode } from "react";
 import { Children, useCallback } from "react";
 

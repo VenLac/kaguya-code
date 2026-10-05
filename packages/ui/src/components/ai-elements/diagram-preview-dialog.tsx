@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon, CircleMinusIcon, CirclePlusIcon, XIcon } from "lucide-react";
+import { ChevronDownIcon, CircleMinusIcon, CirclePlusIcon, XIcon } from "@zcode/lunar-icons";
 import {
   useCallback,
   useEffect,

@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { CheckCircle2Icon, CircleAlertIcon, Loader2Icon, XIcon } from "lucide-react";
+import { CheckCircle2Icon, CircleAlertIcon, Loader2Icon, XIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 

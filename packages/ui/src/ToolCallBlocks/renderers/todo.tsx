@@ -1,4 +1,4 @@
-import { ArrowRightIcon, CircleCheckIcon, CircleIcon, ListTodoIcon } from "lucide-react";
+import { ArrowRightIcon, CircleCheckIcon, CircleIcon, ListTodoIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { extractPlanStepsFromToolInput, extractPlanStepsFromToolOutput } from "@zcode/shared";
 import type { ZCodePlanStep } from "@zcode/shared";

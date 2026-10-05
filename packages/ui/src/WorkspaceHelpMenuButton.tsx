@@ -12,7 +12,7 @@ import {
   MessageSquareIcon,
   UsersIcon,
   RefreshCwIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { Badge } from "@/components/ui/badge.js";
 import { Button } from "@/components/ui/button.js";
 import {

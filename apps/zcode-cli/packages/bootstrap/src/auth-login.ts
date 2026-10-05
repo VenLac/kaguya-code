@@ -229,7 +229,7 @@ export async function loginZCodeCli(
     } catch (error) {
       throw new ZCodeCliLoginError(
         "config_update_failed",
-        "Login succeeded but updating ZCode config failed.",
+        "Login succeeded but updating Kaguya Code config failed.",
         { cause: error },
       );
     }

@@ -6,7 +6,7 @@ import {
   MessageCirclePlus,
   PanelLeftClose,
   PanelLeftOpen,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { UpdateStatusButton } from "@/UpdateStatusButton.js";
 import { DesktopTopOverlayActionButton } from "@/DesktopTopOverlayActionButton.js";
@@ -141,7 +141,7 @@ export function DesktopTopOverlay({
             >
               <img
                 src={appLogoUrl}
-                alt="ZCode"
+                alt="Kaguya Code"
                 className="size-5 transition-opacity duration-150 group-hover:opacity-0"
                 draggable={false}
               />

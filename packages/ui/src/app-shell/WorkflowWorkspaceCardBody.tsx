@@ -6,7 +6,7 @@
 // changed-files，带行号、按行有界）、文本（read / diff，diff 按首字符着墨）。
 
 import { memo, useCallback, useState, type ReactNode } from "react";
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { CheckIcon, CopyIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { useWorkflowRunNodeResult } from "@/hooks/useWorkflowRunNodeResult.js";

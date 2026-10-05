@@ -60,7 +60,7 @@ function loadEnvFiles(): Record<string, string> {
 
 const env = loadEnvFiles();
 const { environment: zcodeEnv } = await loadBuiltinProviderConfig();
-// 安装包身份与后端环境分轴：ZCODE_PREVIEW_IDENTITY=1 让生产后端的构建仍以 ZCode Preview 身份打包运行。
+// 安装包身份与后端环境分轴：ZCODE_PREVIEW_IDENTITY=1 让生产后端的构建仍以 Kaguya Code Preview 身份打包运行。
 const zcodeProductFlavor = resolveDesktopProductFlavor({ ...process.env, ZCODE_ENV: zcodeEnv });
 console.log(`[tsup] ZCODE_ENV=${zcodeEnv} ZCODE_PRODUCT_FLAVOR=${zcodeProductFlavor}`);
 
@@ -103,7 +103,7 @@ function createSharedDefines() {
     __ZCODE_ENDPOINT_ENV__: JSON.stringify(pickProductEndpointEnv(env)),
     __ZCODE_PRODUCT_FLAVOR__: JSON.stringify(zcodeProductFlavor),
     // Computer Use Helper build identity — helperInstaller 读它决定下载哪个 Helper bundle。
-    // 缺失时 installer 抛 "Packaged ZCode is missing its embedded Computer Use Helper build identity"。
+    // 缺失时 installer 抛 "Packaged Kaguya Code is missing its embedded Computer Use Helper build identity"。
     // CI 构建时通过 ZCODE_CUA_HELPER_BUILD_ID env 注入；dev 为空串走兜底（dev helper 不走下载）。
     __ZCODE_CUA_HELPER_BUILD_ID__: JSON.stringify(
       process.env.ZCODE_CUA_HELPER_BUILD_ID?.trim() ?? "",

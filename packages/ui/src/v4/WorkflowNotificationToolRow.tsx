@@ -1,4 +1,4 @@
-import { Hourglass, MessageCircleQuestion, Workflow } from "lucide-react";
+import { Hourglass, MessageCircleQuestion, Workflow } from "@zcode/lunar-icons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { WorkflowNotificationMeta } from "@zcode/shared/zcode-protocol-v4";
 import { CodeBlock, CodeBlockHeader } from "@/components/ai-elements/code-block.js";

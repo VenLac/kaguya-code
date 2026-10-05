@@ -1,4 +1,4 @@
-import { ChevronRightIcon, RotateCcwIcon } from "lucide-react";
+import { ChevronRightIcon, RotateCcwIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo, useState } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { CodeBlock } from "@/components/ai-elements/code-block.js";

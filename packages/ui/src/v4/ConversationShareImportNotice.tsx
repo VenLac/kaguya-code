@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { SquareArrowRightEnter } from "lucide-react";
+import { SquareArrowRightEnter } from "@zcode/lunar-icons";
 
 import type { Locale } from "@zcode/shared";
 import type { ConversationRow } from "@zcode/shared/zcode-protocol-v4";

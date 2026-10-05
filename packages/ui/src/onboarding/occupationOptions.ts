@@ -12,7 +12,7 @@ import {
   Scale,
   Ellipsis,
   type LucideIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 
 export const occupations = [
   "developer",

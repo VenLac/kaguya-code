@@ -1,5 +1,5 @@
 import { useState, type MouseEvent } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight } from "@zcode/lunar-icons";
 import type { SkillSyncCandidate } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

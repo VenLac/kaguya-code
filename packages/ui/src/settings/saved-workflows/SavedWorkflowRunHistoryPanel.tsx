@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Ban, ChevronRight, CircleCheck, Loader2, TriangleAlert } from "lucide-react";
+import { Ban, ChevronRight, CircleCheck, Loader2, TriangleAlert } from "@zcode/lunar-icons";
 import { TID_WORKFLOW_RUN_ROW, testId, type ZCodeSavedWorkflowRun } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";

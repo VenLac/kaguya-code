@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ChevronRightIcon, Loader2Icon, Undo2Icon } from "lucide-react";
+import { ChevronRightIcon, Loader2Icon, Undo2Icon } from "@zcode/lunar-icons";
 import type {
   CommandAck,
   ConversationRowTarget,

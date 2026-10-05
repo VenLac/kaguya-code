@@ -78,7 +78,7 @@ export function shouldOfferSideSlashCommand(options: {
 }
 
 export function normalizeSlashCommandValue(name: string): string {
-  // ZCode Agent 在远端可能直接返回 "/init" 作为命令名。
+  // Kaguya Code Agent 在远端可能直接返回 "/init" 作为命令名。
   // UI 的 value 需要去掉前导斜杠，否则插入 markdown 时会变成 "//init"，并影响 / 面板匹配。
   return name.trim().replace(/^\/+/, "");
 }

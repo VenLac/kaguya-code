@@ -1,7 +1,7 @@
 /* eslint-disable max-lines -- turn group 需要在同一处维护普通 assistant 与后台结果的严格行序，拆分会重复 actions/preview/tail 协议。 */
 import { useIsOfficeMode } from "@/hooks/useInterfaceMode.js";
 import { Fragment, memo, useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "@zcode/lunar-icons";
 import {
   TID_CHAT_ASSISTANT_HISTORY_CONTENT,
   TID_CHAT_ASSISTANT_HISTORY_TRIGGER,

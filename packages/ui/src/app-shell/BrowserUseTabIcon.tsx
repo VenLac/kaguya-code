@@ -1,4 +1,4 @@
-import { MousePointer2Icon } from "lucide-react";
+import { MousePointer2Icon } from "@zcode/lunar-icons";
 import { BrowserTabFavicon } from "@/app-shell/BrowserTabFavicon.js";
 import { useBrowserUseOperationActive } from "@/browser-use/useBrowserUseOperationActive.js";
 import type { BrowserUseSidePaneTab } from "@/lib/workspaceSidePane.js";

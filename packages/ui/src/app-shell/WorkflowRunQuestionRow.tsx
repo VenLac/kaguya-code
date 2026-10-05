@@ -1,4 +1,4 @@
-import { MessageCircleQuestionIcon } from "lucide-react";
+import { MessageCircleQuestionIcon } from "@zcode/lunar-icons";
 import type { WorkflowRunPendingQuestion } from "@zcode/shared/zcode-protocol-v4";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

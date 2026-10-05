@@ -209,7 +209,7 @@ async function serve(options) {
   });
 
   console.log("");
-  console.log("ZCode Web is running");
+  console.log("Kaguya Code Web is running");
   console.log(`Local:   ${localUrl}`);
   if (options.host === "0.0.0.0" || options.host === "::") {
     for (const url of networkUrls(port, token)) {

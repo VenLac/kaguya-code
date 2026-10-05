@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ArrowUpRightIcon, EllipsisIcon } from "lucide-react";
+import { ArrowUpRightIcon, EllipsisIcon } from "@zcode/lunar-icons";
 import {
   ArtifactDetail,
   ArtifactKindIcon,

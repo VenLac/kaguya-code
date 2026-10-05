@@ -1,5 +1,5 @@
 /*
- * ZCode 官方 Server MCP 的凭证解析与身份头构造。
+ * Kaguya Code 官方 Server MCP 的凭证解析与身份头构造。
  *
  * 本文件与 Off-Peak 的 offPeakRuntimeModel.ts **逻辑等价但完全独立**：
  * 不复用其函数、不修改其行为。理由是两者的套餐门槛、Team 支持范围与凭证通道预期会独立演进，

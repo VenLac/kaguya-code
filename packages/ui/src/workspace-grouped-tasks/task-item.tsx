@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import type { ZCodeTaskMeta } from "@zcode/shared";
-import { MessageCirclePlus } from "lucide-react";
+import { MessageCirclePlus } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { GroupedTaskRow } from "@/workspace-grouped-tasks/task-row.js";

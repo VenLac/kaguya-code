@@ -297,7 +297,7 @@ function normalizeStatus(value: string | undefined): ZCodeBackgroundTaskControlS
 
 function readJobId(record: Record<string, unknown>, command: string): string {
   const explicitId = readStringField(record, [
-    // ZCode Protocol 后台任务取消入口按 taskId 查找 runtime task 记录；
+    // Kaguya Code Protocol 后台任务取消入口按 taskId 查找 runtime task 记录；
     // 若这里落到 toolCallId，UI 会发送 call_*，后端只能返回 background_task_not_found。
     "taskId",
     "task_id",

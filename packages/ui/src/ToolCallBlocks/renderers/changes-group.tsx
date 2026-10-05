@@ -1,4 +1,4 @@
-import { PencilIcon } from "lucide-react";
+import { PencilIcon } from "@zcode/lunar-icons";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { getFileDisplayPath } from "@/lib/fileDisplay.js";

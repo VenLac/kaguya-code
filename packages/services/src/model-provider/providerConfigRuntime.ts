@@ -25,7 +25,7 @@ export interface ProviderConfigRuntimeOptions {
 
 /**
  * Services 装配层：提供 App 配置目录和已发布旧配置的一次性迁移入口。
- * 配置迁移保留 ZCode 用户的供应商数据，文件运行时由 @zcode/provider-node 唯一实现。
+ * 配置迁移保留 Kaguya Code 用户的供应商数据，文件运行时由 @zcode/provider-node 唯一实现。
  */
 export class ProviderConfigRuntime {
   readonly configService: NodeProviderConfigRuntime["configService"];

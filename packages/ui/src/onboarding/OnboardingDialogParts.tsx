@@ -1,4 +1,4 @@
-import { CheckIcon } from "lucide-react";
+import { CheckIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

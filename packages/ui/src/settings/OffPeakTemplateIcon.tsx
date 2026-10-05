@@ -1,4 +1,4 @@
-import { Activity, List, ListChecks, SlidersHorizontal, type LucideIcon } from "lucide-react";
+import { Activity, List, ListChecks, SlidersHorizontal, type LucideIcon } from "@zcode/lunar-icons";
 import { ClientSceneLucideIcon } from "@/components/ClientSceneLucideIcon.js";
 
 export type OffPeakTemplateIconName =

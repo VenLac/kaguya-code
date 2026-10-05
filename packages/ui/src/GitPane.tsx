@@ -5,7 +5,7 @@ import type { GitChangeSourceId, GitDiffResult } from "@zcode/shared";
 import { TID_GIT_PANE } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
-import { FileTextIcon, RefreshCw } from "lucide-react";
+import { FileTextIcon, RefreshCw } from "@zcode/lunar-icons";
 import {
   Select,
   SelectContent,

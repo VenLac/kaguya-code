@@ -1,5 +1,5 @@
 import { memo, type ReactNode } from "react";
-import { Ban, CircleCheck, Loader2, TriangleAlert } from "lucide-react";
+import { Ban, CircleCheck, Loader2, TriangleAlert } from "@zcode/lunar-icons";
 import {
   TID_WORKFLOW_CARD,
   TID_WORKFLOW_CARD_MENU,

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronRightIcon, ListIcon, Maximize2Icon, Workflow } from "lucide-react";
+import { ChevronRightIcon, ListIcon, Maximize2Icon, Workflow } from "@zcode/lunar-icons";
 import type { WorkflowRunState } from "@zcode/shared/zcode-protocol-v4";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";

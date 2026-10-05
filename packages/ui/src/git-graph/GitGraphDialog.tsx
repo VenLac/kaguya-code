@@ -15,7 +15,7 @@ import { useServices } from "@/hooks/useServices.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { getErrorMessage } from "@/lib/errorMessage.js";
 import { logger } from "@/logger.js";
-import { AlertCircleIcon, LoaderIcon, XIcon } from "lucide-react";
+import { AlertCircleIcon, LoaderIcon, XIcon } from "@zcode/lunar-icons";
 
 interface GitGraphDialogProps {
   open: boolean;

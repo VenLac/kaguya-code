@@ -18,7 +18,7 @@ export interface TaskChatToolCall {
   toolId: string;
   /** 上级 toolCallId；null 表示主 agent，非空表示来自某个 Task/Agent 子工具。 */
   parentToolUseId?: string | null;
-  /** ZCode 固定工具名；kind 仍保留给旧 ZCode Agent 快照和 UI 聚合分类兼容。 */
+  /** Kaguya Code 固定工具名；kind 仍保留给旧 Kaguya Code Agent 快照和 UI 聚合分类兼容。 */
   toolName?: string;
   kind: string;
   title?: string;
@@ -89,11 +89,11 @@ export interface TaskChatMessage {
   toolSlice?: ZCodeTaskSnapshotToolSlice;
   /** 是否仍在流式输出，仅用于当前运行期 UI 恢复，不参与持久化 */
   streaming?: boolean;
-  /** ZCode Agent synthetic timeline 消息，不参与 assistant 正文、工具调用和 fork。 */
+  /** Kaguya Code Agent synthetic timeline 消息，不参与 assistant 正文、工具调用和 fork。 */
   syntheticTimeline?: ZCodeTimelineMeta;
   /** UI-only synthetic timeline 消息，不进入协议快照或本地历史。 */
   uiTimeline?: TaskUiTimelineMeta;
-  /** ZCode CLI turn steering 状态标记，仅用于用户消息展示。 */
+  /** Kaguya Code CLI turn steering 状态标记，仅用于用户消息展示。 */
   turnSteer?: {
     status: "guided";
   };

@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 import type { FeedbackSubmissionAttachmentDraft } from "@/feedback/feedbackSubmissionJob.js";
-import { ImageIcon, TriangleAlertIcon, XIcon } from "lucide-react";
+import { ImageIcon, TriangleAlertIcon, XIcon } from "@zcode/lunar-icons";
 
 export interface ScreenshotAttachmentDraft extends FeedbackSubmissionAttachmentDraft {
   id: string;

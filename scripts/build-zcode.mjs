@@ -242,7 +242,7 @@ async function main() {
   const rootPackageJson = await readJson(resolve(root, "package.json"));
   const version = options.version ?? rootPackageJson.version;
   if (!version || typeof version !== "string") {
-    throw new Error("Unable to resolve ZCode version.");
+    throw new Error("Unable to resolve Kaguya Code version.");
   }
 
   await buildOutputs(options.skipBuild);

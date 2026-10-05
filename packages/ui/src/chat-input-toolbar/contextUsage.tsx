@@ -207,7 +207,7 @@ export function getRenderableTaskUsage<T extends { used: number; size: number }>
     return null;
   }
 
-  // ZCode Protocol 迁移后会单独补齐真实 contextUsed/contextWindow。
+  // Kaguya Code Protocol 迁移后会单独补齐真实 contextUsed/contextWindow。
   // used=0 或非法值不代表可展示的上下文占用，避免把初始化/异常兜底渲染成误导性的 0%。
   if (
     !Number.isFinite(taskUsage.used) ||

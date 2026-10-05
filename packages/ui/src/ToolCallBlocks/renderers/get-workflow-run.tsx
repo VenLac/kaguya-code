@@ -1,4 +1,4 @@
-import { Gauge } from "lucide-react";
+import { Gauge } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import type { ToolCallGetWorkflowRunDisplay } from "@zcode/shared/zcode-protocol-v4";
 import { CodeBlock, CodeBlockHeader } from "@/components/ai-elements/code-block.js";

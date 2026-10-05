@@ -3,7 +3,7 @@
  * MCP Settings Section
  *
  * Manages MCP server configuration in the settings page.
- * Supports the unified ZCode Agent MCP source backed by settings directories.
+ * Supports the unified Kaguya Code Agent MCP source backed by settings directories.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -68,7 +68,7 @@ import { useBaseWorkspaceServices, useWorkspaceServices } from "@/hooks/useWorks
 import { useTabStore } from "@/store/TabStoreProvider.js";
 import type { WorkspaceTabState } from "@/store/tabStore.js";
 import { getPluginWorkspaceKey } from "@/settings/PluginScopeMenu.js";
-import { ExternalLink, Import, Plus, UploadCloud } from "lucide-react";
+import { ExternalLink, Import, Plus, UploadCloud } from "@zcode/lunar-icons";
 import { SettingsSegmentedTabs } from "@/settings/SettingsSegmentedTabs.js";
 import { formatRemoteSkillSyncTarget } from "@/settings/RemoteSkillSyncDialog.js";
 import { selectPluginsForScope } from "@/settings/pluginCapabilityProjection.js";

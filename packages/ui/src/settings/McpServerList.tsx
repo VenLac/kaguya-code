@@ -17,7 +17,7 @@ import {
 } from "@/settings/McpFailurePresentation.js";
 import { SettingsResourceList } from "@/settings/SettingsResourceGroup.js";
 import { runUserAction } from "@/lib/userActionTelemetry.js";
-import { CircleIcon, Cable, Loader2Icon, ExternalLink, Plus } from "lucide-react";
+import { CircleIcon, Cable, Loader2Icon, ExternalLink, Plus } from "@zcode/lunar-icons";
 
 export function McpStatusDot({
   status,

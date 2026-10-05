@@ -55,6 +55,19 @@ function syncBrowserThemeSurface(resolved: ResolvedTheme) {
   }
 }
 
+// 记下最近一次按下的位置：切换主题时，新主题从这里圆形展开（常见场景就是点了设置里的主题选项）。
+let lastPointer: { x: number; y: number } | null = null;
+if (typeof window !== "undefined") {
+  window.addEventListener(
+    "pointerdown",
+    (event) => {
+      lastPointer = { x: event.clientX, y: event.clientY };
+    },
+    { capture: true, passive: true },
+  );
+}
+let themeAppliedOnce = false;
+
 export function applyTheme(theme: Theme) {
   const resolved = resolveTheme(theme);
   const appliedTheme =
@@ -63,10 +76,40 @@ export function applyTheme(theme: Theme) {
         ? "zai-dark"
         : "zai-light"
       : normalizeThemePreference(theme);
-  document.documentElement.classList.toggle("dark", resolved === "dark");
-  document.documentElement.classList.toggle("theme-zai-light", appliedTheme === "zai-light");
-  document.documentElement.classList.toggle("theme-zai-dark", appliedTheme === "zai-dark");
-  syncBrowserThemeSurface(resolved);
+  const root = document.documentElement;
+  const commit = () => {
+    root.classList.toggle("dark", resolved === "dark");
+    root.classList.toggle("theme-zai-light", appliedTheme === "zai-light");
+    root.classList.toggle("theme-zai-dark", appliedTheme === "zai-dark");
+    syncBrowserThemeSurface(resolved);
+  };
+
+  const changed =
+    root.classList.contains("dark") !== (resolved === "dark") ||
+    root.classList.contains("theme-zai-light") !== (appliedTheme === "zai-light") ||
+    root.classList.contains("theme-zai-dark") !== (appliedTheme === "zai-dark");
+  const canAnimate =
+    themeAppliedOnce &&
+    changed &&
+    typeof document.startViewTransition === "function" &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  themeAppliedOnce = true;
+  if (!canAnimate) {
+    commit();
+    return;
+  }
+
+  const { x, y } = lastPointer ?? { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+  const transition = document.startViewTransition(commit);
+  void transition.ready
+    .then(() =>
+      root.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 900, easing: "cubic-bezier(0.65, 0, 0.35, 1)", pseudoElement: "::view-transition-new(root)" },
+      ),
+    )
+    .catch(() => undefined);
 }
 
 function isTheme(value: string | null): value is Theme {

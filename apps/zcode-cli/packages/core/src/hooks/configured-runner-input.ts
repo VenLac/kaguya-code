@@ -30,7 +30,7 @@ export async function createCompatibleHookStdin(input: HookInput): Promise<{
 
   if ("toolName" in input) {
 
-    // 这里只补无损 alias，继续保留 ZCode camelCase 字段作为内部主契约。
+    // 这里只补无损 alias，继续保留 Kaguya Code camelCase 字段作为内部主契约。
     compatible.tool_name = input.toolName;
     compatible.tool_input = input.toolInput;
     compatible.tool_use_id = input.toolCallId;

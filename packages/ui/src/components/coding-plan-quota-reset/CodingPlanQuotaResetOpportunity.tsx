@@ -1,4 +1,4 @@
-import { GiftIcon } from "lucide-react";
+import { GiftIcon } from "@zcode/lunar-icons";
 import { useEffect, useState } from "react";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import {

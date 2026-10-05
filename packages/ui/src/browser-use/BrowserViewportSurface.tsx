@@ -4,7 +4,7 @@ import {
   TID_BROWSER_WEBVIEW,
   type BrowserViewportSize,
 } from "@zcode/shared";
-import { TriangleAlertIcon } from "lucide-react";
+import { TriangleAlertIcon } from "@zcode/lunar-icons";
 import { ResponsiveBrowserViewport } from "@/browser-use/ResponsiveBrowserViewport.js";
 import {
   resolveResponsiveBrowserGuestLayout,

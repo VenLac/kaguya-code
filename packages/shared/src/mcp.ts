@@ -1,5 +1,5 @@
 /**
- * MCP (Model Context Protocol) types for ZCode
+ * MCP (Model Context Protocol) types for Kaguya Code
  * Based on the original Tauri implementation
  */
 
@@ -283,7 +283,7 @@ export function convertToZCodeAgentMcpServer(
       const unwrappedCommand = args[1];
       if ((lowerCmd === "cmd" || lowerCmd === "cmd.exe") && args[0] === "/c" && unwrappedCommand) {
         // noUncheckedIndexedAccess 下 args[1] 即使经过 length 判断也仍是 string | undefined。
-        // 先显式取值并判空，既满足类型收窄，也避免把空命令传给 ZCode Agent。
+        // 先显式取值并判空，既满足类型收窄，也避免把空命令传给 Kaguya Code Agent。
         command = unwrappedCommand;
         args = args.slice(2);
       }

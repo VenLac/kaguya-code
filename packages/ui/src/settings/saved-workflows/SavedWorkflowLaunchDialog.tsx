@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Info, Workflow } from "lucide-react";
+import { Info, Workflow } from "@zcode/lunar-icons";
 import {
   TID_WORKFLOW_LAUNCH_ARG,
   TID_WORKFLOW_LAUNCH_DIALOG,

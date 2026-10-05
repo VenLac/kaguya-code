@@ -257,7 +257,7 @@ export function resolveTelemetryAttribution(params: {
     isLocalModelValidationMessage(params.error.message)
   ) {
     // Bug 原因：旧 transcript 的请求前 capability / option 校验只有稳定 code/message，
-    // 没有经过 runner 写入 attribution；仅匹配 ZCode 自身生成的精确文案，避免误收 provider 400。
+    // 没有经过 runner 写入 attribution；仅匹配 Kaguya Code 自身生成的精确文案，避免误收 provider 400。
     return { errorSource: "runtime", failureReason: "invalid_request" };
   }
 

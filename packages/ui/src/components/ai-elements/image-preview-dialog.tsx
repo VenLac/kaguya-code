@@ -7,7 +7,7 @@ import {
   MinusIcon,
   PlusIcon,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/components/lib/utils.js";

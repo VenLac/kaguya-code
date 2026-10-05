@@ -49,7 +49,7 @@ export async function fetchAndExtractContent(options: {
   let response: HttpClientResponse | undefined;
 
   for (let redirectCount = 0; redirectCount <= MAX_REDIRECTS; redirectCount += 1) {
-    // ZCode WebFetch 从 agent runtime 所在机器出网；移除 DNS preflight 后，
+    // Kaguya Code WebFetch 从 agent runtime 所在机器出网；移除 DNS preflight 后，
     // 每个真实 GET 前仍要阻断 URL 字面量本地/私网目标，避免 NO_PROXY 绕过安全边界。
     await assertWebFetchLiteralEgress(currentUrl);
 

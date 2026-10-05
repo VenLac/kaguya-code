@@ -14,16 +14,16 @@ export function resolveProductionRemoteAssetCacheDir(
 ) {
   const pathApi = pathApiForPlatform(platform);
   if (platform === "darwin") {
-    return pathApi.join(homeDir, "Library", "Application Support", "ZCode", "remote-assets-cache");
+    return pathApi.join(homeDir, "Library", "Application Support", "Kaguya Code", "remote-assets-cache");
   }
 
   if (platform === "win32") {
     const appDataDir = env.APPDATA?.trim() || pathApi.join(homeDir, "AppData", "Roaming");
-    return pathApi.join(appDataDir, "ZCode", "remote-assets-cache");
+    return pathApi.join(appDataDir, "Kaguya Code", "remote-assets-cache");
   }
 
   const configDir = env.XDG_CONFIG_HOME?.trim() || pathApi.join(homeDir, ".config");
-  return pathApi.join(configDir, "ZCode", "remote-assets-cache");
+  return pathApi.join(configDir, "Kaguya Code", "remote-assets-cache");
 }
 
 export function buildDesktopRemoteProdEnv(

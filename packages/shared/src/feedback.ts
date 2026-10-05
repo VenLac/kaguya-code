@@ -57,7 +57,7 @@ export interface FeedbackDeviceInfo {
   osRelease?: string;
   osVersion?: string;
   osArch?: string;
-  /** 提交反馈时的当前 Agent。单 ZCode Agent 模式下固定为 ZCode Agent。 */
+  /** 提交反馈时的当前 Agent。单 Kaguya Code Agent 模式下固定为 Kaguya Code Agent。 */
   agentProvider?: string;
   /** 提交反馈时归一到反馈平台的框架标识，当前固定为 zcode-agent。 */
   agentFramework?: FeedbackTicketFramework;
@@ -212,7 +212,7 @@ export const DEFAULT_FEEDBACK_TICKET_FRAMEWORK: FeedbackTicketFramework = "zcode
 export const FEEDBACK_TICKET_FRAMEWORK_OPTIONS: {
   value: FeedbackTicketFramework;
   label: string;
-}[] = [{ value: "zcode-agent", label: "ZCode Agent" }];
+}[] = [{ value: "zcode-agent", label: "Kaguya Code Agent" }];
 
 /** 含「未指定」的完整列表，供管理端等场景使用。 */
 export const FEEDBACK_TICKET_FRAMEWORKS: {

@@ -8,4 +8,4 @@ export const CACHE_TTL_MS = 15 * 60 * 1000;
 export const CACHE_MAX_BYTES = 50 * 1024 * 1024;
 export const MAX_REDIRECTS = 10;
 
-export const WEBFETCH_USER_AGENT = "ZCode-WebFetch/0.1 (+https://zcode.ai; coding-agent-cli)";
+export const WEBFETCH_USER_AGENT = "Kaguya Code-WebFetch/0.1 (+https://zcode.ai; coding-agent-cli)";

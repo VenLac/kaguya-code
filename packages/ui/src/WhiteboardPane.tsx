@@ -7,7 +7,7 @@ import {
   Redo2Icon,
   Trash2Icon,
   Undo2Icon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import { Input } from "@/components/ui/input.js";

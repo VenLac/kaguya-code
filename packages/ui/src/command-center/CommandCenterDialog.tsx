@@ -12,7 +12,7 @@ import {
   RocketIcon,
   SearchIcon,
   Trash2Icon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { WorkspaceFileEntry, ZCodeTaskChangeSummary, ZCodeTaskMeta } from "@zcode/shared";
 import {
   Command,

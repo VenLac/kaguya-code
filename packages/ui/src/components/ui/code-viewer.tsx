@@ -7,7 +7,7 @@ import type {
   Ref,
 } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "@zcode/lunar-icons";
 import type { FileContents, LineAnnotation, SupportedLanguages } from "@pierre/diffs";
 import { File, type FileOptions } from "@pierre/diffs/react";
 import type { BundledTheme } from "shiki";

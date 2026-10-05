@@ -77,7 +77,7 @@ export type Locale = "zh-CN" | "en-US";
 /** 界面语言偏好；system 表示跟随当前运行端系统语言。 */
 export type LocalePreference = "system" | Locale;
 
-/** ZCode 运行中继续输入时的交互行为 */
+/** Kaguya Code 运行中继续输入时的交互行为 */
 export type ZCodeInteractionBehavior = "queue" | "guide";
 
 /** 桌面端 Electron 自动更新发布通道。 */
@@ -261,7 +261,7 @@ export interface AppSettings {
   httpProxyCaCertPath?: string;
   /**
    * 内置浏览器忽略 HTTPS 证书校验错误（自签名、过期、域名不匹配等），用于访问内网测试站点。
-   * 只影响内置浏览器出口，不影响 ZCode 自身对后端与模型 API 的请求。默认关闭，重启后生效。
+   * 只影响内置浏览器出口，不影响 Kaguya Code 自身对后端与模型 API 的请求。默认关闭，重启后生效。
    */
   embeddedBrowserAllowInsecureCertificates?: boolean;
   /** 人类用户主动打开 Browser tab 时的一次性显示偏好；Agent Browser Use 不读写。 */
@@ -305,7 +305,7 @@ export interface AppSettings {
   toolGroupingTerminalEnabled?: boolean;
   /** 是否把连续的 Write/Edit/ApplyPatch 工具调用聚合成 Changes。 */
   toolGroupingChangesEnabled?: boolean;
-  /** ZCode 运行中继续输入时，是排队到下一轮，还是引导到下一次工具调用后运行 */
+  /** Kaguya Code 运行中继续输入时，是排队到下一轮，还是引导到下一次工具调用后运行 */
   zcodeInteractionBehavior?: ZCodeInteractionBehavior;
   /** Agent 提问五分钟无人回答时是否允许自动继续；缺失按开启兼容旧配置。 */
   askUserQuestionAutoResolutionEnabled?: boolean;

@@ -58,13 +58,13 @@ export async function applyDesktopChromiumNetworkPolicies(
       name: "default-session",
       session: sessionProvider.defaultSession,
       allowInsecure: false,
-      // ZCode 自身对后端与模型 API 的出口，收敛到设置页的显式配置，不被本机系统代理左右。
+      // Kaguya Code 自身对后端与模型 API 的出口，收敛到设置页的显式配置，不被本机系统代理左右。
       fallbackProxyMode: "direct" as const,
     },
     {
       name: "embedded-browser",
       session: sessionProvider.fromPartition(EMBEDDED_BROWSER_PARTITION),
-      // 自签名放行只开在内置浏览器出口：defaultSession 承载 renderer 对 ZCode 后端与模型 API
+      // 自签名放行只开在内置浏览器出口：defaultSession 承载 renderer 对 Kaguya Code 后端与模型 API
       // 的流量，在那里放行等于整个应用失去 TLS 保护，与「访问内网测试站点」的诉求不成比例。
       allowInsecure: settings.embeddedBrowserAllowInsecureCertificates === true,
       // 内置浏览器是用户自己的浏览出口，留空时跟随系统代理，与本机浏览器保持一致；

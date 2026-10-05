@@ -20,7 +20,7 @@ const GENERIC_ZCODE_UI_ERROR_MESSAGES = new Set([
   "Turn execution failed",
   "Compact failed",
   "Rewind failed",
-  "ZCode session failed",
+  "Kaguya Code session failed",
 ]);
 
 function isObjectRecord(value: unknown): value is Record<string, unknown> {
@@ -74,7 +74,7 @@ function collectMessageCandidatesFromRecord(record: Record<string, unknown>): st
     ["detail"],
     ["data", "message"],
     ["data", "detail"],
-    // ZCode Agent 常把可读原因放在 data.details（复数）里；之前只识别 detail，
+    // Kaguya Code Agent 常把可读原因放在 data.details（复数）里；之前只识别 detail，
     // 会导致 UI 只能看到 “Internal error” 而丢掉关键可执行提示。
     ["data", "details"],
     ["data", "reason"],

@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
-import { LightbulbIcon, XIcon, ChevronDownIcon } from "lucide-react";
+import { LightbulbIcon, XIcon, ChevronDownIcon } from "@zcode/lunar-icons";
 import {
   TID_CHAT_MODE_SELECT_TRIGGER,
   TID_CHAT_MODE_SELECT_ITEM,

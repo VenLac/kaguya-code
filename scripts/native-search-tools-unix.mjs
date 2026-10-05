@@ -400,7 +400,7 @@ export function buildNativeSearchToolsUnix({
   mkdirSync(join(prefix, "include"), { recursive: true });
   mkdirSync(join(prefix, "lib", "pkgconfig"), { recursive: true });
 
-  console.log("==> ZCode native search build");
+  console.log("==> Kaguya Code native search build");
   console.log(`    target:  ${plan.platformKey}`);
   console.log(`    output:  ${plan.outputDir}`);
   console.log(`    workdir: ${workDir}`);

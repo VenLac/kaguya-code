@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useRef, type ReactNode } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 

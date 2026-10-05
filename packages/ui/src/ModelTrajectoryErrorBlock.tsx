@@ -1,4 +1,4 @@
-import { CircleAlertIcon } from "lucide-react";
+import { CircleAlertIcon } from "@zcode/lunar-icons";
 
 export function ModelTrajectoryErrorBlock({
   error,

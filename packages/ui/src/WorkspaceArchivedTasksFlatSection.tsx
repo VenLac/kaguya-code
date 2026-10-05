@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArchiveX, Cloud, CloudDownload, Folder, Smartphone, Trash2 } from "lucide-react";
+import { ArchiveX, Cloud, CloudDownload, Folder, Smartphone, Trash2 } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

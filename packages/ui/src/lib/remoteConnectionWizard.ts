@@ -152,7 +152,7 @@ export function withDefaultRemoteResourcePackages(target: RemoteTarget): RemoteT
   return {
     ...target,
     resourcePackages: {
-      // 当前分支只保留一个 ZCode Agent，SSH 向导再让用户手动挑资源包会产生无意义分叉。
+      // 当前分支只保留一个 Kaguya Code Agent，SSH 向导再让用户手动挑资源包会产生无意义分叉。
       // 这里统一走默认 active 资源集，历史重连传入的旧选择不再影响部署范围。
       selectedPackageIds: normalizeRemoteResourcePackageSelection(),
     },

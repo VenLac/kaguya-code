@@ -1,4 +1,4 @@
-import { FlaskConical } from "lucide-react";
+import { FlaskConical } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import type { ToolCallEvalWorkflowSnippetDisplay } from "@zcode/shared/zcode-protocol-v4";
 import {

@@ -1300,7 +1300,7 @@ export async function parseRemoteAssetManifestFromResponse(
     const mountRule = REMOTE_COMPONENT_MOUNT_RULES[id];
     if (!mountRule) {
       // 旧 release manifest 可能仍包含已退役的三方 agent 组件。
-      // 当前客户端只认识 ZCode Agent 与基础运行时，未知组件应跳过，不能阻断当前组件下载。
+      // 当前客户端只认识 Kaguya Code Agent 与基础运行时，未知组件应跳过，不能阻断当前组件下载。
       continue;
     }
 

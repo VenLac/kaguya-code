@@ -192,7 +192,7 @@ export function extractDeepLinkUrlFromArgs(args: readonly string[]): string | nu
       if (match) {
         // Debian/xdg 的协议回调可能被浏览器或桌面门户多次编码，
         // 也可能把 query 片段拆成相邻 argv。这里先生成有限候选再多轮解码，
-        // 避免浏览器确认“打开 ZCode”后主进程拿不到完整回调 URL。
+        // 避免浏览器确认“打开 Kaguya Code”后主进程拿不到完整回调 URL。
         if (isCompleteDeepLinkUrl(match)) {
           return match;
         }

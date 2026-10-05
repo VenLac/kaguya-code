@@ -122,7 +122,7 @@ export function resolveAppRuntimeConfig(input: {
       resolveBashTimeoutPolicy(options.env ?? process.env),
     mode: options.runtimeConfig?.mode ?? persistedMode ?? configResult.config.permission.mode,
     modelSelection: initialModelSelection,
-    // 仅接受显式传入的会话级工具面（ZCode Protocol session/create 或 CLI
+    // 仅接受显式传入的会话级工具面（Kaguya Code Protocol session/create 或 CLI
     // --allowed-tools/--disallowed-tools）。不要从 config.permission.allowedTools
     // 回落：那个键的既有语义是“免审批清单”，把它投影到注册面会让老配置里
     // 只写了几个 allowedTools 的用户突然丢失其余全部工具。

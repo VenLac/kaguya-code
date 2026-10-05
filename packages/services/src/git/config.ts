@@ -66,7 +66,7 @@ export function getGitCommandEnv(): NodeJS.ProcessEnv {
 
   // pre-push hook 会向子进程注入当前仓库的 GIT_DIR/GIT_WORK_TREE 等 local env。
   // 如果这里原样透传，Git 服务命令会“串仓”到 hook 所在仓库，临时仓库/远端仓库操作都会被污染。
-  // 统一先清理 local env，再叠加 ZCode 约束变量，保证命令只依赖显式 cwd。
+  // 统一先清理 local env，再叠加 Kaguya Code 约束变量，保证命令只依赖显式 cwd。
   for (const variableName of GIT_LOCAL_ENV_VARS) {
     delete env[variableName];
   }

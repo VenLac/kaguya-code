@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "@zcode/lunar-icons";
 import {
   compareDocumentPluginPriority,
   isPublicStoreMarketplaceId,

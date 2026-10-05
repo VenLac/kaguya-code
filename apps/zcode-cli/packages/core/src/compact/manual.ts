@@ -118,7 +118,7 @@ function stringifyToolCallInputForTokenEstimate(input: unknown): string {
     return JSON.stringify(input ?? {}) ?? EMPTY_TOOL_CALL_INPUT_JSON;
   } catch {
     // tool_use 解析失败时降级为空对象的 JSON 表示，供 estimator 估算。
-    // ZCode 的模型输入仍可能包含未知内容；异常输入不能让本地预算估算中断 compact。
+    // Kaguya Code 的模型输入仍可能包含未知内容；异常输入不能让本地预算估算中断 compact。
     return EMPTY_TOOL_CALL_INPUT_JSON;
   }
 }

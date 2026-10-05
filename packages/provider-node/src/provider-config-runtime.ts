@@ -37,7 +37,7 @@ export interface NodeProviderConfigRuntimeOptions {
   readonly watch?: boolean;
 }
 
-/** 组装一个 Node.js 进程内共享的 ZCode Built-in/Personal Config 运行边界。 */
+/** 组装一个 Node.js 进程内共享的 Kaguya Code Built-in/Personal Config 运行边界。 */
 export class NodeProviderConfigRuntime {
   readonly configService: ProviderConfigService;
   readonly #zcodeBuiltinSource:

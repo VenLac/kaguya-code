@@ -1,7 +1,7 @@
 /*
  * Derived from vercel/ai-elements (packages/elements/src/artifact.tsx).
  * Copyright 2023 Vercel, Inc. Licensed under Apache-2.0.
- * Modified by ZCode: local integration, formatting and adaptations.
+ * Modified by Kaguya Code: local integration, formatting and adaptations.
  * See THIRD-PARTY-NOTICES.md in the repository root for license and provenance.
  */
 "use client";
@@ -9,8 +9,8 @@
 import { Button } from "../ui/button.js";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip.js";
 import { cn } from "../lib/utils.js";
-import type { LucideIcon } from "lucide-react";
-import { XIcon } from "lucide-react";
+import type { LucideIcon } from "@zcode/lunar-icons";
+import { XIcon } from "@zcode/lunar-icons";
 import type { ComponentProps, HTMLAttributes } from "react";
 
 export type ArtifactProps = HTMLAttributes<HTMLDivElement>;

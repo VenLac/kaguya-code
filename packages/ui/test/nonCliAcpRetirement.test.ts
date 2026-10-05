@@ -64,7 +64,7 @@ test("current question results work while Claude ACP text is no longer interpret
   }
 });
 
-test("ZCode subagent identity wins over retired Codex nicknames", () => {
+test("Kaguya Code subagent identity wins over retired Codex nicknames", () => {
   const tool = {
     id: "tool-example",
     kind: "Agent",

@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 import type { BotProvider } from "@zcode/shared";
-import { Bot as BotIcon, MonitorSmartphone, XIcon } from "lucide-react";
+import { Bot as BotIcon, MonitorSmartphone, XIcon } from "@zcode/lunar-icons";
 import { BotsDialog } from "@/BotsDialog.js";
 import { ProviderIcon } from "@/BotsDialog/shared.js";
 import { Button } from "@/components/ui/button.js";

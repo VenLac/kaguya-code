@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { ChevronRightIcon, ExternalLinkIcon, SquareMousePointerIcon } from "lucide-react";
+import { ChevronRightIcon, ExternalLinkIcon, SquareMousePointerIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import {
   CodeBlock,

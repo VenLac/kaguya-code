@@ -43,7 +43,7 @@ export function interceptKnownRuntimeWarnings(
   };
 
   // Node/AI SDK dependency warnings can be emitted during headless
-  // provider setup before ZCode can format them as actionable diagnostics. Keep
+  // provider setup before Kaguya Code can format them as actionable diagnostics. Keep
   // these known notices out of user-facing CLI stderr while preserving normal
   // errors and unknown warnings.
   stderr.write = ((chunk, encodingOrCallback, callback) => {

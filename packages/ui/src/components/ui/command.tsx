@@ -4,7 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { cn } from "../lib/utils.js";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./dialog.js";
 import { InputGroup, InputGroupAddon } from "./input-group.js";
-import { SearchIcon, CheckIcon } from "lucide-react";
+import { SearchIcon, CheckIcon } from "@zcode/lunar-icons";
 
 function Command({
   className,

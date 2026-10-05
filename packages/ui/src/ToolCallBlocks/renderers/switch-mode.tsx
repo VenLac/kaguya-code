@@ -7,7 +7,7 @@ import { getToolCallErrorText } from "@/lib/toolError.js";
 import { extractPlanToolCallContent, getPlanFileLabel } from "@/lib/planToolCall.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";
 import type { ToolCallBlockRenderContext } from "../shared.js";
-import { ArrowRightIcon, CheckIcon, CopyIcon, NotepadTextIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon, CopyIcon, NotepadTextIcon } from "@zcode/lunar-icons";
 
 function isInteractiveDescendant(target: EventTarget | null, card: HTMLElement): boolean {
   if (!(target instanceof Element)) return false;

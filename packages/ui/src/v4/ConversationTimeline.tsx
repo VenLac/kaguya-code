@@ -15,7 +15,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { ArrowDownIcon } from "lucide-react";
+import { ArrowDownIcon } from "@zcode/lunar-icons";
 import { TID_V4_TIMELINE, TID_V4_TIMELINE_BOTTOM } from "@zcode/shared";
 import type {
   ApiRetryState,

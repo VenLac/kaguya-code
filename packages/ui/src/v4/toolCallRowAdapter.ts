@@ -1,5 +1,5 @@
 // v4 ToolCallRow → 旧 ToolCallBlocks 输入形态（TaskChatToolCallTreeNode）适配。
-// 纯函数：ToolCallBlock 及其 renderers（execute/read/edit/...）吃的是旧 ZCode Agent 的
+// 纯函数：ToolCallBlock 及其 renderers（execute/read/edit/...）吃的是旧 Kaguya Code Agent 的
 // TaskChatToolCall 形态；v4 row 自包含，字段一一映射即可，不需要看别的行。
 import { buildZCodeStreamingToolInputPreview } from "@zcode/shared";
 import type { ToolCallRow } from "@zcode/shared/zcode-protocol-v4";
@@ -93,7 +93,7 @@ export function toolCallRowToLegacyNode(row: ToolCallRow): TaskChatToolCallTreeN
     toolCall: {
       toolId: row.toolCallId,
       toolName: row.toolName,
-      // kind 兼容旧聚合分类：v4 下没有旧 ZCode Agent 快照形态，直接用固定工具名。
+      // kind 兼容旧聚合分类：v4 下没有旧 Kaguya Code Agent 快照形态，直接用固定工具名。
       kind: row.toolName,
       input: inputPreview.input,
       status: legacyStatus,

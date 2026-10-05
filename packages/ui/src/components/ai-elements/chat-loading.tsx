@@ -1,7 +1,7 @@
 "use client";
 
 import type { ComponentPropsWithoutRef } from "react";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 

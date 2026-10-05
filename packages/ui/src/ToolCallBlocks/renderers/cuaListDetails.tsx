@@ -1,4 +1,4 @@
-import { AppWindow } from "lucide-react";
+import { AppWindow } from "@zcode/lunar-icons";
 import { useEffect, useState } from "react";
 import { useOptionalPlatform } from "@/hooks/usePlatform.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

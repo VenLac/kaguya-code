@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { type BuiltinModelProviderId } from "@zcode/shared";
-import { PackageIcon } from "lucide-react";
+import { PackageIcon, Sparkles } from "@zcode/lunar-icons";
 import { ProviderLogo } from "./ProviderLogo.js";
 import { type ModelProviderNavItem } from "./constants.js";
 
@@ -23,6 +23,9 @@ export function resolveModelProviderNavLogo(item: ModelProviderNavItem) {
 }
 
 export function renderModelProviderNavIcon(item: ModelProviderNavItem): ReactNode {
+  if (item.type === "codex") {
+    return <Sparkles className="size-4 shrink-0" />;
+  }
   if ("provider" in item && item.provider) {
     return <ProviderLogo logo={resolveModelProviderNavLogo(item)} className="size-4" />;
   }

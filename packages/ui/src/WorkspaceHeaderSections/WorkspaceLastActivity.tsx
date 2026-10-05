@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock } from "@zcode/lunar-icons";
 import { useEffect, useState } from "react";
 import type { ZCodeTaskMeta } from "@zcode/shared";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

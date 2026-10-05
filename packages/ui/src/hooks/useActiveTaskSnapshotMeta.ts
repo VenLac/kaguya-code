@@ -61,7 +61,7 @@ export function useActiveTaskSnapshotMeta(
     }
 
     void zcodeSessionService
-      // active header 只需要 session meta/标题兜底，走 ZCode Protocol 的轻量读取，
+      // active header 只需要 session meta/标题兜底，走 Kaguya Code Protocol 的轻量读取，
       // 避免继续经 legacy snapshot 把大任务消息整包拉回 UI。
       .readSession({
         workspacePath,

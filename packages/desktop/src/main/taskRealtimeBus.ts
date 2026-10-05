@@ -522,7 +522,7 @@ export class TaskRealtimeBus {
     batch: PendingStreamBatch,
     event: TaskStreamMirrorBatchEvent,
   ): void {
-    // 不能丢弃 owner 的 mirror seq。ZCode Agent 有 realtime port 时 owner direct stream 会被关闭，
+    // 不能丢弃 owner 的 mirror seq。Kaguya Code Agent 有 realtime port 时 owner direct stream 会被关闭，
     // 如果 oversized batch 只发 gap，service 会因为后续 seq 缺口禁用 mirror，桌面端就停到终态快照。
     // 这里只给 owner 发送连续小批次；observer 和 late subscriber 统一走快照补齐，避免大 payload 扩散。
     batch.replayUnavailable = true;

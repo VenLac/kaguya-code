@@ -1,4 +1,4 @@
-import { createLucideIcon } from "lucide-react";
+import { createLucideIcon } from "@zcode/lunar-icons";
 
 // 用户提供的窗口图形使用 Lucide 渲染，去掉白底并继承主题前景色及全局线宽。
 export const WindowMaximizeIcon = createLucideIcon("WindowMaximize", [

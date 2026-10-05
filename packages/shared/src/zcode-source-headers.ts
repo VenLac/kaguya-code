@@ -1,7 +1,7 @@
 import { DEFAULT_ZCODE_ENDPOINT_ORIGIN } from "./zcodeEndpoint.js";
 
 export const ZCODE_SOURCE_HEADERS = {
-  "User-Agent": "ZCode/unknown",
+  "User-Agent": "Kaguya Code/unknown",
   "HTTP-Referer": DEFAULT_ZCODE_ENDPOINT_ORIGIN,
   "X-Title": "Z Code@electron",
 } as const;
@@ -45,7 +45,7 @@ export function buildZCodeSourceHeadersFromContext(
   return {
     ...ZCODE_SOURCE_HEADERS,
     "HTTP-Referer": endpointOrigin,
-    "User-Agent": `ZCode/${appVersion ?? "unknown"}`,
+    "User-Agent": `Kaguya Code/${appVersion ?? "unknown"}`,
     ...(appVersion ? { "X-ZCode-App-Version": appVersion } : {}),
     "X-Title": `Z Code@${sourceTitle}`,
     ...(platform && arch ? { "X-Platform": `${platform}-${arch}` } : {}),

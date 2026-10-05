@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { LunarMoon, type LunarMoonProps } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeStore } from "@/store/StoreProvider.js";
 import { resolveTheme } from "@/useTheme.js";
@@ -77,6 +78,8 @@ export function ThemeHeroVisual(props: {
   className?: string;
   contentClassName?: string;
   children?: ReactNode;
+  /** 在背景里放一轮“字符月亮”（月字风格的标志性视觉）。传对象可调位置、大小与不透明度。 */
+  moon?: boolean | Pick<LunarMoonProps, "size" | "x" | "y" | "opacity">;
 }) {
   const palette = useResolvedThemeHeroPalette();
 
@@ -94,6 +97,11 @@ export function ThemeHeroVisual(props: {
           palette.glowSecondary,
         )}
       />
+      {props.moon ? (
+        <div className="pointer-events-none absolute inset-0 text-foreground">
+          <LunarMoon {...(props.moon === true ? {} : props.moon)} />
+        </div>
+      ) : null}
       {props.children ? (
         <div className={cn("relative z-10", props.contentClassName)}>{props.children}</div>
       ) : null}

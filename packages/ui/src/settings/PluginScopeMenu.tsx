@@ -1,4 +1,4 @@
-import { ChevronDown, Cloud, Folder, Monitor } from "lucide-react";
+import { ChevronDown, Cloud, Folder, Monitor } from "@zcode/lunar-icons";
 import { testId } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import {

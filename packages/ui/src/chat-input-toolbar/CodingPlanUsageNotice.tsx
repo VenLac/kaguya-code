@@ -1,4 +1,4 @@
-import { InfoIcon, RefreshCwIcon } from "lucide-react";
+import { InfoIcon, RefreshCwIcon } from "@zcode/lunar-icons";
 
 export function CodingPlanUsageNotice({
   message,

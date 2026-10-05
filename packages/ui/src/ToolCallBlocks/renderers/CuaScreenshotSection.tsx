@@ -1,4 +1,4 @@
-import { ImageIcon } from "lucide-react";
+import { ImageIcon } from "@zcode/lunar-icons";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { CuaScreenshotDetails } from "@/ToolCallBlocks/renderers/cuaScreenshotDetails.js";

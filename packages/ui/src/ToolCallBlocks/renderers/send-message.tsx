@@ -1,4 +1,4 @@
-import { SendIcon } from "lucide-react";
+import { SendIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";

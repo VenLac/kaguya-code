@@ -3,7 +3,7 @@ import {
   executionOutputPreviewSchema,
 } from "@zcode/shared/zcode-protocol-v4";
 import { ExecuteOutput } from "@/ToolCallBlocks/renderers/ExecuteOutput.js";
-import { SquareTerminalIcon } from "lucide-react";
+import { SquareTerminalIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";

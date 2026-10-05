@@ -1,4 +1,4 @@
-import { PanelLeftOpen } from "lucide-react";
+import { PanelLeftOpen } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 

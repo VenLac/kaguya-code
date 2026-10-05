@@ -1,4 +1,4 @@
-import { ChevronRightIcon, PlugIcon } from "lucide-react";
+import { ChevronRightIcon, PlugIcon } from "@zcode/lunar-icons";
 import { useCallback } from "react";
 import {
   CodeBlock,

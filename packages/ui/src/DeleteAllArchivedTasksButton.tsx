@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { LoaderIcon, MoreHorizontal, Trash2 } from "lucide-react";
+import { LoaderIcon, MoreHorizontal, Trash2 } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import {
   DropdownMenu,

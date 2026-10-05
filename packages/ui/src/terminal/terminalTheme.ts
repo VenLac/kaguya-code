@@ -84,7 +84,7 @@ function restrictInheritedTerminalTheme(profileTheme: ITheme | undefined): IThem
 
   const inheritedTheme = { ...profileTheme };
   // macOS iTerm2 / Terminal profile 会带回 background / foreground / cursor，
-  // 直接覆盖 ZCode 主题 token 会让浅色 app 里出现深色终端块，或光标和当前背景撞色后不可见。
+  // 直接覆盖 Kaguya Code 主题 token 会让浅色 app 里出现深色终端块，或光标和当前背景撞色后不可见。
   // 这些基础可读性颜色必须跟随 app 主题；系统 profile 只继承 ANSI、选区等终端细节色。
   delete inheritedTheme.background;
   delete inheritedTheme.foreground;

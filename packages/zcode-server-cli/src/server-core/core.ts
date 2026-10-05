@@ -34,7 +34,7 @@ export async function runServerCore(generation: number): Promise<void> {
       : undefined;
   if (!zcodeBuiltinProviderConfigFilePath) {
     throw new Error(
-      `当前构建未嵌入 ZCode Built-in Provider Config，且未设置 ${ZCODE_BUILTIN_PROVIDER_CONFIG_FILE_ENV}`,
+      `当前构建未嵌入 Kaguya Code Built-in Provider Config，且未设置 ${ZCODE_BUILTIN_PROVIDER_CONFIG_FILE_ENV}`,
     );
   }
   const services = createLocalServices({

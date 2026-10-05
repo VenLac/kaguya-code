@@ -147,7 +147,7 @@ export class NodeExecutionAdapterRun extends NodeExecutionAdapterProcess {
           });
         }
         // Windows 的 taskkill 或 POSIX 的 PGID 都可能已无法寻址脱离的后代；
-        // 最终释放 ZCode 持有的读端，不能继续让未知进程保活 CLI。
+        // 最终释放 Kaguya Code 持有的读端，不能继续让未知进程保活 CLI。
         this.destroyChildOutputStreams(startedChild);
       }, FORCE_EXIT_AFTER_KILL_MS);
       forceExitTimer.unref?.();

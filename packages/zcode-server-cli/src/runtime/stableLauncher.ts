@@ -16,14 +16,14 @@ function quoteShell(value: string): string {
 function stablePosixLauncher(bootstrap?: StableLauncherBootstrap): string {
   const fallback = bootstrap
     ? `exec ${quoteShell(bootstrap.command)} ${quoteShell(bootstrap.entry)} "$@"`
-    : 'echo "No current ZCode Server release" >&2; exit 1';
+    : 'echo "No current Kaguya Code Server release" >&2; exit 1';
   return `#!/bin/sh
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 RELEASE_DIR=$(sed -n 's/.*"releaseDir"[[:space:]]*:[[:space:]]*"\\([^"\\]*\\)".*/\\1/p' "$ROOT/current.json")
 if [ -n "$RELEASE_DIR" ]; then
   case "$RELEASE_DIR" in
     "$ROOT/releases"/*) ;;
-    *) echo "Invalid current ZCode Server release" >&2; exit 1 ;;
+    *) echo "Invalid current Kaguya Code Server release" >&2; exit 1 ;;
   esac
   exec "$RELEASE_DIR/runtime/node" "$RELEASE_DIR/runtime/server-cli.js" "$@"
 fi
@@ -38,13 +38,13 @@ function quoteBatch(value: string): string {
 function stableWindowsLauncher(bootstrap?: StableLauncherBootstrap): string {
   const fallback = bootstrap
     ? `${quoteBatch(bootstrap.command)} ${quoteBatch(bootstrap.entry)} %*\r\n`
-    : "echo No current ZCode Server release 1>&2\r\nexit /b 1\r\n";
+    : "echo No current Kaguya Code Server release 1>&2\r\nexit /b 1\r\n";
   return `@echo off\r
 set "ROOT=%~dp0.."\r
 set "ZCODE_SERVER_ROOT=%ROOT%"\r
 powershell -NoProfile -NonInteractive -Command "$root=[IO.Path]::GetFullPath($env:ZCODE_SERVER_ROOT); $current=Join-Path $root 'current.json'; if (Test-Path -LiteralPath $current) { $j=Get-Content -Raw -LiteralPath $current ^| ConvertFrom-Json; if ($j.releaseDir) { $release=[IO.Path]::GetFullPath([string]$j.releaseDir); $releases=[IO.Path]::GetFullPath((Join-Path $root 'releases')); if (-not $release.StartsWith($releases + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { exit 1 } } }"\r
 if errorlevel 1 (\r
-  echo Invalid current ZCode Server release 1>&2\r
+  echo Invalid current Kaguya Code Server release 1>&2\r
   exit /b 1\r
 )\r
 for /f "delims=" %%I in ('powershell -NoProfile -Command "$path=Join-Path $env:ZCODE_SERVER_ROOT 'current.json'; if (Test-Path -LiteralPath $path) { $j=Get-Content -Raw -LiteralPath $path ^| ConvertFrom-Json; $j.releaseDir }"') do set "RELEASE_DIR=%%I"\r

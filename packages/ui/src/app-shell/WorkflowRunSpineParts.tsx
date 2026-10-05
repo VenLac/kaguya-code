@@ -5,7 +5,7 @@
 // 本文件承载四个纯展示件——轨道段、灯、折叠节头上的头像串、轮次。
 
 import { useId, type CSSProperties } from "react";
-import { Repeat2Icon } from "lucide-react";
+import { Repeat2Icon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { STATUS_DOT } from "@/components/workflow-graph/run-status-presentation.js";
 import type { StepRunStatus } from "@/components/workflow-graph/types.js";

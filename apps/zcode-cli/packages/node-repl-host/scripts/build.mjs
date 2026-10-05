@@ -24,7 +24,7 @@ const require = __zcodeCreateRequire(import.meta.url);`;
 // 折叠成空串（见 zcode-cua/src/broker/shared/cua-version.ts 的兜底），
 // `resolveExpectedCuaHelperBuildId()` 返回 null，helperInstaller 撞上 fail-closed 守卫：
 //
-//   "Packaged ZCode is missing its embedded Computer Use Helper build identity;
+//   "Packaged Kaguya Code is missing its embedded Computer Use Helper build identity;
 //    refusing an unpinned Helper install"
 //
 // 结果 Helper 既不装也不起、一行日志都不写，而这句 throw 被 MCP 层翻成超时，没有落盘点 ——

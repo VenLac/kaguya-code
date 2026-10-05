@@ -14,7 +14,7 @@ import {
   FolderOpen,
   MessageCircle,
   X,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import {
   resolveWorkspaceKey,
   testId,

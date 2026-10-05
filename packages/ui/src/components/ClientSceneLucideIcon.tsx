@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import type { LucideIcon, LucideProps } from "lucide-react";
+import type { LucideIcon, LucideProps } from "@zcode/lunar-icons";
 import { dynamicIconImports, type IconName } from "lucide-react/dynamic.mjs";
 
 interface ClientSceneLucideIconProps extends Omit<LucideProps, "children"> {

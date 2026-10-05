@@ -51,7 +51,7 @@ async function main() {
   const ack = await waitForAck();
   log(`client connected: ${ack.clientId} (v${ack.version})`);
 
-  // 远端主机没有 Desktop main，没人写 telemetry-state.json，services 发往 ZCode endpoint
+  // 远端主机没有 Desktop main，没人写 telemetry-state.json，services 发往 Kaguya Code endpoint
   // 的请求缺 X-Device-Mid，Start Plan 的 billing/balance 被拒。远端 server 是本机设备身份的
   // 生命周期所有者，必须在 services 创建前确保 deviceMid 存在（详见 stdioDeviceMid.ts）。
   await ensureRemoteServerDeviceMid({ log });

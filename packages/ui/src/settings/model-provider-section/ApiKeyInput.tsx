@@ -1,4 +1,4 @@
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "@zcode/lunar-icons";
 import { TID_MODEL_PROVIDER_API_KEY_INPUT } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { Input } from "@/components/ui/input.js";

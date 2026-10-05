@@ -1,4 +1,4 @@
-import { ClipboardCheckIcon } from "lucide-react";
+import { ClipboardCheckIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { CodeBlock } from "@/components/ai-elements/code-block.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

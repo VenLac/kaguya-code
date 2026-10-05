@@ -2,9 +2,9 @@ import { resolveRuntimeZCodeEndpointOrigin } from "@zcode/shared";
 import type { EnvRecord } from "./model-execution.js";
 
 /**
- * 官方 Coding Plan 的模型请求经 ZCode 平台网关发送。
+ * 官方 Coding Plan 的模型请求经 Kaguya Code 平台网关发送。
  *
- * Z.ai / BigModel Coding Plan 是 ZCode 的官方订阅套餐，模型请求统一发往 ZCode 平台网关，
+ * Z.ai / BigModel Coding Plan 是 Kaguya Code 的官方订阅套餐，模型请求统一发往 Kaguya Code 平台网关，
  * 由平台完成套餐权益校验等平台侧处理后转发到对应的模型服务。客户端这里只做一件事：
  * 把官方模型端点替换为对应的网关端点，请求方法、请求体、鉴权头与响应均原样透传。
  *
@@ -15,7 +15,7 @@ import type { EnvRecord } from "./model-execution.js";
 export interface OfficialCodingPlanGatewayRoute {
   /** 官方模型端点（含路径），仅 https。 */
   readonly providerEndpoint: string;
-  /** 对应的网关端点路径，相对 ZCode 平台 origin。 */
+  /** 对应的网关端点路径，相对 Kaguya Code 平台 origin。 */
   readonly gatewayPath: string;
 }
 

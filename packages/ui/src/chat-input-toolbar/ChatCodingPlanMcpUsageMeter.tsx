@@ -1,4 +1,4 @@
-import { InfoIcon } from "lucide-react";
+import { InfoIcon } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { cn } from "@/components/lib/utils.js";
 

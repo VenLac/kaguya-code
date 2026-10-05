@@ -169,7 +169,7 @@ export function createMemoryExtractionScheduler<
     },
     shutdown() {
       if (shuttingDown) return;
-      // ZCode 关闭单个 session 后进程仍继续运行；旧 scheduler 只让调用方
+      // Kaguya Code 关闭单个 session 后进程仍继续运行；旧 scheduler 只让调用方
       // 放弃等待，running/pending Extraction 仍可能继续请求模型和写 Memory。
       shuttingDown = true;
       latestPending = undefined;

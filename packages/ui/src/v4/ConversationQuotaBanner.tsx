@@ -1,6 +1,6 @@
 import { CodingPlanEntryButton } from "@/settings/CodingPlanEntryButton.js";
 import { useEffect, useRef } from "react";
-import { InfoIcon, RocketIcon, XIcon } from "lucide-react";
+import { InfoIcon, RocketIcon, XIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type {

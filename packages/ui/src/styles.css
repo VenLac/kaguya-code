@@ -2051,3 +2051,256 @@ body {
 .prompt-mention[data-mention-category="plugins"]::before {
   border-radius: var(--radius-sm);
 }
+
+/* =====================================================================
+   月字 Lunar Glyph · 令牌覆盖层
+   冷白色调、冰蓝强调、更圆润的形状。图标见 @zcode/lunar-icons。
+   放在文件末尾，与 .theme-zai-* 同权重，后者覆盖前者。
+   ===================================================================== */
+:root {
+  --radius-xs: 0.5rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+.theme-zai-dark {
+  --color-background: #0e1422;
+  --color-background-win-alt: #1b253b;
+  --color-brand: #a9d6ff;
+  --color-accent: #17304d;
+  --color-border: rgba(190, 210, 255, 0.1);
+  --color-border-hover: rgba(190, 210, 255, 0.2);
+  --color-hover: rgba(190, 210, 255, 0.06);
+  --color-selected: rgba(169, 214, 255, 0.12);
+  --color-header: #141c2e;
+  --color-panel: #141c2e;
+  --color-sidebar: #101728;
+  --color-surface: rgba(190, 210, 255, 0.05);
+  --color-surface-hover: rgba(190, 210, 255, 0.09);
+  --color-card: #1b253b;
+  --color-popover: #1b253b;
+  --color-popover-header: #141c2e;
+  --color-input: #1b253b;
+  --color-input-border-focused: color-mix(in oklab, #a9d6ff 60%, transparent);
+  --color-tab: #141c2e;
+  --color-tab-active: #0e1422;
+  --color-menu: #1b253b;
+  --color-menu-hover: #27334f;
+  --color-primary: #a9d6ff;
+  --color-primary-foreground: #0c1a2e;
+  --color-secondary: #27334f;
+  --color-foreground: #eef3fa;
+  --color-foreground-subtle: color-mix(in oklab, #eef3fa 62%, transparent);
+  --color-foreground-subtlest: color-mix(in oklab, #eef3fa 36%, transparent);
+  --color-foreground-inverse: #0c1a2e;
+  --color-success: #9fe3d0;
+  --color-success-foreground: #0c1a2e;
+  --color-destructive: #ff9db3;
+  --color-destructive-foreground: #2a0a14;
+  --color-warning: #ffd3a0;
+  --color-warning-foreground: #2e1a04;
+  --color-diff-added: #9fe3d0;
+  --color-diff-added-foreground: #0c1a2e;
+  --color-diff-removed: #ff9db3;
+  --color-diff-removed-foreground: #2a0a14;
+}
+
+.theme-zai-light {
+  --color-background: #f5f8fc;
+  --color-background-win-alt: #e4ebf4;
+  --color-brand: #2563b8;
+  --color-accent: #e2eefc;
+  --color-border: rgba(31, 42, 68, 0.1);
+  --color-border-hover: rgba(31, 42, 68, 0.2);
+  --color-hover: rgba(31, 42, 68, 0.05);
+  --color-selected: rgba(37, 99, 184, 0.09);
+  --color-header: #f9fbfe;
+  --color-panel: #f9fbfe;
+  --color-sidebar: #edf2f8;
+  --color-surface: rgba(31, 42, 68, 0.035);
+  --color-surface-hover: rgba(31, 42, 68, 0.06);
+  --color-card: #ffffff;
+  --color-popover: #ffffff;
+  --color-popover-header: #f5f8fc;
+  --color-input: #ffffff;
+  --color-input-border-focused: color-mix(in oklab, #2563b8 55%, transparent);
+  --color-tab: #edf2f8;
+  --color-tab-active: #ffffff;
+  --color-menu: #ffffff;
+  --color-menu-hover: #edf2f8;
+  --color-primary: #1f2a44;
+  --color-primary-foreground: #f5f8fc;
+  --color-secondary: #e4ebf4;
+  --color-foreground: #1f2a44;
+  --color-foreground-subtle: color-mix(in oklab, #1f2a44 62%, transparent);
+  --color-foreground-subtlest: color-mix(in oklab, #1f2a44 40%, transparent);
+  --color-foreground-inverse: #f5f8fc;
+  --color-success: #1f7a62;
+  --color-destructive: #c0394f;
+  --color-warning: #a8590a;
+  --color-diff-added: #1f7a62;
+  --color-diff-removed: #c0394f;
+}
+
+/* =====================================================================
+   月字 Lunar Glyph · 丝滑动效层
+   原则：只动 transform/opacity（GPU 合成、不触发布局）；弹层用指数缓出，按压用弹簧回弹；
+   入场有编排（依次、错峰）；全部尊重“减少动态效果”。
+   ===================================================================== */
+:root {
+  --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-moon: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 主题切换：新主题从点击处圆形展开（由 useTheme.applyTheme 驱动 View Transition） */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@keyframes lunar-moon-in {
+  from { opacity: 0; scale: 0.9; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes lunar-char-in {
+  from { opacity: 0; translate: 0 0.55em; filter: blur(6px); }
+  to { opacity: 1; translate: 0 0; filter: blur(0); }
+}
+@keyframes lunar-rise {
+  from { opacity: 0; translate: 0 18px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes lunar-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 细而圆润的滚动条，悬停才显深 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklab, var(--color-foreground) 14%, transparent);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background-color: color-mix(in oklab, var(--color-foreground) 30%, transparent); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* 键盘焦点：柔和的品牌色光环（零权重，业务里自带 ring/outline 的组件不受影响） */
+:where(button, [role="button"], input, textarea, select, a[href], [tabindex]):focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-brand) 55%, transparent);
+  outline-offset: 2px;
+}
+::selection { background: color-mix(in oklab, var(--color-brand) 32%, transparent); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---- 弹层：菜单 / 气泡 / 下拉 / 对话框 ---- */
+  [data-slot$="-content"][data-open] {
+    --tw-enter-scale: 0.92;
+    animation-duration: 340ms;
+    animation-timing-function: var(--ease-silk);
+  }
+  [data-slot$="-content"][data-closed] {
+    --tw-exit-scale: 0.96;
+    animation-duration: 160ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  [data-slot="dialog-content"][data-open],
+  [data-slot="alert-dialog-content"][data-open] {
+    --tw-enter-scale: 0.9;
+    animation-duration: 460ms;
+    animation-timing-function: cubic-bezier(0.34, 1.32, 0.64, 1); /* 轻微过冲 */
+  }
+  [data-slot="tooltip-content"][data-open] {
+    --tw-enter-scale: 0.96;
+    animation-duration: 220ms;
+  }
+
+  /* ---- 按钮：颜色渐变 + 按下弹性回弹 ---- */
+  [data-slot="button"]:not(:disabled) {
+    transition:
+      color 0.18s ease,
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.28s var(--ease-silk),
+      opacity 0.2s ease,
+      scale 0.45s var(--ease-spring),
+      translate 0.45s var(--ease-spring);
+  }
+  [data-slot="button"]:not(:disabled):active {
+    scale: 0.95;
+    transition-duration: 0.12s, 0.12s, 0.12s, 0.12s, 0.12s, 0.12s, 0.12s;
+  }
+
+  /* ---- 开关：圆点用弹簧滑过去 ---- */
+  [data-slot="switch"] { transition: background-color 0.35s var(--ease-silk), box-shadow 0.3s var(--ease-silk); }
+  [data-slot="switch-thumb"] { transition: translate 0.5s var(--ease-spring), transform 0.5s var(--ease-spring); }
+
+  /* ---- 菜单项 / 选项：背景平滑 ---- */
+  [role="menuitem"],
+  [role="option"],
+  [data-slot="select-item"] {
+    transition: background-color 0.16s ease, color 0.16s ease;
+  }
+
+  /* ---- 新会话页编排：月亮浮现 → 问候语逐字显现 → 输入框升起 ---- */
+  [data-v4-draft-logo="moon"] { animation: lunar-moon-in 2.6s var(--ease-silk) both; }
+  .lunar-char {
+    display: inline-block;
+    white-space: pre;
+    animation: lunar-char-in 0.95s var(--ease-silk) both;
+    animation-delay: calc(var(--i, 0) * 42ms + 280ms);
+  }
+  [data-v4-composer-dock-content] {
+    animation: lunar-rise 0.85s var(--ease-silk) 0.18s both;
+  }
+
+  /* ---- 应用启动：整窗淡入，避免启动画面到界面的硬切 ---- */
+  #root { animation: lunar-fade 0.5s ease-out both; }
+}
+
+/* ---- 默认头像：自转的月球 ---- */
+.lunar-moon-avatar {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  isolation: isolate;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-foreground) 14%, transparent);
+}
+.lunar-moon-avatar__map {
+  position: absolute;
+  inset: 0 auto 0 0;
+  /* 两张纹理（宽 = 2 × 圆盘直径 × 2），向左平移一张的宽度后与起点完全重合，无缝循环 */
+  width: calc(var(--moon-size) * 4);
+  background-repeat: repeat-x;
+  background-size: calc(var(--moon-size) * 2) 100%;
+  will-change: transform;
+}
+.lunar-moon-avatar::after {
+  /* 球面明暗：左上受光，边缘变暗，让平移的平面纹理看起来像在球面上转 */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 32% 30%, rgb(255 255 255 / 0.22), transparent 42%),
+    radial-gradient(circle at 50% 50%, transparent 52%, rgb(6 10 24 / 0.55) 100%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lunar-moon-avatar__map { animation: lunar-moon-avatar-spin 26s linear infinite; }
+}
+@keyframes lunar-moon-avatar-spin {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(var(--moon-size) * -2)); }
+}

@@ -60,7 +60,7 @@ import {
   GitCommitIcon,
   LoaderIcon,
   SparklesIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 
 interface GitActionMenuProps {
   workspacePath: string;

@@ -184,9 +184,9 @@ export function buildAffectedRepoPaths(files: GitCheckpointFileDiff[]): string[]
 export function buildCheckpointEnv(tempIndexPath: string): NodeJS.ProcessEnv {
   return {
     GIT_INDEX_FILE: tempIndexPath,
-    GIT_AUTHOR_NAME: "ZCode Checkpoint",
+    GIT_AUTHOR_NAME: "Kaguya Code Checkpoint",
     GIT_AUTHOR_EMAIL: "checkpoint@zcode.local",
-    GIT_COMMITTER_NAME: "ZCode Checkpoint",
+    GIT_COMMITTER_NAME: "Kaguya Code Checkpoint",
     GIT_COMMITTER_EMAIL: "checkpoint@zcode.local",
   };
 }

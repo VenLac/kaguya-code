@@ -26,7 +26,7 @@ function supportsRegistryApiFormat(
   apiFormat: string | null | undefined,
 ): boolean {
   if (!apiFormat) return false;
-  // 仅剩 glm（ZCode Agent）provider；三方 CLI 的 api format 差异已随 provider 下线。
+  // 仅剩 glm（Kaguya Code Agent）provider；三方 CLI 的 api format 差异已随 provider 下线。
   return isZCodeAgentProvider(selectedProvider);
 }
 

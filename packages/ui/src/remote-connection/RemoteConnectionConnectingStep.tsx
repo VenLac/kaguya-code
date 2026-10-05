@@ -1,6 +1,6 @@
 import { redactFeedbackText } from "@zcode/shared";
 import { useCallback, useEffect, useRef } from "react";
-import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
+import { AlertTriangleIcon, LoaderIcon } from "@zcode/lunar-icons";
 import { TID_SSH_ERROR, type RemoteTarget } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";

@@ -1,4 +1,4 @@
-import { CircleCheckIcon, CircleXIcon, LoaderCircleIcon } from "lucide-react";
+import { CircleCheckIcon, CircleXIcon, LoaderCircleIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import type { StepRunStatus } from "@/components/workflow-graph/types.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

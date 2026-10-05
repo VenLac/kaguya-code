@@ -294,6 +294,6 @@ function mapCompletedToolStateMetadata(
   const visibleMetadata = { ...protocolMetadata };
   delete visibleMetadata.modelContentLayout;
   // core 的历史/异常 completed tool part 可能没有 metadata，但
-  // ZCode protocol 的 completed tool state 要求 metadata 必须是 object。
+  // Kaguya Code protocol 的 completed tool state 要求 metadata 必须是 object。
   return visibleMetadata;
 }

@@ -1,4 +1,4 @@
-import { BookOpenTextIcon } from "lucide-react";
+import { BookOpenTextIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { MessageResponse } from "@/components/ai-elements/message.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

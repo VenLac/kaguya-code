@@ -115,7 +115,7 @@ export function resolveWorkspaceModelConfigSyncScope(
   }
 
   if (activeTaskProvider === snapshot.selectedProvider) {
-    // 自定义供应商运行中的 ZCode Agent 回包经常只带纯模型名（如 glm-5.1），
+    // 自定义供应商运行中的 Kaguya Code Agent 回包经常只带纯模型名（如 glm-5.1），
     // 直接按模型值推导会误判成 native supplier，导致设置页保存后刷新到错误的 scope。
     // 当前 provider 与 selectedProvider 一致时，纯模型名不能证明 supplier 已变化，所以继续沿用 selectedSupplierKey。
     return {

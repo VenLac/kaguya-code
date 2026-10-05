@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X } from "@zcode/lunar-icons";
 
 export function OnboardingHeader({
   step,

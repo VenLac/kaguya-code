@@ -6,7 +6,7 @@
  */
 import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
-import { Info, TriangleAlert, X } from "lucide-react";
+import { Info, TriangleAlert, X } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 
 export type ToastPosition = "top-center" | "top-right" | "bottom-left" | "bottom-center";

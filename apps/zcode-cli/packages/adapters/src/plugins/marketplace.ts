@@ -181,7 +181,7 @@ function buildMarketplaceGitEnv(
 ): Record<string, string> {
   const env = sanitizeZCodeRuntimeEnv(sourceEnv);
   // marketplace 安装会启动 Git 子进程，不能只依赖父进程继承的 shell 代理。
-  // 这里统一从 ZCode 显式网络环境恢复 HTTP(S)/NO_PROXY/CA，避免安装按钮卡到协议超时。
+  // 这里统一从 Kaguya Code 显式网络环境恢复 HTTP(S)/NO_PROXY/CA，避免安装按钮卡到协议超时。
   return applyNetworkEgressEnv(env, { sourceEnv });
 }
 
@@ -2278,7 +2278,7 @@ function pushManifestCompatibilityDiagnostics(input: {
     if (key in input.manifest) {
       input.diagnostics.push({
         code: "plugin_unsupported_component",
-        message: `Plugin component is diagnostic-only in this ZCode runtime: ${key}`,
+        message: `Plugin component is diagnostic-only in this Kaguya Code runtime: ${key}`,
         path: input.manifestPath,
         pluginId: input.pluginId,
         severity: "warning",

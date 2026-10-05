@@ -87,7 +87,7 @@ function buildStaleRemoteStagingCleanupCommand(parentDir: string, patterns: stri
     `for candidate in ${candidateExpressions.join(" ")}; do`,
     'test -e "$candidate" || continue',
     // SSH 取消会先释放旧 backend，不能再用旧凭据立即 cleanup。
-    // 新连接只回收超过 24 小时的 ZCode owner staging，避免误删当前 owner 或正常时长内的活跃部署。
+    // 新连接只回收超过 24 小时的 Kaguya Code owner staging，避免误删当前 owner 或正常时长内的活跃部署。
     'find "$candidate" -prune -mtime +0 -exec rm -rf {} + 2>/dev/null || true',
     "done",
   ].join("\n");

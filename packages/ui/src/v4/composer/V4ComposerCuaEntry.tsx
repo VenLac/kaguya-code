@@ -5,7 +5,7 @@
  * 「不可见就不渲染」以及把 view 映射成 DOM。视觉上刻意与 toolbar 其它控件同权重，避免在不可用场景误导用户以为装了就能用。
  */
 import { memo } from "react";
-import { MonitorCogIcon } from "lucide-react";
+import { MonitorCogIcon } from "@zcode/lunar-icons";
 import { TID_V4_COMPOSER_CUA_ENTRY } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

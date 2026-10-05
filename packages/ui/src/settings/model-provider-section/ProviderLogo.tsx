@@ -1,5 +1,5 @@
 import type { ProviderConfigObject } from "@zcode/provider";
-import { PackageIcon } from "lucide-react";
+import { PackageIcon } from "@zcode/lunar-icons";
 import { useState } from "react";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeStoreWithDefault } from "@/store/StoreProvider.js";

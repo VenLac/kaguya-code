@@ -1,4 +1,4 @@
-import { Eye, EyeOff, RotateCcw, Save, Trash2 } from "lucide-react";
+import { Eye, EyeOff, RotateCcw, Save, Trash2 } from "@zcode/lunar-icons";
 import { useState } from "react";
 import type { ZCodePluginInfo, ZCodePluginScope, ZCodePluginUserConfigOption } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";

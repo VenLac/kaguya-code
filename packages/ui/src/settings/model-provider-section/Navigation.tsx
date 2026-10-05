@@ -17,7 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "@zcode/lunar-icons";
 import { ProviderStatusIndicator } from "./ProviderStatusIndicator.js";
 
 import {

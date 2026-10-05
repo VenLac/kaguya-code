@@ -1,5 +1,5 @@
 import { TID_TERMINAL_TOGGLE } from "@zcode/shared";
-import { SquareTerminalIcon } from "lucide-react";
+import { SquareTerminalIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

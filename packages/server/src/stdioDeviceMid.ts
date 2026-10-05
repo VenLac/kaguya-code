@@ -15,7 +15,7 @@ interface EnsureRemoteServerDeviceMidOptions {
  * 看不到 Start Plan 模型。Desktop main 通过 ensureDesktopDeviceMidSync 承担本地的这一职责，这里让
  * 远端 stdio entry 承担同一职责，复用同一个文件、字段与锁，与同机 zcode-cli 共享同一个设备身份。
  *
- * 失败不阻断启动：设备标识缺失只会让 ZCode endpoint 请求少一个 header（与修复前行为一致），
+ * 失败不阻断启动：设备标识缺失只会让 Kaguya Code endpoint 请求少一个 header（与修复前行为一致），
  * 远端 server 的其余能力不依赖它；这里记录 warn 并保留原因，不伪造设备 ID。
  */
 export async function ensureRemoteServerDeviceMid(
@@ -26,7 +26,7 @@ export async function ensureRemoteServerDeviceMid(
     return await ensureDeviceMid();
   } catch (error) {
     options.log(
-      "deviceMid 初始化失败，ZCode endpoint 请求将不带 X-Device-Mid:",
+      "deviceMid 初始化失败，Kaguya Code endpoint 请求将不带 X-Device-Mid:",
       error instanceof Error ? error.message : String(error),
     );
     return undefined;

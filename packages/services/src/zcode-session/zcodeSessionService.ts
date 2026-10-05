@@ -244,7 +244,7 @@ export function createZCodeSessionService({
         deferredDraftSessions.remember(agentParams, snapshot);
         return snapshot;
       }
-      // desktop-continuous 路径不会经过 ZCode task adapter，sqlite 的 task index 全靠
+      // desktop-continuous 路径不会经过 Kaguya Code task adapter，sqlite 的 task index 全靠
       // syncer 的 shadow 订阅刷新。createSession 成功后立刻 ensure，保证后续 runtime
       // 事件首条到达前订阅已就位。
       notifySyncer({

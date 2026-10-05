@@ -1,5 +1,5 @@
 import { CodingPlanEntryButton } from "@/settings/CodingPlanEntryButton.js";
-import { ArrowLeftIcon, Loader2Icon, RocketIcon } from "lucide-react";
+import { ArrowLeftIcon, Loader2Icon, RocketIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { CodingPlanLoginOptions } from "./codingPlanPricingCards.js";

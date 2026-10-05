@@ -1,6 +1,6 @@
 import { ingestToolExecResource } from "./desktopResourceTelemetry.js";
 import { ingestMcpResourceSamples } from "./processResourceMcpTelemetrySource.js";
-/* eslint-disable max-lines -- host process 统一处理 main↔host 生命周期、日志、ZCode Agent，拆分前先保持跨进程消息收口。 */
+/* eslint-disable max-lines -- host process 统一处理 main↔host 生命周期、日志、Kaguya Code Agent，拆分前先保持跨进程消息收口。 */
 import { bindDatabaseStartupRelay } from "./databaseStartupRelay.js";
 import { randomUUID } from "node:crypto";
 import { join } from "node:path";
@@ -79,7 +79,7 @@ export interface HostInitMessage {
     workspaceIdentity?: string;
   }>;
   agentSpawnFallbackCwd?: string;
-  /** Main 解析后的 ZCode Built-in Provider Config 路径；Host/Services 不感知 Electron 安装布局。 */
+  /** Main 解析后的 Kaguya Code Built-in Provider Config 路径；Host/Services 不感知 Electron 安装布局。 */
   zcodeBuiltinProviderConfigFilePath: string;
   /** Main 提前异步采集并过滤的本机 runtime 环境；只允许传给 InitLocal。 */
   runtimeProcessEnvPatch?: Record<string, string>;
@@ -656,7 +656,7 @@ export function spawnHostProcess(
           type: HostMessageTypes.BotRemoteWorkspaceRuntimePort,
           requestId: request.requestId,
           ok: false,
-          // Bugfix: 远端 Bot 不能在缺少 runtime bridge 时回落到本地 ZCode Agent，
+          // Bugfix: 远端 Bot 不能在缺少 runtime bridge 时回落到本地 Kaguya Code Agent，
           // 否则会把 remote workspace 的任务写到本地并触发错误模型。
           error: "未注入 Bot 远端 workspace runtime 处理器。",
         });

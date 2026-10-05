@@ -145,7 +145,7 @@ async function findMissingRemoteOfficialPluginAssetPaths(
 }
 
 /**
- * 部署 ZCode Agent runtime 到远程机器。
+ * 部署 Kaguya Code Agent runtime 到远程机器。
  *
  * 生产态只用 manifest SHA 判断制品是否变化；语义版本不参与跳过决策。
  */

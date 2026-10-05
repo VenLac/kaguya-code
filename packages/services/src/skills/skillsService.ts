@@ -69,7 +69,7 @@ interface SkillsServiceOptions {
   isDesktopRuntime?: boolean;
 }
 
-/** ZCode Agent 工作区级技能目录。 */
+/** Kaguya Code Agent 工作区级技能目录。 */
 function getWorkspaceZcodeSkillRoot(workspacePath: string): string {
   return join(workspacePath, ".zcode", "skills");
 }
@@ -79,7 +79,7 @@ function getWorkspaceAgentsSkillRoot(workspacePath: string): string {
   return join(workspacePath, ".agents", "skills");
 }
 
-/** ZCode Agent 用户级技能目录。 */
+/** Kaguya Code Agent 用户级技能目录。 */
 function getUserZcodeSkillRoot(): string {
   return join(resolveUserHomeDir(), ".zcode", "skills");
 }
@@ -943,7 +943,7 @@ async function discoverSkills(params: {
       }
 
       // frontmatter 扩展字段通常来自不同 skill 生态的元信息。
-      // 这些字段不影响 ZCode 读取 name/description，继续报 warning 只会制造无操作价值的噪音。
+      // 这些字段不影响 Kaguya Code 读取 name/description，继续报 warning 只会制造无操作价值的噪音。
 
       const body = parsed.body.trim();
       const metadata = await readSkillMetadata(skillPath);

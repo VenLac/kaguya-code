@@ -9,7 +9,7 @@ import type {
 } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TID_CHAT_SEND_BUTTON } from "@zcode/shared";
-import { ArrowUpIcon, Hand, XIcon } from "lucide-react";
+import { ArrowUpIcon, Hand, XIcon } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import { Spinner } from "@/components/ui/spinner.js";

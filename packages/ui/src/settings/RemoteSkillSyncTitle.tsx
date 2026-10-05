@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { DialogTitle } from "@/components/ui/dialog.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

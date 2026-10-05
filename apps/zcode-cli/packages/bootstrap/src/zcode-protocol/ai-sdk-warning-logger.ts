@@ -14,7 +14,7 @@ type AiSdkWarningGlobal = typeof globalThis & {
 
 export function installZCodeProtocolAiSdkWarningLogger(logger: Logger): void {
   // AI SDK 默认 warning logger 第一次会用 console.info 写 stdout；
-  // app-server --stdio 的 stdout 是 ZCode Protocol NDJSON 帧通道，任何普通文本都会让宿主解析失败。
+  // app-server --stdio 的 stdout 是 Kaguya Code Protocol NDJSON 帧通道，任何普通文本都会让宿主解析失败。
   (globalThis as AiSdkWarningGlobal).AI_SDK_LOG_WARNINGS = (
     options: AiSdkWarningLoggerOptions,
   ) => {

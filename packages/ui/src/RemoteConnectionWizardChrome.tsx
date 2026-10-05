@@ -1,4 +1,4 @@
-import { CheckIcon, MinusIcon, XIcon } from "lucide-react";
+import { CheckIcon, MinusIcon, XIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog.js";
 import { Button } from "@/components/ui/button.js";

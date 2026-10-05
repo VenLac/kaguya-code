@@ -69,7 +69,7 @@ export async function prepareOnlineUpdate(layout: ServerLayout): Promise<UpdateP
     const pending = await new ReleaseManager(layout).readPending();
     if (!pending) {
       throw new Error(
-        "ZCode Server release source is not configured and no offline pending release is available",
+        "Kaguya Code Server release source is not configured and no offline pending release is available",
       );
     }
     return { status: "prepared-offline", version: pending.version };

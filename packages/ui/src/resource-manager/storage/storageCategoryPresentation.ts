@@ -10,7 +10,7 @@ import {
   KeyRound,
   PackageOpen,
   Route,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { StorageCategoryId, StorageCategoryUsage, StorageRootUsage } from "@zcode/shared";
 import { APP_USAGE_MODEL_CHART_COLORS } from "@/settings/usage-stats/appUsageChartPalette.js";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronRightIcon } from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 
 /**

@@ -1,5 +1,5 @@
 import type { UsageEntitlementSubscriptionDetail } from "@zcode/shared";
-import { Loader2Icon, RefreshCwIcon } from "lucide-react";
+import { Loader2Icon, RefreshCwIcon } from "@zcode/lunar-icons";
 import { useEffect, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

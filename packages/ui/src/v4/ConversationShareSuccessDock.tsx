@@ -1,4 +1,4 @@
-import { CheckCircle2, Copy, ExternalLink, X } from "lucide-react";
+import { CheckCircle2, Copy, ExternalLink, X } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { ConversationShareDisplayWarnings } from "@/store/conversationShareSelectionStore.js";

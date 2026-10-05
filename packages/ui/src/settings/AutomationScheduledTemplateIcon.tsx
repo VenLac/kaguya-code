@@ -1,4 +1,4 @@
-import { Activity, FileText, List, Target, type LucideIcon } from "lucide-react";
+import { Activity, FileText, List, Target, type LucideIcon } from "@zcode/lunar-icons";
 import { ClientSceneLucideIcon } from "@/components/ClientSceneLucideIcon.js";
 
 export type AutomationScheduledTemplateIconName = "target" | "activity" | "file" | "list";

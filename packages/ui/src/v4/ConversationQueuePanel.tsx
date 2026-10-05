@@ -21,7 +21,7 @@ import {
   testId,
 } from "@zcode/shared";
 import type { QueueState } from "@zcode/shared/zcode-protocol-v4";
-import { ArrowUpFromLine, GripVertical, PencilIcon, Trash2Icon } from "lucide-react";
+import { ArrowUpFromLine, GripVertical, PencilIcon, Trash2Icon } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";

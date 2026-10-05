@@ -1,7 +1,7 @@
 import { createOpenInEditorRemoteTarget, type EditorInfo, type RemoteTarget } from "@zcode/shared";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button.js";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "@zcode/lunar-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,

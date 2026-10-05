@@ -7,7 +7,7 @@ import {
   TID_SSH_ERROR,
   TID_SSH_SUCCESS,
 } from "@zcode/shared";
-import { AlertTriangleIcon } from "lucide-react";
+import { AlertTriangleIcon } from "@zcode/lunar-icons";
 import { Button, buttonVariants } from "@/components/ui/button.js";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog.js";
 import { useCancelPendingRemoteConnection } from "@/hooks/useCancelPendingRemoteConnection.js";

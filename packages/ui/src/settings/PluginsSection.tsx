@@ -10,7 +10,7 @@ import {
   RotateCcw,
   Trash2,
   UploadCloud,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { toast } from "@/components/ui/toast.js";
 import {

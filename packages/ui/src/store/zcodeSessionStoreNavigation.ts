@@ -1,5 +1,5 @@
 /**
- * ZCode Session Store 导航切片 —— 任务前进/后退历史管理
+ * Kaguya Code Session Store 导航切片 —— 任务前进/后退历史管理
  *
  * 从 zcodeSessionStore.ts 拆分出来，封装所有任务导航相关的初始状态和 action。
  * 通过 createNavigationSlice(set, get) 返回可直接展开到 store 的对象。

@@ -9,7 +9,7 @@ import {
   type ComponentType,
   type SVGProps,
 } from "react";
-import { CircleCheck, RotateCcw, TriangleAlert } from "lucide-react";
+import { CircleCheck, RotateCcw, TriangleAlert } from "@zcode/lunar-icons";
 import {
   AUTOMATION_CREATE_LIMIT,
   BUILTIN_MODEL_PROVIDER_IDS,

@@ -1,5 +1,5 @@
 import type { ProviderSettingsView } from "@zcode/services";
-import { ArrowLeftIcon, ChevronRightIcon, PlusIcon } from "lucide-react";
+import { ArrowLeftIcon, ChevronRightIcon, PlusIcon } from "@zcode/lunar-icons";
 import { resolveProviderTemplateName } from "@zcode/provider";
 import type { ReactNode } from "react";
 import {

@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check } from "@zcode/lunar-icons";
 import { modeOptionIcons } from "@/onboarding/occupationOptions.js";
 import { cn } from "@/components/lib/utils.js";
 import type { InterfaceMode } from "@/lib/interfaceMode.js";

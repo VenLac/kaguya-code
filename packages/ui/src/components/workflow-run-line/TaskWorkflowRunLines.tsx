@@ -3,7 +3,7 @@
 // 别的都不画：没有光晕、没有行进虚线、没有问题 chip（升级问答由主代理作答，不是用户）、
 // 没有子代理数、没有箭头——那些进 hover tooltip。结束的 run 只剩一个中性词，颜色只留给灯。
 import { useEffect, useMemo, type MouseEvent } from "react";
-import { Workflow } from "lucide-react";
+import { Workflow } from "@zcode/lunar-icons";
 import type {
   SessionWorkflowActivity,
   SessionWorkflowRunSummary,

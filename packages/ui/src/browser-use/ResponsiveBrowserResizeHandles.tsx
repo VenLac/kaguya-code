@@ -10,7 +10,7 @@ import {
   TID_BROWSER_RESPONSIVE_RESIZE_TOP,
   TID_BROWSER_RESPONSIVE_RESIZE_WIDTH,
 } from "@zcode/shared";
-import { GripHorizontalIcon, GripVerticalIcon } from "lucide-react";
+import { GripHorizontalIcon, GripVerticalIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 
 export const RESPONSIVE_BROWSER_VIEWPORT_LIMITS = BROWSER_VIEWPORT_LIMITS;

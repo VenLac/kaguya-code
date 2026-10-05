@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus } from "@zcode/lunar-icons";
 import {
   TID_WORKFLOWS_CREATE_VIA_CHAT,
   TID_WORKFLOWS_LIST,

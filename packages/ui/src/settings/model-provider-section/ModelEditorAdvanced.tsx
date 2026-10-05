@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { ProviderModelDraftCommitResult } from "@/settings/model-provider-section/ProviderModelMetadata.js";
 

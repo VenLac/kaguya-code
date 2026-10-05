@@ -1,4 +1,4 @@
-import { ShareIcon } from "lucide-react";
+import { ShareIcon } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";

@@ -1,4 +1,4 @@
-import { Repeat2Icon } from "lucide-react";
+import { Repeat2Icon } from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { TimelineStation } from "./timeline-model.js";
 

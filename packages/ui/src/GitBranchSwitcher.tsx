@@ -26,7 +26,7 @@ import {
   isCoarseTouchDevice,
   shouldRestoreChatInputFocusAfterPickerClose,
 } from "@/lib/pickerFocus.js";
-import { ChevronDownIcon, GitBranchIcon, GitGraph, LoaderIcon, PlusIcon } from "lucide-react";
+import { ChevronDownIcon, GitBranchIcon, GitGraph, LoaderIcon, PlusIcon } from "@zcode/lunar-icons";
 
 interface GitBranchSwitcherProps {
   workspacePath: string;

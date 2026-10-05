@@ -10,7 +10,7 @@
 // 按 tab 缓存）。状态以 journal 为准，活投影只叠 `cached`。
 
 import { Fragment, memo, useEffect, useMemo, useRef, type ReactNode } from "react";
-import { HourglassIcon, Repeat2Icon, TerminalIcon, TriangleAlertIcon } from "lucide-react";
+import { HourglassIcon, Repeat2Icon, TerminalIcon, TriangleAlertIcon } from "@zcode/lunar-icons";
 import { phaseDisplayName } from "@/components/workflow-graph/phase-name.js";
 import { WorkflowRunStatus } from "@/components/workflow-timeline/WorkflowCardChrome.js";
 import { useRunningBackgroundTaskElapsedClock } from "@/hooks/useRunningBackgroundTaskElapsedClock.js";

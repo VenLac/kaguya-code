@@ -1,4 +1,4 @@
-/* ZCode 官方 Server MCP 鉴权的共享常量与类型。
+/* Kaguya Code 官方 Server MCP 鉴权的共享常量与类型。
    放在 shared 是因为头集合有两个消费者且分属不同包：
    - `packages/services` 侧生产身份头；
    - `apps/zcode-cli/packages/adapters` 侧（Plugin parser + MCP adapter）拦截保留头。
@@ -175,12 +175,12 @@ export interface IsOfficialMcpOriginTrustedInput {
    * 归属标识。保留在入参里是为了让日志能回答"是哪个插件在要凭证"。
    */
   pluginId: string;
-  /** 当前 ZCode API origin，由调用方按各自口径解析后传入。 */
+  /** 当前 Kaguya Code API origin，由调用方按各自口径解析后传入。 */
   zcodeApiOrigin: string | undefined;
 }
 
 /**
- * 校验官方 MCP 的凭据目标：要求 HTTPS origin 与运行时 ZCode API origin 相等，
+ * 校验官方 MCP 的凭据目标：要求 HTTPS origin 与运行时 Kaguya Code API origin 相等，
  * 且 URL 不携带 username/password。开发配置只允许显式列出的 HTTP loopback origin。
  *
  * pluginId 用于归属和日志，不是授权过滤条件；任何已加载插件都可以请求官方鉴权。
@@ -245,7 +245,7 @@ export interface OfficialMcpTrustedOriginRegistry {
 export interface CreateOfficialMcpTrustedOriginRegistryOptions {
   /** 本地自测开关原始值（逗号分隔的 loopback origin），通常来自 env。 */
   devTrustedOriginsRaw?: string | undefined;
-  /** 当前 ZCode API origin 的解析器；两侧必须用等价口径，否则会一侧放行一侧拒绝。 */
+  /** 当前 Kaguya Code API origin 的解析器；两侧必须用等价口径，否则会一侧放行一侧拒绝。 */
   resolveZCodeApiOrigin: () => string | undefined | Promise<string | undefined>;
 }
 

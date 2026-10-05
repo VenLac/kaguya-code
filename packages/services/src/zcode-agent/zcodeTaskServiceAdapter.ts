@@ -1,4 +1,4 @@
-/* oxlint-disable eslint(max-lines) -- 迁移期需要在一个门面里集中维护旧 task projection 到 ZCode session 的协议适配。 */
+/* oxlint-disable eslint(max-lines) -- 迁移期需要在一个门面里集中维护旧 task projection 到 Kaguya Code session 的协议适配。 */
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
@@ -287,7 +287,7 @@ export function createZCodeTaskServiceAdapter(
 
   function unsupported(name: string): never {
     throw Object.assign(
-      new Error(`ZCode task service adapter does not support IZCodeTaskService.${name} yet.`),
+      new Error(`Kaguya Code task service adapter does not support IZCodeTaskService.${name} yet.`),
       {
         code: "ZCODE_AGENT_UNSUPPORTED_LEGACY_TASK_METHOD",
       },
@@ -396,10 +396,10 @@ export function createZCodeTaskServiceAdapter(
     // 新输入开始时必须清掉上一轮 live-only 子工具，避免后续 snapshot 把旧工具补到新回复尾部。
     clearLiveToolProjection(target);
     clearStreamingToolInputCache(target);
-    // ZCode task wrapper 的字段仍叫 traceId，但这里语义已经是单次输入 inputId。
-    // 先记录 inputId，后续 ZCode session 事件回投 ZCode Agent 时才能让 UI 终态按输入轮次收口。
+    // Kaguya Code task wrapper 的字段仍叫 traceId，但这里语义已经是单次输入 inputId。
+    // 先记录 inputId，后续 Kaguya Code session 事件回投 Kaguya Code Agent 时才能让 UI 终态按输入轮次收口。
     activePromptInputIds.set(taskKey(target), params.traceId);
-    logger.info(params.traceId, "ZCode task facade sendPrompt 开始", {
+    logger.info(params.traceId, "Kaguya Code task facade sendPrompt 开始", {
       attachmentCount: params.attachments?.length ?? 0,
       queryId: params.queryId ?? null,
       reason: params.logReason ?? "direct",
@@ -465,7 +465,7 @@ export function createZCodeTaskServiceAdapter(
         });
         assertV4CommandAckOk("sendText", ack, `session=${target.taskId}`);
       }
-      logger.info(params.traceId, "ZCode task facade sendPrompt ACK", {
+      logger.info(params.traceId, "Kaguya Code task facade sendPrompt ACK", {
         durationMs: Date.now() - startedAt,
         queryId: params.queryId ?? null,
         reason: params.logReason ?? "direct",
@@ -476,7 +476,7 @@ export function createZCodeTaskServiceAdapter(
       });
     } catch (error) {
       activePromptInputIds.delete(taskKey(target));
-      logger.warn(params.traceId, "ZCode task facade sendPrompt 失败", {
+      logger.warn(params.traceId, "Kaguya Code task facade sendPrompt 失败", {
         durationMs: Date.now() - startedAt,
         error: error instanceof Error ? error.message : String(error),
         queryId: params.queryId ?? null,
@@ -579,7 +579,7 @@ export function createZCodeTaskServiceAdapter(
     // 手机 host command 在 sendPrompt ACK 后仍要保持 running，
     // 否则手机刷新拿不到“已开始发送”的 pendingCommands。只有真实终态到达后才能从 host 队列移除。
     removeRuntimeCommand(params, command.commandId);
-    logger.info(command.traceId, "ZCode task command 终态收口", {
+    logger.info(command.traceId, "Kaguya Code task command 终态收口", {
       commandId: command.commandId,
       terminalType,
       taskId: params.taskId,
@@ -614,7 +614,7 @@ export function createZCodeTaskServiceAdapter(
     }
 
     const runningCommand = markRuntimeCommandRunning(params, command);
-    logger.info(runningCommand.traceId, "ZCode task command drain 开始", {
+    logger.info(runningCommand.traceId, "Kaguya Code task command drain 开始", {
       commandId: runningCommand.commandId,
       queryId: runningCommand.queryId ?? null,
       reason,
@@ -639,7 +639,7 @@ export function createZCodeTaskServiceAdapter(
       });
     } catch (error) {
       markRuntimeCommandFailed(params, runningCommand, error);
-      logger.warn(runningCommand.traceId, "ZCode task command drain 失败", {
+      logger.warn(runningCommand.traceId, "Kaguya Code task command drain 失败", {
         commandId: runningCommand.commandId,
         error: error instanceof Error ? error.message : String(error),
         reason,
@@ -655,7 +655,7 @@ export function createZCodeTaskServiceAdapter(
     try {
       await drainRuntimeCommands(params, reason);
     } catch (error) {
-      logger.warn(undefined, "ZCode task command drain 调度失败", {
+      logger.warn(undefined, "Kaguya Code task command drain 调度失败", {
         error: error instanceof Error ? error.message : String(error),
         reason,
         taskId: params.taskId,
@@ -956,7 +956,7 @@ export function createZCodeTaskServiceAdapter(
     }
 
     if (changed) {
-      logger.debug(undefined, "ZCode snapshot 合并 live tool projection", {
+      logger.debug(undefined, "Kaguya Code snapshot 合并 live tool projection", {
         event: "zcode_task.snapshot.live_tool_projection.merged",
         liveToolCount: liveTools.length,
         mergedToolCount,
@@ -982,7 +982,7 @@ export function createZCodeTaskServiceAdapter(
   function getTaskTarget(taskId: string): TaskTarget {
     const target = taskTargets.get(taskId);
     if (!target) {
-      throw Object.assign(new Error(`ZCode session target is not loaded: ${taskId}`), {
+      throw Object.assign(new Error(`Kaguya Code session target is not loaded: ${taskId}`), {
         code: "ZCODE_SESSION_TARGET_NOT_FOUND",
       });
     }
@@ -1249,7 +1249,7 @@ export function createZCodeTaskServiceAdapter(
       snapshot = await resumeSnapshot(params);
     } catch (error) {
       if (!isSessionMissingError(error)) throw error;
-      // 早期原生历史导入只保存了带 migrationSource 的快照，仍需升级成真实 ZCode session。
+      // 早期原生历史导入只保存了带 migrationSource 的快照，仍需升级成真实 Kaguya Code session。
       // 复用导入模块的严格来源校验，避免清理 ACP 时误删这条独立的数据迁移路径。
       const history = await readLegacyImportedClaudeHistory(params);
       if (!history) throw error;
@@ -1354,7 +1354,7 @@ export function createZCodeTaskServiceAdapter(
     if (model || thoughtLevel) {
       // task-local thoughtLevel 和 model 一样属于历史 session 恢复 hint。
       // 不回填 thoughtLevel 时，同 workspace 的 draft 默认值会在 session/resume 后覆盖 active task。
-      logger.info(undefined, "从 task index 回填 ZCode session resume 配置", {
+      logger.info(undefined, "从 task index 回填 Kaguya Code session resume 配置", {
         model: model || null,
         thoughtLevel: thoughtLevel || null,
         reason,
@@ -1403,7 +1403,7 @@ export function createZCodeTaskServiceAdapter(
         patch,
       });
     } catch (error) {
-      // 旧 ZCode session 可能还没有轻量 task index 行。
+      // 旧 Kaguya Code session 可能还没有轻量 task index 行。
       // 状态动作只在点开具体 task 后发生，此处允许按需读取当前 task seed index，
       // 但侧边栏全量列表查询仍只读 sqlite，不会启动所有 workspace agent。
       logger.warn(undefined, "task index 缺失，按需从 agent seed 当前 task", error);
@@ -1596,7 +1596,7 @@ export function createZCodeTaskServiceAdapter(
   function mapServiceEvent(params: TaskTarget, event: ZCodeAgentServiceEvent): void {
     if (event.type === "snapshot") {
       void syncTaskIndexSnapshot(event.snapshot).catch((error) => {
-        logger.warn(undefined, "同步 ZCode snapshot 到 task index 失败", error);
+        logger.warn(undefined, "同步 Kaguya Code snapshot 到 task index 失败", error);
       });
       const snapshotEvent: ZCodeStreamEvent = {
         type: "task_snapshot_updated",
@@ -2009,7 +2009,7 @@ export function createZCodeTaskServiceAdapter(
       const commands = runtimeCommands.get(key) ?? [];
       const command = commands.find((candidate) => candidate.commandId === params.commandId);
       if (!command) {
-        logger.info(undefined, "ZCode task command 取消时已不存在", {
+        logger.info(undefined, "Kaguya Code task command 取消时已不存在", {
           commandId: params.commandId,
           taskId: params.taskId,
           workspaceIdentity: params.workspaceIdentity ?? null,
@@ -2023,7 +2023,7 @@ export function createZCodeTaskServiceAdapter(
         };
       }
       if (command.status === "running") {
-        logger.info(command.traceId, "ZCode task command 已开始运行，跳过取消", {
+        logger.info(command.traceId, "Kaguya Code task command 已开始运行，跳过取消", {
           commandId: command.commandId,
           taskId: params.taskId,
           workspaceIdentity: params.workspaceIdentity ?? null,
@@ -2044,7 +2044,7 @@ export function createZCodeTaskServiceAdapter(
         commands.filter((item) => item.commandId !== command.commandId),
       );
       emitRuntimeCommandSnapshotUpdated(params, command.traceId);
-      logger.info(command.traceId, "ZCode task command 已取消", {
+      logger.info(command.traceId, "Kaguya Code task command 已取消", {
         commandId: command.commandId,
         status: command.status,
         taskId: params.taskId,
@@ -2068,7 +2068,7 @@ export function createZCodeTaskServiceAdapter(
             workspaceIdentity: params.workspaceIdentity,
           }
         : getTaskTarget(params.taskId);
-      logger.info(params.runId, "ZCode task facade stopGeneration 开始", {
+      logger.info(params.runId, "Kaguya Code task facade stopGeneration 开始", {
         hasRunId: Boolean(params.runId),
         taskId: params.taskId,
         workspaceIdentity: target.workspaceIdentity ?? null,
@@ -2086,7 +2086,7 @@ export function createZCodeTaskServiceAdapter(
         }),
       });
       assertV4CommandAckOk("stop", ack, `session=${params.taskId}`);
-      logger.info(params.runId, "ZCode task facade stopGeneration ACK", {
+      logger.info(params.runId, "Kaguya Code task facade stopGeneration ACK", {
         durationMs: Date.now() - startedAt,
         taskId: params.taskId,
         workspaceIdentity: target.workspaceIdentity ?? null,
@@ -2684,7 +2684,7 @@ export function createZCodeTaskServiceAdapter(
             },
           });
           const meta = await syncTaskIndexSnapshot(snapshot);
-          // 导入后的任务必须是真实 ZCode session，setModel/sendPrompt 才能继续命中 runtime。
+          // 导入后的任务必须是真实 Kaguya Code session，setModel/sendPrompt 才能继续命中 runtime。
           // 同时保留 migrationSource，避免任务列表把 Claude Code 迁移历史当成本地新会话。
           return syncTaskIndexMeta({ ...meta, migrationSource: "claudeCode" });
         },
@@ -2817,12 +2817,12 @@ export function createZCodeTaskServiceAdapter(
 
     async getTaskNativeSessionLogFile() {
       const path = resolveZCodeAgentCurrentLogFilePath();
-      // 返回 ZCode Agent 的结构化日志 JSONL；日志行中的 sessionId 用于按当前任务排查。
+      // 返回 Kaguya Code Agent 的结构化日志 JSONL；日志行中的 sessionId 用于按当前任务排查。
       return { provider: GLM_PROVIDER, path, exists: existsSync(path) };
     },
 
     async getModelTrajectory(params) {
-      // ZCode Agent 把 taskId 当作 sessionId 落盘 model-io（见本文件其它 sessionId: params.taskId 用法），
+      // Kaguya Code Agent 把 taskId 当作 sessionId 落盘 model-io（见本文件其它 sessionId: params.taskId 用法），
       // 这里按 sessionId 还原该 task 的模型调用轨迹，供 UI 侧边栏可视化。
       const trajectory = await readModelTrajectory(params.taskId, params.limit);
       logger.info(
@@ -2833,7 +2833,7 @@ export function createZCodeTaskServiceAdapter(
 
     async getTaskTokenUsage(params): Promise<ZCodeTaskTokenUsageResult> {
       // 摘要面板需要展示 task 的累计模型消耗，不能复用 usage_update 的 context window。
-      // 这里通过 ZCode Protocol 读 agent SQLite 的 model_usage 聚合，保持桌面和远控同一事实源。
+      // 这里通过 Kaguya Code Protocol 读 agent SQLite 的 model_usage 聚合，保持桌面和远控同一事实源。
       return options.zcodeAgentService.getTaskTokenUsage({
         workspacePath: params.workspacePath,
         workspaceIdentity: params.workspaceIdentity,
@@ -3727,7 +3727,7 @@ function mapToolPart(
 ): ZCodePersistedToolCall {
   const state = part.state;
   const taskNotification = backgroundTaskNotifications?.get(part.callId);
-  // ZCode Protocol 的 part.callId 是实时流和终态 snapshot 共同的工具身份。
+  // Kaguya Code Protocol 的 part.callId 是实时流和终态 snapshot 共同的工具身份。
   // 以前只保存 metadata 会丢掉 toolCallId，手机 replayable 里 result-only 临时工具就无法被终态快照覆盖。
   const raw = attachZCodeBackgroundTaskNotificationToRaw(
     attachToolCallIdToRaw("metadata" in state ? (state.metadata ?? state) : state, part.callId),
@@ -3933,13 +3933,13 @@ function mapSessionEvent(
   const inputId = stringValue(payload.inputId);
   const queryId = stringValue(payload.queryId);
   // 兼容层对外的 traceId 语义是“一次用户输入到本轮回复结束”的轮次标识。
-  // ZCode Protocol runtime trace 只在事件没有 inputId 时兜底，避免同一轮 chunk/tool/complete 被拆成不同 trace。
+  // Kaguya Code Protocol runtime trace 只在事件没有 inputId 时兜底，避免同一轮 chunk/tool/complete 被拆成不同 trace。
   const eventInputId = inputId ?? activePromptInputId;
   const traceId = eventInputId ?? protocolTraceId;
   if (eventInputId && eventInputId !== protocolTraceId) {
     logger.debug(
       eventInputId,
-      `对齐 ZCode prompt inputId eventType=${event.type} protocolTrace=${protocolTraceId}`,
+      `对齐 Kaguya Code prompt inputId eventType=${event.type} protocolTrace=${protocolTraceId}`,
     );
   }
   const turnKey = `${event.sessionId}:${event.turnId ?? eventInputId ?? traceId}`;
@@ -4128,7 +4128,7 @@ function mapSessionEvent(
           params.taskId,
           traceId,
           eventInputId,
-          stringValue(errorPayload.message) ?? "ZCode compact failed",
+          stringValue(errorPayload.message) ?? "Kaguya Code compact failed",
         ),
       ];
     }
@@ -4140,7 +4140,7 @@ function mapSessionEvent(
         taskId: params.taskId,
         traceId,
         ...(eventInputId ? { inputId: eventInputId } : {}),
-        error: stringValue(errorPayload.message) ?? "ZCode session failed",
+        error: stringValue(errorPayload.message) ?? "Kaguya Code session failed",
         // type 是外层错误分类，code 才是 provider/subagent 要展示的真实错误码。
         code: stringValue(errorPayload.code) ?? stringValue(errorPayload.type),
         detail: stringValue(errorPayload.detail),
@@ -4411,7 +4411,7 @@ function logStreamingToolInputProjection(
     toolName?: string;
   },
 ): void {
-  logger.debug(traceId, "ZCode streaming tool input projected", {
+  logger.debug(traceId, "Kaguya Code streaming tool input projected", {
     ...details,
     event: "zcode.task.streaming_tool_input.projected",
   });
@@ -4649,8 +4649,8 @@ function mapToolUpdated(
   }
   if ("result" in payload) {
     const result = asRecord(payload.result);
-    // ZCode Protocol 的 ToolCallResult 只有 toolCallId/result，不再重复带 toolName。
-    // 去掉 ZCode Agent 后如果不记住前序 ToolCallScheduled 的 TodoWrite 名称，result 里的 todos
+    // Kaguya Code Protocol 的 ToolCallResult 只有 toolCallId/result，不再重复带 toolName。
+    // 去掉 Kaguya Code Agent 后如果不记住前序 ToolCallScheduled 的 TodoWrite 名称，result 里的 todos
     // 就只能当普通字符串输出，无法继续投射成顶部 todo/plan 事件。
     const toolName = rememberedToolName;
     const content = normalizeToolResultContent(toolName, result);
@@ -4817,7 +4817,7 @@ function isSubagentDispatchToolName(toolName: string | undefined): boolean {
 }
 
 function parentToolUseIdFromToolPayload(payload: Record<string, unknown>): string | null {
-  // ZCode Protocol 发送的父级字段叫 parentToolCallId；
+  // Kaguya Code Protocol 发送的父级字段叫 parentToolCallId；
   // UI stream 模型统一消费 parentToolUseId，必须在服务投影层完成一次性归一。
   return stringValue(payload.parentToolUseId) ?? stringValue(payload.parentToolCallId) ?? null;
 }
@@ -5556,7 +5556,7 @@ function contextUsageFromPayload(payload: Record<string, unknown>): ContextUsage
   if (size === undefined || size <= 0) {
     return null;
   }
-  // ZCode Protocol 的 session.updated 里 contextUsed/contextWindow 是 projection 事实源；
+  // Kaguya Code Protocol 的 session.updated 里 contextUsed/contextWindow 是 projection 事实源；
   // 旧 task stream 只认识 usage_update，adapter 不转换就会让右下角 context meter 永远拿不到数据。
   // used=0 只表示初始化或异常兜底，不能渲染成可用的 context meter。
   if (used === undefined || used <= 0) {

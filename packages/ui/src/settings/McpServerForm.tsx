@@ -14,7 +14,7 @@ import { PluginScopeMenu } from "@/settings/PluginScopeMenu.js";
 import type { WorkspaceTabState } from "@/store/tabStore.js";
 import { SettingsFormTextarea } from "@/settings/SettingsFormTextarea.js";
 import { SettingsFormActions } from "@/settings/SettingsFormActions.js";
-import { ChevronDown, ChevronUpIcon as ChevronUp, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUpIcon as ChevronUp, Trash2 } from "@zcode/lunar-icons";
 import {
   EMPTY_FORM,
   formToJsonDraft,

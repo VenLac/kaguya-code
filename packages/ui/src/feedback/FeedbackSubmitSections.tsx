@@ -8,7 +8,7 @@ import { cn } from "@/components/lib/utils.js";
 import { SubmitProgressView } from "@/feedback/FeedbackSubmitProgressView.js";
 import { rememberFeedbackContactInput } from "@/feedback/feedbackContactPreference.js";
 import type { FeedbackSubmissionProgressState } from "@/feedback/feedbackSubmissionJob.js";
-import { InboxIcon } from "lucide-react";
+import { InboxIcon } from "@zcode/lunar-icons";
 
 export function DescriptionSection({
   value,

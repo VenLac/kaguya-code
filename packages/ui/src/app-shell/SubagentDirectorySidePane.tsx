@@ -8,7 +8,7 @@ import {
   CircleDashedIcon,
   LoaderCircleIcon,
   PauseCircleIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useSessionSubagents } from "@/hooks/useSessionSubagents.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

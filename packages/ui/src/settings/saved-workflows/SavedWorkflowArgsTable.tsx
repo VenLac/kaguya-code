@@ -1,4 +1,4 @@
-import { Plus, X } from "lucide-react";
+import { Plus, X } from "@zcode/lunar-icons";
 import type { ZCodeSavedWorkflowArgType } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { Input } from "@/components/ui/input.js";

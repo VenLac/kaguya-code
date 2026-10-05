@@ -1,4 +1,4 @@
-import { AlertTriangle, Loader2, RefreshCw, Trash2 } from "lucide-react";
+import { AlertTriangle, Loader2, RefreshCw, Trash2 } from "@zcode/lunar-icons";
 import type { ZCodePluginMarketplaceSummary } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog.js";

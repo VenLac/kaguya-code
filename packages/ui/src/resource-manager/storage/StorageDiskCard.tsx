@@ -1,4 +1,4 @@
-import { HardDrive } from "lucide-react";
+import { HardDrive } from "@zcode/lunar-icons";
 import {
   type StorageVolumeGroup,
   TID_RESOURCE_MANAGER_STORAGE_DISK_CARD,

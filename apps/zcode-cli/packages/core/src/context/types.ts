@@ -47,7 +47,7 @@ export type ContextSource =
   | "session_guidance" // 当前可用内置能力指导
   | "output_style" // 输出风格
   | "context_management" // 长上下文管理提示
-  | "desktop_context"; // ZCode Desktop 渲染与交互协议
+  | "desktop_context"; // Kaguya Code Desktop 渲染与交互协议
 
 export type ContextInjectionTarget = "system" | "meta_user";
 

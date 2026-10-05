@@ -17,7 +17,7 @@ export interface DeviceResourceSample {
   /** 整机 CPU（两次 `os.cpus()` 差分得到的整机归一化百分比）。 */
   systemCpuPercent: number;
   systemFreeMemoryKb: number;
-  /** 全部本机 ZCode 进程的 CPU 之和。 */
+  /** 全部本机 Kaguya Code 进程的 CPU 之和。 */
   appCpuPercent: number;
   appRssKbTotal: number;
   appProcessCount: number;

@@ -1,4 +1,4 @@
-import { CircleDashed, Folder, UserRound } from "lucide-react";
+import { CircleDashed, Folder, UserRound } from "@zcode/lunar-icons";
 import { Badge } from "@/components/ui/badge.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 

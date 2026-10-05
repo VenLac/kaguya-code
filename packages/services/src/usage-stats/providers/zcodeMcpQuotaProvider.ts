@@ -1,4 +1,4 @@
-/* ZCode 官方 Server MCP 的调用额度读取（`GET /api/v1/mcp/usage`）。
+/* Kaguya Code 官方 Server MCP 的调用额度读取（`GET /api/v1/mcp/usage`）。
  *
  * 单文件承载该接口的全部细节：路径、信封解析、总额度映射。**鉴权不在这里实现**——
  * 身份头必须与 server MCP 端点用同一套 5 个头，唯一生产者是

@@ -231,7 +231,7 @@ function providerOptionsForClientTool(options: AiSdkToolTransformOptions): {
 
   // AI SDK enables Anthropic fine-grained tool input streaming by default
   // and serializes eager_input_streaming on every function tool. Several
-  // Anthropic-compatible gateways reject that extra tool field, so ZCode opts out
+  // Anthropic-compatible gateways reject that extra tool field, so Kaguya Code opts out
   // at the provider-option boundary unless a future capability contract enables it.
   return {
     providerOptions: {

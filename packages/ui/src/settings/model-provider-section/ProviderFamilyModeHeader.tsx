@@ -6,7 +6,7 @@ import {
   testId,
   type ProviderFamilyConnectionSelectionSettings,
 } from "@zcode/shared";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon } from "@zcode/lunar-icons";
 import type { ReactNode } from "react";
 import {
   Select,

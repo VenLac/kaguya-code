@@ -13,7 +13,7 @@ import {
   Terminal,
   TriangleAlert,
   WandSparkles,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { ZCodePluginComponentKind, ZCodePluginsDescribeResult } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

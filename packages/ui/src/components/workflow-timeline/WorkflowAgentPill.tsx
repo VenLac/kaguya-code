@@ -6,7 +6,7 @@ import {
   CircleXIcon,
   LoaderCircleIcon,
   TerminalIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { LaneClass, StepRunStatus } from "@/components/workflow-graph/types.js";

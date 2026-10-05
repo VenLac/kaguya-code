@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { ChevronDown, ChevronRight, GripVertical } from "lucide-react";
+import { ChevronDown, ChevronRight, GripVertical } from "@zcode/lunar-icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {

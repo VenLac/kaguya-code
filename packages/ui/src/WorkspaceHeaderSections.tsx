@@ -12,7 +12,7 @@ import { useMemo, useRef, useState } from "react";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
-import { Cloud, Ellipsis, Folder, GitBranch, LoaderIcon } from "lucide-react";
+import { Cloud, Ellipsis, Folder, GitBranch, LoaderIcon } from "@zcode/lunar-icons";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog.js";
 import { useGlobalTaskList } from "@/hooks/useGlobalTaskList.js";
 import { useBaseWorkspaceServices, useWorkspaceServices } from "@/hooks/useWorkspaceServices.js";

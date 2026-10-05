@@ -23,7 +23,7 @@ import {
   RefreshCwIcon,
   MessageCirclePlus,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { useSortable } from "@dnd-kit/sortable";
 import { BorderBeam } from "border-beam";
 import { STATUS_DOT } from "@/components/workflow-graph/run-status-presentation.js";

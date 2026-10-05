@@ -4,7 +4,7 @@ import type { TraceContext } from "../tracing/tracer.js";
  * BrowserControlPort —— agent 侧浏览器控制端口。
  *
  * browser-client 库把 agent.browsers.* 的每个调用构造成 BrowserCommand，经此端口执行；
- * 实现（ProtocolBrowserControlBroker）把它翻译成 ZCode Protocol 的
+ * 实现（ProtocolBrowserControlBroker）把它翻译成 Kaguya Code Protocol 的
  * interaction/browserExecute 反向请求，由 app（host→main WebContentsView/CDP）执行。
  *
  * 类型说明：BrowserCommand/BrowserCommandResult 与 @zcode/shared 的 browser-use 契约同构。
@@ -36,7 +36,7 @@ export interface BrowserBackendDescriptor {
   metadata?: Record<string, string>;
 }
 
-/** ZCode Protocol 使用包装结果；BrowserControlPort.list 会解包并直接返回 browsers。 */
+/** Kaguya Code Protocol 使用包装结果；BrowserControlPort.list 会解包并直接返回 browsers。 */
 export interface BrowserBackendListResult {
   browsers: BrowserBackendDescriptor[];
 }

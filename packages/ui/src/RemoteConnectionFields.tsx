@@ -8,7 +8,7 @@ import type {
   SSHConfigAliasOption,
   WSLDistro,
 } from "@zcode/shared";
-import { AlertTriangleIcon, CheckIcon, ChevronDownIcon, LoaderIcon, Plus } from "lucide-react";
+import { AlertTriangleIcon, CheckIcon, ChevronDownIcon, LoaderIcon, Plus } from "@zcode/lunar-icons";
 import {
   TID_DOCKER_CONTAINER_INPUT,
   TID_DOCKER_CONTAINER_SELECT,

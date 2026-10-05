@@ -1,7 +1,7 @@
 "use client";
 
 import { createMermaidPlugin, type MermaidConfig } from "@streamdown/mermaid";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "@zcode/lunar-icons";
 import type { HTMLAttributes } from "react";
 import { useEffect, useId, useMemo, useState } from "react";
 import { cn } from "@/components/lib/utils.js";

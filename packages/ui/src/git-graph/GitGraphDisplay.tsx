@@ -1,4 +1,4 @@
-import { GitBranchIcon, TagIcon } from "lucide-react";
+import { GitBranchIcon, TagIcon } from "@zcode/lunar-icons";
 import type { GitGraphRef } from "./layout.js";
 
 export function getShortHash(hash: string): string {

@@ -14,7 +14,7 @@ import {
   RefreshCw,
   Square,
   Trash2,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 
 type AutomationSvgIconProps = SVGProps<SVGSVGElement>;

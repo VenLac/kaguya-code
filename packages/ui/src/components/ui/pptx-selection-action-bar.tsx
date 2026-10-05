@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { SparklesIcon } from "lucide-react";
+import { SparklesIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { Popover, PopoverContent } from "@/components/ui/popover.js";
 import { Textarea } from "@/components/ui/textarea.js";

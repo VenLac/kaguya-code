@@ -20,6 +20,7 @@ import {
 } from "@zcode/contracts";
 import type { RegistryProviderConfig } from "@zcode/provider";
 import { withOpenRouterAttributionHeaders } from "@zcode/shared";
+import { createCodexAuthFetch, isCodexBaseUrl } from "@zcode/shared/node";
 import { createAnthropicCompatFetch } from "./anthropic-stream-compat.js";
 import { createOpenAIResponsesJsonCompatFetch } from "./openai-responses-json-compat.js";
 import { createModelOptionMapFetch, type RawRequestBodyCapture } from "./model-option-map-fetch.js";
@@ -262,7 +263,11 @@ export class AiSdkModelExecution {
   ): LanguageModelFactory {
     const apiKey = this.resolveApiKey(providerConfig);
     const headers = providerConfig.headers;
-    const providerTransport = this.resolveProviderTransport(providerId);
+    const baseTransport = this.resolveProviderTransport(providerId);
+    // ChatGPT Codex 渠道：用已登录账号的令牌鉴权（自动刷新），并把请求改造成该后端接受的形态。
+    const providerTransport = isCodexBaseUrl(providerConfig.baseURL)
+      ? createCodexAuthFetch(baseTransport, { env: this.env })
+      : baseTransport;
     const fetch = createProviderBusinessErrorFetch({
       fetch: providerTransport,
       providerId,
@@ -509,7 +514,7 @@ function createProviderProxyFetch(options: ProviderProxyFetchOptions): ProviderF
 }
 
 /**
- * 模型请求出口：官方 Coding Plan 端点经 ZCode 平台网关发送（做套餐权益校验等平台侧处理），
+ * 模型请求出口：官方 Coding Plan 端点经 Kaguya Code 平台网关发送（做套餐权益校验等平台侧处理），
  * 其余 provider 直连；之后统一进入用户 HTTP 代理 fetch，httpProxy / noProxy 按实际发送地址判定。
  * 官方端点与网关端点的对应关系见 official-coding-plan-gateway.ts。
  */
@@ -580,7 +585,7 @@ export function readProviderBusinessFailureFromBody(body: unknown):
     toProviderCode(errorRecord?.providerCode) ??
     toProviderCode(record.error_code) ??
     toProviderCode(errorRecord?.error_code) ??
-    // 二次包装后的外层 code 是 ZCode 自己的 PROVIDER_BUSINESS_ERROR，
+    // 二次包装后的外层 code 是 Kaguya Code 自己的 PROVIDER_BUSINESS_ERROR，
     // 真实上游码在 providerCode；只有没有 providerCode 时才退回读取 code。
     toProviderCode(record.code) ??
     toProviderCode(errorRecord?.code);

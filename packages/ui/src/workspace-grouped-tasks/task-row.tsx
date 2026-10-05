@@ -4,7 +4,7 @@ import type { KeyboardEvent, MouseEvent } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import { isCronTask, isOffPeakTask, type ZCodeTaskMeta } from "@zcode/shared";
-import { ArrowUpToLine, Clock, Cloud, Folder, ListTree, LoaderIcon, Moon, X } from "lucide-react";
+import { ArrowUpToLine, Clock, Cloud, Folder, ListTree, LoaderIcon, Moon, X } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Badge } from "@/components/ui/badge.js";
 import { toast } from "@/components/ui/toast.js";

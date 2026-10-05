@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle } from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { CuaDetailsModel } from "@/ToolCallBlocks/renderers/cua.js";
 import { CuaScreenshotSection } from "@/ToolCallBlocks/renderers/CuaScreenshotSection.js";

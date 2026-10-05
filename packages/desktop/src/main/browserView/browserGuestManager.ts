@@ -549,7 +549,7 @@ export class BrowserGuestManager {
     }
     if (guest.getType() !== "webview") {
       // fromId 接受进程内任意 WebContents id；若 renderer 误传主窗口 id，后续
-      // CDP/Runtime 输入会直接操作 ZCode composer。IAB 只允许真实 <webview> guest fail closed。
+      // CDP/Runtime 输入会直接操作 Kaguya Code composer。IAB 只允许真实 <webview> guest fail closed。
       this.log?.(
         `[browser-use] attachGuest rejected tabId=${tabId} id=${webContentsId} reason=not-webview type=${guest.getType()}`,
       );
@@ -2733,7 +2733,7 @@ export class BrowserGuestManager {
     context: InternalExecutionContext,
     keep: Map<string, "handoff" | "deliverable">,
   ): void {
-    // 产品语义：IAB tab 在当前 ZCode 进程内默认持久。keep 是状态标记集合，不是清理白名单；
+    // 产品语义：IAB tab 在当前 Kaguya Code 进程内默认持久。keep 是状态标记集合，不是清理白名单；
     // 遗漏的 tab 不能当成临时页关闭：模型未显式 close 时用户页面会在 turn end 消失。
     for (const tab of this.tabs.values()) {
       if (!sameScope(tab.owner, context)) continue;

@@ -1,5 +1,5 @@
 import type { ZCodeTaskGroupColor } from "@zcode/services";
-import { Hash } from "lucide-react";
+import { Hash } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { TASK_GROUP_COLOR_CLASS } from "@/workspace-grouped-tasks/types.js";
 

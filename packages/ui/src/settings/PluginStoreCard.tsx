@@ -6,7 +6,7 @@ import {
   Power,
   TriangleAlert,
   Trash2,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import {
   DropdownMenu,

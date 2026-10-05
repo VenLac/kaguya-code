@@ -34,7 +34,7 @@ export function createBundledMcpRuntimeConfig(input: {
     cwd: input.cwd,
     env: {
       ...input.env,
-      // 桌面打包态 process.execPath 是 ZCode Helper；缺少 Node 模式会误进 Electron main。
+      // 桌面打包态 process.execPath 是 Kaguya Code Helper；缺少 Node 模式会误进 Electron main。
       ELECTRON_RUN_AS_NODE: "1",
     },
     timeoutMs: input.timeoutMs,
@@ -69,7 +69,7 @@ export function writeOfficialPluginRuntimeManifest(input: OfficialRuntimeManifes
     mcpServer.args = [...hostPrefixArgs, join(input.rootPath, ...MCP_SERVER_RELATIVE_PATH)];
     mcpServer.env = {
       ...mcpServerEnv,
-      // 桌面打包态的 process.execPath 是 ZCode Helper。
+      // 桌面打包态的 process.execPath 是 Kaguya Code Helper。
       // 官方插件 MCP server 缺少 Node 模式 env 时会误进 Electron main，触发 deep-link 注册等桌面副作用。
       ELECTRON_RUN_AS_NODE: "1",
       // 权威写入插件身份（pluginName@marketplace，来自本地 plugin registry，manifest/user env 不可覆盖）。

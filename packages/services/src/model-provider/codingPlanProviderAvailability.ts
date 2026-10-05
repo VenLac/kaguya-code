@@ -531,7 +531,7 @@ function hasActiveStartPlan(plans: ZaiStartPlanPlan[] | undefined): boolean {
       const planId = plan.plan_id?.trim().toLowerCase();
       const name = plan.name?.trim().toLowerCase();
       // billing/balance 的 plans 真实返回的是 `plan_id=zcode-v3-start-plan`
-      // 和 `name=ZCode V3 Start Plan`；只认 `name === "start plan"` 的话，
+      // 和 `name=Kaguya Code V3 Start Plan`；只认 `name === "start plan"` 的话，
       // 已激活的 Start Plan 会被误写成 coding_plan_not_entitled。
       const identityMatches =
         !planId && !name ? true : isZaiStartPlanIdentity(planId) || isZaiStartPlanIdentity(name);

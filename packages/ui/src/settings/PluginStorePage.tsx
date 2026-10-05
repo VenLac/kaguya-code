@@ -1,7 +1,7 @@
 /* eslint-disable max-lines -- 插件商店容器统一编排列表/详情、市场源对话框、卸载确认、试用跳转与技能刷新收尾，集中维护保证交互一致。 */
 import { PluginAddMenu } from "@/settings/PluginAddMenu.js";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { RefreshCw, Settings } from "lucide-react";
+import { RefreshCw, Settings } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import { toast } from "@/components/ui/toast.js";
@@ -125,7 +125,7 @@ export function PluginStorePage({
     });
   }, [initialize, pluginManagementService, workspaceIdentity, workspacePath]);
 
-  // 目录自动刷新（Catalog Auto-Refresh）：只针对 ZCode 官方市场。每次进入商店页都刷新 CDN 目录，
+  // 目录自动刷新（Catalog Auto-Refresh）：只针对 Kaguya Code 官方市场。每次进入商店页都刷新 CDN 目录，
   // 否则新上架插件要等用户手动点刷新才可见；以 10 分钟窗口节流，并在发起时占位防抖（失败/在飞不重复），
   // 判据见 officialMarketplaceAutoRefresh。状态放模块级而非组件 ref，因为每次进入都是重新挂载。
   useEffect(() => {

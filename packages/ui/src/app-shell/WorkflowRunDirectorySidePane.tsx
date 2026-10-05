@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState } from "react";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import {
   RUN_STATUS_DOT,

@@ -48,7 +48,7 @@ exec node "$INSTALL_DIR/current/bin/zcode.mjs" "\\$@"
 SH
 chmod +x "$BIN_DIR/zcode"
 
-echo "ZCode $VERSION installed."
+echo "Kaguya Code $VERSION installed."
 echo "Run: zcode (TUI) or zcode --web (Web)"
 case ":$PATH:" in
   *":$BIN_DIR:"*) ;;

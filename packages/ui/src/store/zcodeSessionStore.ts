@@ -1,5 +1,5 @@
 /**
- * ZCode session UI 状态 store
+ * Kaguya Code session UI 状态 store
  *
  * 一个 tab 对应一个 workspace，所以聊天相关状态也必须按 workspace 分桶保存。
  * 这样切换标签页时，当前任务、输入中的草稿态和初始化状态才不会互相串台。

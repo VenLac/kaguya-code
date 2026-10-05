@@ -1,5 +1,5 @@
 import { cn } from "@/components/lib/utils.js";
-import zaiLogoUrl from "@/assets/provider-icons/logo-zai.svg";
+import zaiLogoUrl from "@/assets/brand/kaguya-code.svg";
 
 export function WindowsTopLeftLogo({
   className,
@@ -21,7 +21,7 @@ export function WindowsTopLeftLogo({
     >
       <img
         src={zaiLogoUrl}
-        alt="ZCode"
+        alt="Kaguya Code"
         className={cn("pointer-events-none size-5 select-none", imageClassName)}
         draggable={false}
       />

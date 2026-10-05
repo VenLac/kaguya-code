@@ -102,7 +102,7 @@ export function createCustomAboutDialogHtml(input: CustomAboutDialogHtmlInput): 
       }
 
       .app-logo {
-        width: 30px;
+        width: 34px;
         height: auto;
         display: block;
       }
@@ -173,23 +173,138 @@ export function createCustomAboutDialogHtml(input: CustomAboutDialogHtmlInput): 
           <div class="app-icon" aria-hidden="true">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="118"
+              width="100"
               height="100"
-              fill="none"
-              viewBox="0 0 256 218"
+              fill="currentColor"
+              viewBox="0 0 100 100"
               class="app-logo"
               focusable="false"
             >
-              <path
-                fill="currentColor"
-                d="M134.4 0.130152L116.48 25.6022C113.665 29.5699 109.054 32.0019 104.064 32.0019H6.3999V0C6.3999 0.130149 134.4 0.130152 134.4 0.130152Z"
-              />
-              <path fill="currentColor" d="M256 0.130127L102.401 217.732H0L153.599 0.130127H256Z" />
-              <path
-                fill="currentColor"
-                d="M121.601 217.732L139.65 192.134C142.465 188.166 147.076 185.734 152.067 185.734H249.604V217.736H121.601V217.732Z"
-              />
-            </svg>
+<circle cx="50" cy="50" r="47" opacity="0.16" />
+<circle cx="29.9" cy="10.4" r="2.44" />
+<circle cx="37.3" cy="10.4" r="2.93" />
+<circle cx="44.7" cy="10.4" r="3.03" />
+<circle cx="52.1" cy="10.4" r="2.96" />
+<circle cx="59.5" cy="10.4" r="2.67" />
+<circle cx="66.9" cy="10.4" r="2.01" />
+<circle cx="18.8" cy="16.8" r="1.95" />
+<circle cx="26.2" cy="16.8" r="3.05" />
+<circle cx="33.6" cy="16.8" r="3.21" />
+<circle cx="41.0" cy="16.8" r="3.22" />
+<circle cx="48.4" cy="16.8" r="3.11" />
+<circle cx="55.8" cy="16.8" r="3.26" />
+<circle cx="63.2" cy="16.8" r="3.04" />
+<circle cx="70.6" cy="16.8" r="2.49" />
+<circle cx="78.0" cy="16.8" r="1.42" />
+<circle cx="15.1" cy="23.2" r="2.56" />
+<circle cx="22.5" cy="23.2" r="3.2" />
+<circle cx="29.9" cy="23.2" r="3.14" />
+<circle cx="37.3" cy="23.2" r="2.87" />
+<circle cx="44.7" cy="23.2" r="2.49" />
+<circle cx="52.1" cy="23.2" r="2.73" />
+<circle cx="59.5" cy="23.2" r="3.33" />
+<circle cx="66.9" cy="23.2" r="3.15" />
+<circle cx="74.3" cy="23.2" r="2.58" />
+<circle cx="81.7" cy="23.2" r="1.56" />
+<circle cx="11.4" cy="29.6" r="2.59" />
+<circle cx="18.8" cy="29.6" r="3.25" />
+<circle cx="26.2" cy="29.6" r="3.1" />
+<circle cx="33.6" cy="29.6" r="2.46" />
+<circle cx="41.0" cy="29.6" r="1.98" />
+<circle cx="48.4" cy="29.6" r="2.36" />
+<circle cx="55.8" cy="29.6" r="3.08" />
+<circle cx="63.2" cy="29.6" r="3.28" />
+<circle cx="70.6" cy="29.6" r="3.02" />
+<circle cx="78.0" cy="29.6" r="2.44" />
+<circle cx="85.4" cy="29.6" r="1.37" />
+<circle cx="7.7" cy="36.0" r="2.23" />
+<circle cx="15.1" cy="36.0" r="3.23" />
+<circle cx="22.5" cy="36.0" r="3.24" />
+<circle cx="29.9" cy="36.0" r="2.59" />
+<circle cx="37.3" cy="36.0" r="1.62" />
+<circle cx="44.7" cy="36.0" r="1.5" />
+<circle cx="52.1" cy="36.0" r="2.44" />
+<circle cx="59.5" cy="36.0" r="2.8" />
+<circle cx="66.9" cy="36.0" r="2.66" />
+<circle cx="74.3" cy="36.0" r="2.71" />
+<circle cx="81.7" cy="36.0" r="2.11" />
+<circle cx="89.1" cy="36.0" r="0.96" />
+<circle cx="11.4" cy="42.5" r="3.05" />
+<circle cx="18.8" cy="42.5" r="3.37" />
+<circle cx="26.2" cy="42.5" r="3.11" />
+<circle cx="33.6" cy="42.5" r="2.32" />
+<circle cx="41.0" cy="42.5" r="1.73" />
+<circle cx="48.4" cy="42.5" r="2.17" />
+<circle cx="55.8" cy="42.5" r="2.45" />
+<circle cx="63.2" cy="42.5" r="1.62" />
+<circle cx="70.6" cy="42.5" r="2.2" />
+<circle cx="78.0" cy="42.5" r="2.4" />
+<circle cx="85.4" cy="42.5" r="1.6" />
+<circle cx="7.7" cy="48.9" r="2.5" />
+<circle cx="15.1" cy="48.9" r="3.26" />
+<circle cx="22.5" cy="48.9" r="3.21" />
+<circle cx="29.9" cy="48.9" r="2.65" />
+<circle cx="37.3" cy="48.9" r="2.74" />
+<circle cx="44.7" cy="48.9" r="2.69" />
+<circle cx="52.1" cy="48.9" r="2.95" />
+<circle cx="59.5" cy="48.9" r="1.88" />
+<circle cx="66.9" cy="48.9" r="1.8" />
+<circle cx="74.3" cy="48.9" r="2.35" />
+<circle cx="81.7" cy="48.9" r="1.94" />
+<circle cx="89.1" cy="48.9" r="0.93" />
+<circle cx="11.4" cy="55.3" r="2.81" />
+<circle cx="18.8" cy="55.3" r="3.18" />
+<circle cx="26.2" cy="55.3" r="2.35" />
+<circle cx="33.6" cy="55.3" r="2.16" />
+<circle cx="41.0" cy="55.3" r="2.78" />
+<circle cx="48.4" cy="55.3" r="2.09" />
+<circle cx="55.8" cy="55.3" r="2.32" />
+<circle cx="63.2" cy="55.3" r="2.5" />
+<circle cx="70.6" cy="55.3" r="2.45" />
+<circle cx="78.0" cy="55.3" r="2.08" />
+<circle cx="85.4" cy="55.3" r="1.22" />
+<circle cx="7.7" cy="61.7" r="1.72" />
+<circle cx="15.1" cy="61.7" r="2.82" />
+<circle cx="22.5" cy="61.7" r="3.03" />
+<circle cx="29.9" cy="61.7" r="2.73" />
+<circle cx="37.3" cy="61.7" r="2.96" />
+<circle cx="44.7" cy="61.7" r="2.06" />
+<circle cx="52.1" cy="61.7" r="1.74" />
+<circle cx="59.5" cy="61.7" r="2.32" />
+<circle cx="66.9" cy="61.7" r="2.14" />
+<circle cx="74.3" cy="61.7" r="1.58" />
+<circle cx="81.7" cy="61.7" r="1.27" />
+<circle cx="11.4" cy="68.1" r="1.76" />
+<circle cx="18.8" cy="68.1" r="2.63" />
+<circle cx="26.2" cy="68.1" r="2.96" />
+<circle cx="33.6" cy="68.1" r="3.03" />
+<circle cx="41.0" cy="68.1" r="2.63" />
+<circle cx="48.4" cy="68.1" r="2.13" />
+<circle cx="55.8" cy="68.1" r="2.17" />
+<circle cx="63.2" cy="68.1" r="2.25" />
+<circle cx="70.6" cy="68.1" r="1.23" />
+<circle cx="78.0" cy="68.1" r="1.06" />
+<circle cx="15.1" cy="74.5" r="1.45" />
+<circle cx="22.5" cy="74.5" r="2.24" />
+<circle cx="29.9" cy="74.5" r="2.57" />
+<circle cx="37.3" cy="74.5" r="2.62" />
+<circle cx="44.7" cy="74.5" r="2.43" />
+<circle cx="52.1" cy="74.5" r="2.22" />
+<circle cx="59.5" cy="74.5" r="2.03" />
+<circle cx="66.9" cy="74.5" r="1.56" />
+<circle cx="74.3" cy="74.5" r="0.96" />
+<circle cx="18.8" cy="80.9" r="0.87" />
+<circle cx="26.2" cy="80.9" r="1.6" />
+<circle cx="33.6" cy="80.9" r="1.92" />
+<circle cx="41.0" cy="80.9" r="1.97" />
+<circle cx="48.4" cy="80.9" r="1.85" />
+<circle cx="55.8" cy="80.9" r="1.59" />
+<circle cx="63.2" cy="80.9" r="1.2" />
+<circle cx="29.9" cy="87.3" r="0.77" />
+<circle cx="37.3" cy="87.3" r="1.03" />
+<circle cx="44.7" cy="87.3" r="1.06" />
+<circle cx="52.1" cy="87.3" r="0.92" />
+</svg>
           </div>
           <h1 id="about-title" class="title">
             ${escapeHtml(input.applicationName)}<br />

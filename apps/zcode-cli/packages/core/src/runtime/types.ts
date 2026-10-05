@@ -158,7 +158,7 @@ export interface AgentRuntimeConfig {
   runtimeFeatures?: {
     /**
      * 是否注册 node_repl 工具（js）。
-     * 由 bootstrap 根据 ZCode 官方插件启停推导，不由普通插件 manifest 自声明。
+     * 由 bootstrap 根据 Kaguya Code 官方插件启停推导，不由普通插件 manifest 自声明。
      */
     nodeRepl?: boolean;
     /**
@@ -206,7 +206,7 @@ export interface AgentRuntimeConfig {
   taskType?: SessionTaskType;
   /**
    * 动态工作流开关：Host 判定后经
-   * ZCode Protocol 下发，runtime 只消费。**缺席即开启**，保留 TUI 默认值；
+   * Kaguya Code Protocol 下发，runtime 只消费。**缺席即开启**，保留 TUI 默认值；
    * headless 按 --enable-workflow 显式传 true/false（默认 false），workflow_child 继承父配置。
    * false 会关闭十个工作流工具，不改变其他工具的注册策略。
    */

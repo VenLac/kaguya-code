@@ -1,4 +1,4 @@
-/* oxlint-disable eslint(max-lines) -- ZCode task 投影类型当前集中在单文件维护，新增 workspace 事件先保持就近声明。 */
+/* oxlint-disable eslint(max-lines) -- Kaguya Code task 投影类型当前集中在单文件维护，新增 workspace 事件先保持就近声明。 */
 // ── 旧协议兼容面（过渡期）──────────────────────────────
 // 剩余 29 个导出：workspace 预热/workspace 事件、turn steer 结果、session binding/import、
 // trace/input/query id 工厂函数、ZCodeError、ZCodeTaskCreateResult 等。
@@ -29,7 +29,7 @@ export function generateTraceId(_taskId: string): TraceId {
   return createUuid();
 }
 
-/** 创建 ZCode session 级观测 traceId；后续 prompt 只继承，不重新生成。 */
+/** 创建 Kaguya Code session 级观测 traceId；后续 prompt 只继承，不重新生成。 */
 export function createSessionTraceId(): TraceId {
   return createUuid();
 }
@@ -64,12 +64,12 @@ export function isOffPeakTask(task: Pick<ZCodeTaskMeta, "offPeakTaskId">): boole
   return Boolean(task.offPeakTaskId);
 }
 
-// ---- ZCode Provider ----
+// ---- Kaguya Code Provider ----
 export type ZCodeTaskTarget = ZCodeTaskGoal;
-// ---- ZCode task 模式 ----
-// ---- ZCode 运行时状态 ----
+// ---- Kaguya Code task 模式 ----
+// ---- Kaguya Code 运行时状态 ----
 
-/** workspace 级 ZCode 初始化状态 */
+/** workspace 级 Kaguya Code 初始化状态 */
 export type ZCodeWorkspaceInitStatus = "idle" | "initializing" | "ready" | "failed";
 
 /** 预热 workspace 时返回的结果 */
@@ -126,8 +126,8 @@ export interface ZCodeImportSessionsResult {
   failed: ZCodeImportedSessionSkippedItem[];
 }
 
-// ---- ZCode 配置与命令类型 ----
-// ---- ZCode 流式事件（Host → Renderer） ----
+// ---- Kaguya Code 配置与命令类型 ----
+// ---- Kaguya Code 流式事件（Host → Renderer） ----
 // ---- 新增流式事件类型 ----
 
 export interface ZCodeEnqueueTaskCommandResult {
@@ -145,7 +145,7 @@ export interface ZCodeCancelTaskCommandResult {
 // ---- Workspace 级别事件（预热阶段、task 创建前的异步通知） ----
 
 /**
- * Workspace 级别事件，用于在 task 创建前把 ZCode Agent 异步推送的
+ * Workspace 级别事件，用于在 task 创建前把 Kaguya Code Agent 异步推送的
  * 通知（如 slash commands、configOptions）实时传递到 UI。
  *
  * 与 ZCodeStreamEvent 的区别：ZCodeStreamEvent 绑定到具体 taskId，

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChartLineIcon, FileIcon, GaugeIcon, SquareKanbanIcon, TableIcon } from "lucide-react";
+import { ChartLineIcon, FileIcon, GaugeIcon, SquareKanbanIcon, TableIcon } from "@zcode/lunar-icons";
 import type { WorkflowRunArtifactKind } from "@zcode/shared/zcode-protocol-v4";
 import { FileDisplayIcon, resolveFileDisplayDescriptor } from "@/lib/fileDisplay.js";
 import type {

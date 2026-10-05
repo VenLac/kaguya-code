@@ -1,4 +1,4 @@
-import { Terminal } from "lucide-react";
+import { Terminal } from "@zcode/lunar-icons";
 import type { UserCommand, ZCodeCommand } from "@zcode/shared";
 import { isPluginCommand, isUserCommand } from "@zcode/shared";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

@@ -96,7 +96,7 @@ function isWebOAuthCallback(params: URLSearchParams): boolean {
 }
 
 function renderWebAuthCallbackPage(): void {
-  document.title = "ZCode - Sign In";
+  document.title = "Kaguya Code - Sign In";
   const callbackState = parseOAuthState(
     new URLSearchParams(window.location.search).get("state") ?? "",
   );
@@ -121,7 +121,7 @@ async function renderConversationSharePage(): Promise<void> {
   document.documentElement.lang = routeLocale;
   // 分享页必须设置 title：否则浏览器标签只显示 index.html 的通用标题。
   // 会话标题要等 preview 加载完，先给一个语言正确的兜底。
-  document.title = routeLocale === "zh-CN" ? "ZCode 会话分享" : "ZCode Conversation Share";
+  document.title = routeLocale === "zh-CN" ? "Kaguya Code 会话分享" : "Kaguya Code Conversation Share";
   const shareCode = resolveConversationShareCodeFromPath(window.location.pathname);
   if (!shareCode) {
     root.render(
@@ -416,7 +416,7 @@ function WebBootstrapErrorScreen({ message }: { message: string }) {
 }
 
 function renderWebBootstrapError(error: unknown): void {
-  document.title = "ZCode - Web";
+  document.title = "Kaguya Code - Web";
   root.render(
     <WebBootstrapErrorScreen message={error instanceof Error ? error.message : String(error)} />,
   );
@@ -447,7 +447,7 @@ async function bootstrapWebApp() {
       onClose: () => {},
     });
     const platform = createWebPlatform();
-    document.title = "ZCode - Web + Server";
+    document.title = "Kaguya Code - Web + Server";
 
     root.render(
       <AppErrorBoundary>

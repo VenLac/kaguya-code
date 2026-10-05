@@ -4,7 +4,7 @@ import {
   TID_V4_SESSION_TITLE,
   TID_V4_SPLIT_CLOSE,
 } from "@zcode/shared";
-import { XIcon } from "lucide-react";
+import { XIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { runUserAction } from "@/lib/userActionTelemetry.js";

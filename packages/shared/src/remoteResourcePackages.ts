@@ -55,7 +55,7 @@ const REQUIRED_REMOTE_RESOURCE_PACKAGE_ID_SET = new Set<RemoteResourcePackageId>
 export function normalizeRemoteResourcePackageSelection(
   _selection?: RemoteResourcePackageSelection | null,
 ): RemoteResourcePackageId[] {
-  // 当前分支只保留一个 ZCode Agent，历史 SSH 资源包选择已经没有业务意义。
+  // 当前分支只保留一个 Kaguya Code Agent，历史 SSH 资源包选择已经没有业务意义。
   // 无论旧配置里保存过什么选择，新版本都统一部署完整 active 资源集，避免重连时沿用过时裁剪。
   return [...ACTIVE_REMOTE_RESOURCE_PACKAGE_IDS];
 }

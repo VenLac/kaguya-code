@@ -10,7 +10,7 @@ import {
   Trash2,
   UploadCloud,
   WandSparkles,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.js";
@@ -367,7 +367,7 @@ export function SkillsSection({
       if (!activeWorkspacePath) {
         return;
       }
-      // 移除三方来源后，技能状态统一写入 ZCode Agent 上下文，避免旧 provider 前缀带来分桶漂移。
+      // 移除三方来源后，技能状态统一写入 Kaguya Code Agent 上下文，避免旧 provider 前缀带来分桶漂移。
       const targetSkill = skills.find((skill) => skill.id === skillId);
       const effectiveProvider: ZCodeProvider = ZCODE_AGENT_PROVIDER;
       try {

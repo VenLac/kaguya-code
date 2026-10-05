@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { Search, X } from "@zcode/lunar-icons";
 import type { ComponentProps } from "react";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";

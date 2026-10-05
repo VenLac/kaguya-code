@@ -9,7 +9,7 @@ import {
   type ZCodeAccountAccess,
   type ZCodeProviderAccountAccess,
 } from "@zcode/shared";
-import { InfoIcon, Loader2Icon } from "lucide-react";
+import { InfoIcon, Loader2Icon } from "@zcode/lunar-icons";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

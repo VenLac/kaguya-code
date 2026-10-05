@@ -1,5 +1,5 @@
 import type { EditorInfo } from "@zcode/shared";
-import { ChevronDownIcon, CopyIcon, ExternalLinkIcon } from "lucide-react";
+import { ChevronDownIcon, CopyIcon, ExternalLinkIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button.js";
 import { toast } from "@/components/ui/toast.js";

@@ -169,7 +169,7 @@ export function TaskActionMenuContent({
         title={taskTargetActionsDisabled ? disabledReason : undefined}
         onSelect={onCopyTaskLogPath}
       >
-        {/* ZCode Agent 的日志路径可能先按运行时约定得出，当前日期文件尚未落盘。
+        {/* Kaguya Code Agent 的日志路径可能先按运行时约定得出，当前日期文件尚未落盘。
             复制动作只依赖路径字符串，不能把 exists=false 当成不可复制，否则菜单会表现成“不能点”。 */}
         {intl.formatMessage({ id: "appHeader.copyLogPath" })}
       </Item>

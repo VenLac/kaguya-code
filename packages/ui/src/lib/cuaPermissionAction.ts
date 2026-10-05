@@ -18,7 +18,7 @@ export function isZCodeCuaToolName(value: string | null | undefined): boolean {
 function didReturnFromCuaPermissionSettings(
   result: CuaAccessibilitySettingsResult | null | undefined,
 ): boolean {
-  // main 只有在整组 staged pane 都完成并观察到 ZCode 应用级返回后才置 true。renderer focus
+  // main 只有在整组 staged pane 都完成并观察到 Kaguya Code 应用级返回后才置 true。renderer focus
   // 可能来自 TCC 原生 prompt、另一窗口或普通切换，不能再作为授权完成信号。
   return (
     result?.success === true &&

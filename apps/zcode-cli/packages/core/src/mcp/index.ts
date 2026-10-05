@@ -331,7 +331,7 @@ function createModelFacingMcpInputSchema(
     ? schema.required.filter((value): value is string => typeof value === "string")
     : [];
 
-  // 原因：title 是 ZCode 给用户看的意图摘要，不属于上游 zcode-cua 参数。只在模型 contract
+  // 原因：title 是 Kaguya Code 给用户看的意图摘要，不属于上游 zcode-cua 参数。只在模型 contract
   // 叠加必填字段，runtime dispatch 再剥离，既让模型稳定生成可读标题，也保持上游严格 schema 兼容。
   return {
     ...schema,

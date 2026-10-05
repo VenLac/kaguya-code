@@ -1,23 +1,28 @@
-# ZCode
+# Kaguya Code
 
 <div align="center">
-  <img src="public/logo/icons/1024x1024.png" alt="ZCode" width="128" height="128" />
+  <img src="public/logo/icons/1024x1024.png" alt="Kaguya Code" width="128" height="128" />
 </div>
-<p align="center">
-  <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=47ag983c-8fcb-4d6d-814b-5395193a712c&amp;qr_code=true">飞书社群</a> ·
-  <a href="https://discord.gg/z9aBcQXZQ3">Discord</a>
-</p>
 <p align="center">
   简体中文 | <a href="README.en.md">English</a>
 </p>
 
+Kaguya Code 是 AI 编程工作台，提供桌面应用、浏览器界面和终端 Agent。本仓库包含客户端、后端服务、共享 UI，以及 Agent CLI 与运行时源码。
 
-
-ZCode 是 AI 编程工作台，提供桌面应用、浏览器界面和终端 Agent。本仓库包含客户端、后端服务、共享 UI，以及 Agent CLI 与运行时源码。
+> 本项目是 [zai-org/ZCode](https://github.com/zai-org/ZCode) v3.14.3 的非官方分叉，沿用 Apache-2.0 许可（见 [LICENSE](LICENSE)、[NOTICE.md](NOTICE.md)、[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)），与上游团队无隶属关系。
+>
+> 与上游的主要差异：
+>
+> - 改名为 Kaguya Code，重绘应用图标（字符点阵月亮）与界面风格（冷白、圆润、动效）。
+> - 移除智谱平台登录。
+> - 新增 ChatGPT（Codex 账号 OAuth）渠道，可使用 GPT 模型。
+> - 左下角头像和昵称可自定义，默认头像是旋转的月亮。
+>
+> 内部包名（`@zcode/*`）、数据目录 `~/.zcode`、`zcode://` 协议和 `ZCODE_*` 环境变量沿用上游，未改动。应用仍会访问上游的遥测、配置与 CDN 端点。
 
 ## 更新
 
-- 2026-9-23：更新至 ZCode v3.14.3 版本。
+- 2026-10-05：改名为 Kaguya Code，新增 Codex 渠道，更换图标。
 
 ## 初始化
 

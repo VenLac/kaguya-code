@@ -1,4 +1,4 @@
-import { CircleStopIcon } from "lucide-react";
+import { CircleStopIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";

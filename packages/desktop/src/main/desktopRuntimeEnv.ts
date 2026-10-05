@@ -55,12 +55,12 @@ function isTruthyRuntimeEnvOverride(name: string): boolean {
   return value === "1" || value === "true" || value === "yes" || value === "on";
 }
 
-// e2e 运行的是生产构建，默认会和本机正式版 ZCode 共用 app name / userData，
+// e2e 运行的是生产构建，默认会和本机正式版 Kaguya Code 共用 app name / userData，
 // 触发 Electron 单实例锁后只激活已有窗口，Chromedriver 无法接管测试进程。
 // 这里允许测试显式隔离运行时身份，正常桌面/远控路径保持原来的默认值。
 export const runtimeApplicationName =
   readRuntimeEnvOverride("ZCODE_DESKTOP_APPLICATION_NAME") ??
-  (isLocalDevelopmentRuntime ? "ZCode Dev" : isPreviewPackagedRuntime ? "ZCode Preview" : "ZCode");
+  (isLocalDevelopmentRuntime ? "Kaguya Code Dev" : "Kaguya Code");
 // Electron 的 app.getPath("home") 不一定跟随测试进程里的 HOME 覆盖。
 // e2e 默认工作区依赖 home 路径，因此提供显式覆盖，避免测试写到开发者真实 ~/ZCodeProject。
 export const runtimeHomePath = readRuntimeEnvOverride("ZCODE_DESKTOP_HOME_DIR");
@@ -403,7 +403,7 @@ function resolveHostProcessBinaryEnv(
   hostProcessLocalEnv: Record<string, string>,
   bundledPath: string | undefined,
 ): string | undefined {
-  // ZCode Agent 与 app 协议适配强绑定版本，生产包必须优先使用随包携带的固定 runtime。
+  // Kaguya Code Agent 与 app 协议适配强绑定版本，生产包必须优先使用随包携带的固定 runtime。
   // 用户机器或本地 .env 里残留的 GLM_BINARY_PATH 即使存在，也可能版本不兼容。
   // 只有 bundled runtime 缺失时才把显式路径作为兜底，避免用户本机 CLI 覆盖内嵌版本。
   if (bundledPath) {
@@ -539,11 +539,11 @@ export function buildHostProcessEnv(hostProcessLocalEnv: Record<string, string>)
     // OTLP 凭据只定向传到 host；host 初始化 services 时会立即捕获并从 process.env 清除，
     // 后续只在启动 Agent 时短暂注入，不会进入 Bash/MCP/tool env。
     ...agentTelemetryEnv,
-    // ZCode 运行时不再使用 NODE_ENV；它会被用户 shell、包管理器和测试框架复用。
+    // Kaguya Code 运行时不再使用 NODE_ENV；它会被用户 shell、包管理器和测试框架复用。
     // 这里显式下发 ZCODE_RUNTIME_ENV，并在继承环境里清掉 NODE_ENV，避免 host/agent/Bash 被污染。
     [ZCODE_RUNTIME_ENV_KEY]: resolveHostProcessNodeEnv(),
     // 显式注入编译期产品身份，保证主进程与 host 的身份语义一致；地址独立解析。
-    // inheritedEnv 从 .env 通用变量补齐 ZCode/ZAI 链接，未覆盖时统一使用线上默认值。
+    // inheritedEnv 从 .env 通用变量补齐 Kaguya Code/ZAI 链接，未覆盖时统一使用线上默认值。
     ZCODE_ENV,
     // Preview 与生产版共享任务、配置和凭据，但不同版本的 Helper 不能互相覆盖或触发降级保护。
     // 只隔离 computer-use 下的运行组件，不改写 ZCODE_HOME / ZCODE_DATA_BASE_DIR 业务数据根。

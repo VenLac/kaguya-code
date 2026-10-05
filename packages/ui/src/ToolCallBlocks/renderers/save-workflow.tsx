@@ -1,4 +1,4 @@
-import { Save } from "lucide-react";
+import { Save } from "@zcode/lunar-icons";
 import { useMemo } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";

@@ -17,7 +17,7 @@ import {
 } from "@/git-branch-switcher/switchAssist.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { FileDisplayInline } from "@/lib/fileDisplay.js";
-import { AlertCircleIcon, GitBranchIcon, LoaderIcon } from "lucide-react";
+import { AlertCircleIcon, GitBranchIcon, LoaderIcon } from "@zcode/lunar-icons";
 
 interface GitBranchCreateDialogProps {
   open: boolean;

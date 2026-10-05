@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw } from "@zcode/lunar-icons";
 import {
   SHORTCUT_COMMANDS,
   getDefaultShortcutBindings,

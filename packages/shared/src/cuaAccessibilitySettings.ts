@@ -13,7 +13,7 @@ export interface CuaAccessibilitySettingsResult {
   canceled?: boolean;
   /** main 级 onboarding 会话 id；同一 Helper identity 的并发窗口共享同一 id。 */
   sessionId?: string;
-  /** 只有所有 staged 设置页都观察到任意 ZCode 窗口返回后才为 true。 */
+  /** 只有所有 staged 设置页都观察到任意 Kaguya Code 窗口返回后才为 true。 */
   returnedFromSettings?: boolean;
   /**
    * 同一 main onboarding 会话可能被多个窗口加入。每个独立 renderer/host 只有一个调用拿到 true，负责

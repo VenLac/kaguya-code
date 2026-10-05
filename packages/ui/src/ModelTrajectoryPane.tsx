@@ -6,7 +6,7 @@ import {
   RefreshCwIcon,
   SearchIcon,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { toast } from "@/components/ui/toast.js";
 import { cn } from "@/components/lib/utils.js";

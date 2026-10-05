@@ -1,4 +1,4 @@
-import { NotepadText } from "lucide-react";
+import { NotepadText } from "@zcode/lunar-icons";
 import { useCallback } from "react";
 import { MessageResponse } from "@/components/ai-elements/message.js";
 import { ToolOutput } from "@/components/ai-elements/tool.js";

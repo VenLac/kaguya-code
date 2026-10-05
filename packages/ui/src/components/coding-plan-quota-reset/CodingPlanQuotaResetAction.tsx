@@ -1,4 +1,4 @@
-import { CheckIcon, Loader2 } from "lucide-react";
+import { CheckIcon, Loader2 } from "@zcode/lunar-icons";
 import { useEffect, useRef, useState } from "react";
 import type { CodingPlanResetType } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";

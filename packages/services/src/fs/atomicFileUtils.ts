@@ -117,7 +117,7 @@ export async function atomicWriteText(
   await mkdir(dir, { recursive: true });
   // Windows 上多个窗口/host process 可能同时保存同一个 task JSON，
   // 进程内 writeChains 无法覆盖这种抢写，最终在 rename 替换目标文件时高频 EPERM。
-  // 这里用同目录 lock 文件做 ZCode 进程间协作串行化，再保留 rename 重试处理杀软/索引器的短暂占用。
+  // 这里用同目录 lock 文件做 Kaguya Code 进程间协作串行化，再保留 rename 重试处理杀软/索引器的短暂占用。
   const releaseLock =
     options?.useFileLock === false
       ? null

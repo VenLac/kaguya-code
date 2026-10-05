@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ArrowUpIcon, SearchIcon, XIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, SearchIcon, XIcon } from "@zcode/lunar-icons";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button.js";
 import type { IntlShape } from "@/ModelTrajectoryPaneParts.js";

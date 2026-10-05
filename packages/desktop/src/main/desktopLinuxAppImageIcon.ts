@@ -10,7 +10,7 @@ import {
 // 从 desktopLinuxDeepLinkRegistration 拆出的 AppImage 用户级图标安装逻辑：
 // 图标集成是可选的桌面增强，与 deep link 协议注册分属不同关注点，独立成模块便于各自演进。
 
-const LINUX_APP_ICON_NAME = "zcode";
+const LINUX_APP_ICON_NAME = "kaguya-code";
 const LINUX_APP_ICON_SIZE = "512x512";
 
 function resolveLinuxUserIconFilePath(dataDir: string): string {
@@ -57,7 +57,7 @@ function installLinuxAppImageDesktopIcon(params: {
 
   mkdirSync(dirname(iconFilePath), { recursive: true });
   const changed = copyFileIfChanged(params.iconSourcePath, iconFilePath);
-  // AppImage 直跑不会像 deb 安装包一样把 Icon=zcode 写入 hicolor 图标主题。
+  // AppImage 直跑不会像 deb 安装包一样把 Icon=kaguya-code 写入 hicolor 图标主题。
   // 这里在用户级 hicolor 目录补齐同名图标，让任务栏/Dock 有机会按 desktop entry 命中真实图标。
   if (!changed) {
     return { iconFilePath, installed: true, changed };

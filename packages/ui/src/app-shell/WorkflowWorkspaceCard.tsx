@@ -23,7 +23,7 @@ import {
   SearchIcon,
   SquareTerminalIcon,
   TerminalIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { WorkflowRunState } from "@zcode/shared/zcode-protocol-v4";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

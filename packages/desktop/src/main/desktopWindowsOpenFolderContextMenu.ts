@@ -6,8 +6,8 @@ const MENU_KEY_NAME = "ZCode.OpenInZCode";
 const DIRECTORY_MENU_KEY = `HKCU\\Software\\Classes\\Directory\\shell\\${MENU_KEY_NAME}`;
 const DRIVE_MENU_KEY = `HKCU\\Software\\Classes\\Drive\\shell\\${MENU_KEY_NAME}`;
 const MENU_LABELS: Record<Locale, string> = {
-  "zh-CN": "在ZCode中打开",
-  "en-US": "Open in ZCode",
+  "zh-CN": "在Kaguya Code中打开",
+  "en-US": "Open in Kaguya Code",
 };
 
 type Logger = {

@@ -1,4 +1,4 @@
-/* oxlint-disable eslint(max-lines) -- 已发布旧 ZCode config.json 的多版 Provider 结构读取集中在同一边界。 */
+/* oxlint-disable eslint(max-lines) -- 已发布旧 Kaguya Code config.json 的多版 Provider 结构读取集中在同一边界。 */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
@@ -925,7 +925,7 @@ function applyProviderStoreMigrations(providers: ModelProviderConfig[]): ModelPr
   );
 
   // 迁移边界只规范化旧文件里真实存在的值。模型 Properties、Option Specs 与
-  // reasoning mapping 由 ZCode Built-in/Personal ModelConfigRules 在 Registry 中解析；
+  // reasoning mapping 由 Kaguya Code Built-in/Personal ModelConfigRules 在 Registry 中解析；
   // 旧 Store 不能再按 Model ID 从另一份 Catalog 补值并把补值持久化回用户文件。
   return next.map(normalizeProviderForStore);
 }

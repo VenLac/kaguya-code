@@ -25,7 +25,7 @@ import {
   MessageCircle,
   SearchIcon,
   X,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { useRemoteConnectionEntryVisibility } from "@/hooks/useRemoteConnectionEntryVisibility.js";
 import { cn } from "@/components/lib/utils.js";

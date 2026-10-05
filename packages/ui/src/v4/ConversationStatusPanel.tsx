@@ -34,7 +34,7 @@ import {
   SquareIcon,
   SquareTerminalIcon,
   Workflow,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import {
   TID_CHAT_SUMMARY_PANEL,
   TID_V4_BACKGROUND_WORK_CANCEL,

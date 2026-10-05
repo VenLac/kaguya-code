@@ -11,7 +11,7 @@ import {
   type ReactNode,
   type SVGProps,
 } from "react";
-import { CircleCheck, Loader2, TriangleAlert } from "lucide-react";
+import { CircleCheck, Loader2, TriangleAlert } from "@zcode/lunar-icons";
 import {
   TID_OFFPEAK_ACTION_CONTINUE,
   TID_OFFPEAK_ACTION_DELETE,

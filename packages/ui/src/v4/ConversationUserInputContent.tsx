@@ -7,7 +7,7 @@ import {
   ScrollText,
   SquareSlash,
   WandSparkles,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { FileDisplayInline } from "@/lib/fileDisplay.js";
 import { isTrustedPluginIconSource } from "@/lib/pluginIconSource.js";

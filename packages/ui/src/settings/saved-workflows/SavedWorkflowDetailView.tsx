@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { Copy } from "lucide-react";
+import { Copy } from "@zcode/lunar-icons";
 import {
   TID_WORKFLOW_DETAIL,
   TID_WORKFLOW_DETAIL_SCRIPT,

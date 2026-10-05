@@ -27,7 +27,7 @@ const logger = createServiceLogger("model-trajectory");
  * 设计说明：
  * - model-io 由 adapters/model/runner-debug.ts 落盘；一个 session 一个
  *   `model-io-<sanitizedSessionId>.jsonl`。
- * - ZCode Agent 把 taskId 当作 sessionId（见 zcodeTaskServiceAdapter），所以这里只读取
+ * - Kaguya Code Agent 把 taskId 当作 sessionId（见 zcodeTaskServiceAdapter），所以这里只读取
  *   该 session 的单文件，并按 `record.sessionId === taskId` 精确匹配。
  */
 export async function readModelTrajectory(

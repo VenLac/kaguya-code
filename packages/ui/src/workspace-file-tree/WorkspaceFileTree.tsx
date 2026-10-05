@@ -17,7 +17,7 @@ import {
   RefreshCw,
   Search,
   X,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";

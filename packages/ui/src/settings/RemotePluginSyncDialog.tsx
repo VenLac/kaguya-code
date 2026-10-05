@@ -8,7 +8,7 @@ import {
   Loader2,
   Cable,
   UploadCloud,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type {
   PluginSyncCandidate,
   PluginSyncImportResult,

@@ -19,7 +19,7 @@ import {
   WaypointsIcon,
   Workflow as WorkflowIcon,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import {
   ContextMenu,

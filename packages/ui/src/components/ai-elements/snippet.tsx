@@ -1,7 +1,7 @@
 /*
  * Derived from vercel/ai-elements (packages/elements/src/snippet.tsx).
  * Copyright 2023 Vercel, Inc. Licensed under Apache-2.0.
- * Modified by ZCode: local integration, formatting and adaptations.
+ * Modified by Kaguya Code: local integration, formatting and adaptations.
  * See THIRD-PARTY-NOTICES.md in the repository root for license and provenance.
  */
 "use client";
@@ -14,7 +14,7 @@ import {
   InputGroupText,
 } from "../ui/input-group.js";
 import { cn } from "../lib/utils.js";
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { CheckIcon, CopyIcon } from "@zcode/lunar-icons";
 import type { ComponentProps } from "react";
 import {
   createContext,

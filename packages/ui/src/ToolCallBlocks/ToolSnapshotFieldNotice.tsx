@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "@zcode/lunar-icons";
 import type { ZCodeTaskSnapshotToolFieldRef } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

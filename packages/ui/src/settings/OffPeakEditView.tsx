@@ -5,7 +5,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ModelSelectionView } from "@zcode/services";
 import { completeNewModelSelection } from "@zcode/provider";
-import { FolderOpen } from "lucide-react";
+import { FolderOpen } from "@zcode/lunar-icons";
 import {
   TID_OFFPEAK_EDIT_SUBMIT,
   TID_OFFPEAK_EDIT_VIEW,

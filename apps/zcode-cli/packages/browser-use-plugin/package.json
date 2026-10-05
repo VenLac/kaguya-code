@@ -3,7 +3,7 @@
   "name": "@zcode/browser-use-plugin",
   "version": "0.5.1",
   "private": true,
-  "description": "作为官方 ZCode 内置插件发布的 Browser Use skill 与 client runtime；node_repl MCP server 由 @zcode/node-repl-host 提供。",
+  "description": "作为官方 Kaguya Code 内置插件发布的 Browser Use skill 与 client runtime；node_repl MCP server 由 @zcode/node-repl-host 提供。",
   "license": "Apache-2.0",
   "type": "module",
   "main": "./dist/mcp/server.js",

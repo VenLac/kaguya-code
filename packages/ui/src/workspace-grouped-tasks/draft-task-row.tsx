@@ -1,5 +1,5 @@
 import type { KeyboardEvent, MouseEvent } from "react";
-import { X } from "lucide-react";
+import { X } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { TaskRowActionButton } from "@/workspace-grouped-tasks/task-row-action-button.js";

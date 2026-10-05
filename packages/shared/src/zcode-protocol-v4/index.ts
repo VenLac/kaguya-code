@@ -1,4 +1,4 @@
-// ZCode Protocol v4 —— 数据模型草稿。
+// Kaguya Code Protocol v4 —— 数据模型草稿。
 //
 // 本包纪律：只放 schema 类型 + 纯函数
 // （coalesce/conflation/apply），运行时（通道层缓冲、订阅注册表、调度）一律不进本包。

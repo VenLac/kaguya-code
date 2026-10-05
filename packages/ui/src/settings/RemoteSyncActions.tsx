@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type MouseEvent } from "react";
-import { ChevronDown, UploadCloud } from "lucide-react";
+import { ChevronDown, UploadCloud } from "@zcode/lunar-icons";
 import type { RemoteTarget } from "@zcode/shared";
 import type {
   IMcpSyncService,

@@ -14,7 +14,7 @@ import {
   CopyIcon,
   DownloadIcon,
   Maximize2Icon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 import {

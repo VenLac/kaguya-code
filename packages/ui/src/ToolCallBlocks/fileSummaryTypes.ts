@@ -88,7 +88,7 @@ export function readRawToolCallInput(raw: unknown): unknown {
     return raw.rawInput;
   }
 
-  // ZCode protocol 的 permission/request payload 按 schema 把工具参数放在 input，
+  // Kaguya Code protocol 的 permission/request payload 按 schema 把工具参数放在 input，
   // 旧 UI 只读兼容输入字段 rawInput，Write/Edit 会退化成整段 JSON 展示而不是文件 diff。
   return "input" in raw ? raw.input : null;
 }

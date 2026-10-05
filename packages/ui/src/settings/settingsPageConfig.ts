@@ -18,7 +18,7 @@ import {
   WandSparkles,
   Keyboard,
   FileSearch,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { isSettingsSectionEnabled, type SettingsSectionId } from "@/lib/settingsNavigation.js";
 import type { Theme } from "@/useTheme.js";
 

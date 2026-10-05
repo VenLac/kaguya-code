@@ -3,7 +3,7 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } f
 import type { ZCodeProvider } from "@zcode/shared";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { createPortal } from "react-dom";
-import { PaletteIcon, WandSparkles } from "lucide-react";
+import { PaletteIcon, WandSparkles } from "@zcode/lunar-icons";
 import {
   $createTextNode,
   $getSelection,

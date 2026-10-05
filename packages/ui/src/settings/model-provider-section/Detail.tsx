@@ -17,7 +17,7 @@ import {
   getProviderFormApiKeyManagementUrl,
   type ProviderSettingsFormProvider,
 } from "@/lib/providerSettingsFormTypes.js";
-import { ArrowRightIcon, AstroidIcon, UsersIcon } from "lucide-react";
+import { ArrowRightIcon, AstroidIcon, UsersIcon } from "@zcode/lunar-icons";
 import { useEffect, useMemo, useState } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import {
@@ -668,17 +668,6 @@ export function ModelProviderSectionDetail({
               ? onRetryCodingPlan
               : undefined)
           }
-          onLogin={(options) => {
-            return onCodingPlanLogin(
-              selectedNavItem.presetId,
-              selectedNavItem.oauthProviderId,
-              selectedNavItem.providerName,
-              // 查看套餐接口要求业务 OAuth 仍有效；已购买状态下的“重新链接”不能只静默刷新 key，
-              // 否则 OAuth 过期时点击没有可见反馈。升级态的重连强制走重新登录路径。
-              upgradePlansVisible ? "unavailable" : selectedNavItem.status,
-              options,
-            );
-          }}
           onOpenUpgradePlans={(options) => {
             openCodingPlanUpgrade({
               providerId: selectedNavItem.presetId,
@@ -759,15 +748,6 @@ export function ModelProviderSectionDetail({
             mcpQuotaLimit={selectedNavItem.mcpQuotaLimit ?? null}
             authError={codingPlanAuthError}
             onOpenRegistration={onOpenBigModelRegistration}
-            onLogin={(options) => {
-              return onCodingPlanLogin(
-                selectedNavItem.presetId,
-                selectedNavItem.oauthProviderId,
-                selectedNavItem.providerName,
-                selectedNavItem.status,
-                options,
-              );
-            }}
             reloginOnFailure={!upgradePlansVisible && reloginOnFailure}
             onRetry={
               retryTeamPlan ??

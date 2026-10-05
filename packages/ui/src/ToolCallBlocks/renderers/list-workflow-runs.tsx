@@ -1,4 +1,4 @@
-import { History } from "lucide-react";
+import { History } from "@zcode/lunar-icons";
 import { useMemo } from "react";
 import type { ToolCallListWorkflowRunsDisplay } from "@zcode/shared/zcode-protocol-v4";
 import {

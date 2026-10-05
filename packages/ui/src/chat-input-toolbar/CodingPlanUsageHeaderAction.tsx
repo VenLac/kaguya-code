@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronRightIcon, InfoIcon, Loader2 } from "lucide-react";
+import { CheckIcon, ChevronRightIcon, InfoIcon, Loader2 } from "@zcode/lunar-icons";
 import { useEffect, useRef, useState } from "react";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { TooltipProvider } from "@/components/ui/tooltip.js";

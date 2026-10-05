@@ -1,7 +1,7 @@
 /*
  * Derived from vercel/ai-elements (packages/elements/src/agent.tsx).
  * Copyright 2023 Vercel, Inc. Licensed under Apache-2.0.
- * Modified by ZCode: local integration, formatting and adaptations.
+ * Modified by Kaguya Code: local integration, formatting and adaptations.
  * See THIRD-PARTY-NOTICES.md in the repository root for license and provenance.
  */
 "use client";
@@ -10,7 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { Badge } from "../ui/badge.js";
 import { cn } from "../lib/utils.js";
 import type { Tool } from "ai";
-import { BotIcon } from "lucide-react";
+import { BotIcon } from "@zcode/lunar-icons";
 import type { ComponentProps } from "react";
 import { memo } from "react";
 

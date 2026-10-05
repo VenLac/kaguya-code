@@ -327,7 +327,7 @@ function buildLastTurnDataset(options: {
     id: "last-turn",
     readonly: true,
     turnIndex: options.turnIndex,
-    // 关键业务逻辑：上一轮更改继续优先复用 ZCode Agent 已持久化的单轮文件快照，
+    // 关键业务逻辑：上一轮更改继续优先复用 Kaguya Code Agent 已持久化的单轮文件快照，
     // 这样 Git pane 接入真实仓库数据后，agent 视角的只读审阅链路仍然保持独立稳定。
     sections: options.summary
       ? [

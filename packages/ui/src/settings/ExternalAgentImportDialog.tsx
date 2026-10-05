@@ -9,7 +9,7 @@ import {
   MinusIcon,
   RefreshCw,
   XIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type {
   SettingsSyncAgentSummary,
   SettingsSyncCategory,

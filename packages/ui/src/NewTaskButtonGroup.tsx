@@ -1,4 +1,4 @@
-import { MessageCirclePlus } from "lucide-react";
+import { MessageCirclePlus } from "@zcode/lunar-icons";
 import { TID_TASK_NEW_BUTTON } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

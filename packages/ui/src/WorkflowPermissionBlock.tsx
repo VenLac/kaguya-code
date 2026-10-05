@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "@zcode/lunar-icons";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import type { ZCodePermissionRequest } from "@zcode/shared";
 import { CodeBlock } from "@/components/ai-elements/code-block.js";

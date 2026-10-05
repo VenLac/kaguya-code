@@ -1,4 +1,4 @@
-import { CircleIcon } from "lucide-react";
+import { CircleIcon } from "@zcode/lunar-icons";
 import type { ProviderSettingsFormProvider } from "@/lib/providerSettingsFormTypes.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 

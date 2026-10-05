@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
-import { Clock3, Trash2 } from "lucide-react";
+import { Clock3, Trash2 } from "@zcode/lunar-icons";
 import type {
   BotConfig,
   BotReplyGranularity,

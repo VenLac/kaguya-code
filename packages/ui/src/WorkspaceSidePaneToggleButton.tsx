@@ -1,5 +1,5 @@
 import { TID_SIDE_PANE_TOGGLE } from "@zcode/shared";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { PanelRightClose, PanelRightOpen } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

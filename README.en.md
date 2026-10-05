@@ -1,21 +1,28 @@
-# ZCode
+# Kaguya Code
 
 <div align="center">
-  <img src="public/logo/icons/1024x1024.png" alt="ZCode" width="128" height="128" />
+  <img src="public/logo/icons/1024x1024.png" alt="Kaguya Code" width="128" height="128" />
 </div>
-<p align="center">
-  <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=47ag983c-8fcb-4d6d-814b-5395193a712c&amp;qr_code=true">Feishu community</a> ·
-  <a href="https://discord.gg/z9aBcQXZQ3">Discord</a>
-</p>
 <p align="center">
   <a href="README.md">简体中文</a> | English
 </p>
 
-ZCode is an AI coding workspace with desktop, browser, and terminal interfaces. This repository contains the clients, backend services, shared UI, and Agent CLI and runtime source code.
+Kaguya Code is an AI coding workspace with desktop, browser, and terminal interfaces. This repository contains the clients, backend services, shared UI, and Agent CLI and runtime source code.
+
+> This is an unofficial fork of [zai-org/ZCode](https://github.com/zai-org/ZCode) v3.14.3, kept under the Apache-2.0 license (see [LICENSE](LICENSE), [NOTICE.md](NOTICE.md), [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)). It is not affiliated with the upstream team.
+>
+> Main differences from upstream:
+>
+> - Renamed to Kaguya Code, with a new app icon (a dot-matrix "character moon") and a restyled UI (cold white, rounded, animated).
+> - Zhipu platform login removed.
+> - New ChatGPT (Codex account OAuth) channel for GPT models.
+> - Editable avatar and display name in the sidebar; the default avatar is a rotating moon.
+>
+> Internal package names (`@zcode/*`), the `~/.zcode` data directory, the `zcode://` protocol and `ZCODE_*` environment variables are kept from upstream. The app still contacts upstream telemetry, config and CDN endpoints.
 
 ## Updates
 
-- 2026-9-23: Updated to ZCode v3.14.3.
+- 2026-10-05: Renamed to Kaguya Code, added the Codex channel, new icon.
 
 ## Setup
 

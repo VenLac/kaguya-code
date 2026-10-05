@@ -226,7 +226,7 @@ export function resolveToolCallIdentity(toolCall: ToolIdentityLike): ToolCallIde
     );
   }
 
-  // `Task` 现在是现役 Claude 兼容工具名，但历史 ZCode Agent 投影会用
+  // `Task` 现在是现役 Claude 兼容工具名，但历史 Kaguya Code Agent 投影会用
   // kind="think" + title="Task" 表示子 agent 活动。title 只是展示名，必须放在
   // legacy payload 判断之后，避免把旧会话误升级成非 legacy 工具身份。
   const titleIdentity = identityFromKnownToolName(toolCall.title, "title");
@@ -276,7 +276,7 @@ export function resolveToolCallIdentity(toolCall: ToolIdentityLike): ToolCallIde
   }
 
   if (
-    // 当前 ZCode Agent 传给 app 的 plan mode 退出工具是 ExitPlanMode，
+    // 当前 Kaguya Code Agent 传给 app 的 plan mode 退出工具是 ExitPlanMode，
     // normalize 后没有下划线；旧兼容只认 switch_mode / Exited Plan Mode，导致计划卡片走 fallback。
     [
       toolCall.toolName,

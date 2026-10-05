@@ -27,6 +27,7 @@ import { useModelProviders } from "@/hooks/useModelProviders.js";
 import { resolveEntitledAccountProviderAccess } from "@/lib/accountProviderAccess.js";
 import { usePlatform } from "@/hooks/usePlatform.js";
 import { useServices } from "@/hooks/useServices.js";
+import { CodexAuthCard } from "@/settings/CodexAuthCard.js";
 import { useZCodeStore } from "@/store/StoreProvider.js";
 import { logger } from "@/logger.js";
 import {
@@ -383,7 +384,6 @@ export function ModelProviderSection({
   const codingPlanStatusSyncAttemptsRef = useRef(
     new Map<string, "inFlight" | "succeeded" | "failed">(),
   );
-  const requestLoginEntry = useZCodeStore((state) => state.requestLoginEntry);
   const setUser = useZCodeStore((state) => state.setUser);
   const oauthError = useZCodeStore((state) => state.oauthError);
   const setOAuthError = useZCodeStore((state) => state.setOAuthError);
@@ -808,10 +808,14 @@ export function ModelProviderSection({
         });
         return;
       }
-      // ZAI/BigModel provider 不再有独立 connection，Connect 必须切换 App active provider。
-      return requestLoginEntry(providerId);
+      // 登录功能已移除：账号式 Coding Plan 不能再通过登录页连接，这里只复位“连接中”状态，
+      // 模型请改用 API Key 方式在本页配置。
+      logger.warn("[ModelProviderSection] 登录功能已移除，忽略账号式连接请求", { presetId, providerId });
+      setPresetSubscriptionProviderId((current) => (current === presetId ? null : current));
+      setCodingPlanStatusSyncProviderId((current) => (current === presetId ? null : current));
+      return undefined;
     },
-    [activeOAuthProvider, refreshProviderPanelAfterAuthChange, requestLoginEntry],
+    [activeOAuthProvider, refreshProviderPanelAfterAuthChange],
   );
 
   const handleCodingPlanDisconnect = useCallback(
@@ -1095,6 +1099,8 @@ export function ModelProviderSection({
             return handleCreateProvider({ providerName: label });
           }}
         />
+      ) : selectedNavItem?.type === "codex" ? (
+        <CodexAuthCard />
       ) : (
         <ModelProviderSectionDetail
           connectionSelections={effectiveConnectionSelections}

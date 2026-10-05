@@ -24,7 +24,7 @@ export interface LocalTarGzEntry {
 }
 
 // Windows 客户端不一定能 spawn System32\tar.exe，远端资源本地缓存不能依赖系统 tar。
-// 这里仅支持 ZCode remote assets 使用的普通文件/目录子集，避免扩大归档格式的行为面。
+// 这里仅支持 Kaguya Code remote assets 使用的普通文件/目录子集，避免扩大归档格式的行为面。
 export async function extractTarGzArchive(archivePath: string, targetDir: string): Promise<void> {
   const targetRoot = resolve(targetDir);
   await mkdir(targetRoot, { recursive: true });

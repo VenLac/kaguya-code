@@ -38,7 +38,7 @@ interface UsageStatsServiceDependencies {
   ) => Promise<UsageApiAuthorization | null>;
   credentialService?: Pick<ICredentialService, "load">;
   env?: NodeJS.ProcessEnv;
-  /** App Usage 经 ZCode Protocol 读取 agent 数据库真实统计。 */
+  /** App Usage 经 Kaguya Code Protocol 读取 agent 数据库真实统计。 */
   zcodeAgentService: Pick<IZCodeAgentService, "getAppUsageStats">;
   /**
    * 官方 Server MCP 额度的凭证来源（与 server MCP 调用同一套 5 个身份头）。
@@ -68,7 +68,7 @@ export function createUsageStatsService(
   return {
     async getAppUsageSnapshot(request: AppUsageRequest): Promise<AppUsageSnapshot> {
       // App Usage 现读取 agent 数据库真实统计（model_usage/turn_usage/tool_usage），
-      // 经 ZCode Protocol usage/stats 取回。不再读本地 session JSON 估算。
+      // 经 Kaguya Code Protocol usage/stats 取回。不再读本地 session JSON 估算。
       return dependencies.zcodeAgentService.getAppUsageStats({
         range: request.range,
         timeZone: request.timeZone,

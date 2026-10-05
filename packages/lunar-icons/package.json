@@ -1,0 +1,25 @@
+{
+  "name": "@zcode/lunar-icons",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "月字 Lunar Glyph 手绘图标集：与 lucide-react 同名同接口的即插即用替代，24px 网格、圆头描边、柔填充双色调。",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "scripts": {
+    "gen": "node tools/gen.mjs",
+    "sheet": "node tools/sheet.mjs dsl/icons.txt dsl/preview.html 12",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint"
+  },
+  "peerDependencies": {
+    "lucide-react": "^1.17.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^6.0.2"
+  }
+}

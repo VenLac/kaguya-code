@@ -1,4 +1,4 @@
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "@zcode/lunar-icons";
 import { useCallback, useEffect, useRef, useState, type ReactElement } from "react";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import type { RemoteConnectionLogEntry } from "@/hooks/useRemoteConnectionLogs.js";

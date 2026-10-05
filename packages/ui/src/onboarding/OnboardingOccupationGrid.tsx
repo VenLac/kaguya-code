@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import {
   occupations,

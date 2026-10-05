@@ -523,7 +523,7 @@ export function createCommandsService(_options?: CommandsServiceOptions): IComma
     const agentSources = getCommandAgentSources(params.agentSource);
     const enabledOverrides = await readCommandEnabledOverridesFromUserConfig();
 
-    // ZCode Agent 需要先合并所有 workspace 目录，再合并所有 user 目录；
+    // Kaguya Code Agent 需要先合并所有 workspace 目录，再合并所有 user 目录；
     // 按每个目录交错读取 project/user 会让 user .zcode 抢在 workspace .agents 前面。
     for (const agentSource of agentSources) {
       const descriptors =

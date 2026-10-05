@@ -29,7 +29,7 @@ export async function isCurrentOAuthCredentialRequest(options: {
   const currentJwt = (await options.credentialService.load("zcodejwttoken"))?.trim() ?? "";
   if (currentJwt && authorization === `Bearer ${currentJwt}`) return true;
 
-  // 原观察器只识别 ZCode JWT，业务 access token 的 userinfo 401
+  // 原观察器只识别 Kaguya Code JWT，业务 access token 的 userinfo 401
   // 只会变成普通请求错误。仅扩展用户/团队身份查询，避免支付和 API key 接口跟随全局退出。
   const provider = await options.credentialService.load("oauth:active_provider");
   if (provider !== BIGMODEL_PROVIDER_ID && provider !== ZAI_PROVIDER_ID) return false;

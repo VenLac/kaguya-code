@@ -154,7 +154,7 @@ async function runServe(
         else
           stdout(
             io,
-            `ZCode Server ${existing.state} at ${existing.host ?? ""}:${existing.port ?? ""}`,
+            `Kaguya Code Server ${existing.state} at ${existing.host ?? ""}:${existing.port ?? ""}`,
           );
         return 0;
       }
@@ -225,14 +225,14 @@ async function runServe(
       () => {
         if (childEarlyExit) {
           throw new Error(
-            `ZCode Server daemon exited before ready (code=${childEarlyExit.code ?? "null"} signal=${childEarlyExit.signal ?? "none"}); check ${layout.statusFile} for details`,
+            `Kaguya Code Server daemon exited before ready (code=${childEarlyExit.code ?? "null"} signal=${childEarlyExit.signal ?? "none"}); check ${layout.statusFile} for details`,
           );
         }
       },
       serviceStarted,
     );
     if (json) stdout(io, started);
-    else stdout(io, `ZCode Server ${started.state} at ${started.host ?? ""}:${started.port ?? ""}`);
+    else stdout(io, `Kaguya Code Server ${started.state} at ${started.host ?? ""}:${started.port ?? ""}`);
     process.stdin.pause();
     process.stdin.destroy();
     return 0;
@@ -292,7 +292,7 @@ async function runServe(
     throw error;
   }
   if (json) stdout(io, status);
-  else stdout(io, `ZCode Server ${status.state} at ${status.host ?? ""}:${status.port ?? ""}`);
+  else stdout(io, `Kaguya Code Server ${status.state} at ${status.host ?? ""}:${status.port ?? ""}`);
   await new Promise<void>((resolve) => {
     foregroundStopped = resolve;
     if (!daemon) {
@@ -365,7 +365,7 @@ async function runUninstall(
   json: boolean,
   layout: ReturnType<typeof resolveServerLayout>,
 ): Promise<number> {
-  const first = await (io.confirm?.("Type DELETE to uninstall ZCode Server: ") ??
+  const first = await (io.confirm?.("Type DELETE to uninstall Kaguya Code Server: ") ??
     Promise.resolve(""));
   if (first !== "DELETE") throw new Error("Uninstall cancelled");
   const second = await (io.confirm?.("Type DELETE again to confirm: ") ?? Promise.resolve(""));
@@ -435,7 +435,7 @@ async function finishUninstall(
       .filter((entry) => entry !== "run")
       .sort();
     // server root 允许用户显式指定，不能递归删除未知内容。卸载只清理上面的
-    // ZCode allowlist，并把保留项写入结果供用户审计。先落盘 marker，再释放 lock，
+    // Kaguya Code allowlist，并把保留项写入结果供用户审计。先落盘 marker，再释放 lock，
     // 让并发 Supervisor 在删除 run 目录的最后窗口也会 fail-closed。
     await writeFile(
       layout.uninstalledFile,
@@ -509,7 +509,7 @@ async function delegateLegacyCli(argv: readonly string[], io: CliIO): Promise<nu
   try {
     await access(candidate);
   } catch {
-    stdout(io, argv.length ? `Unknown command: ${argv[0]}` : "ZCode TUI");
+    stdout(io, argv.length ? `Unknown command: ${argv[0]}` : "Kaguya Code TUI");
     return argv.length ? 1 : 0;
   }
   const child = fork(candidate, [...argv], { stdio: "inherit" });

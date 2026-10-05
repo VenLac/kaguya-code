@@ -1,4 +1,4 @@
-import { Bot, Webhook } from "lucide-react";
+import { Bot, Webhook } from "@zcode/lunar-icons";
 import type {
   BotConfig,
   BotServiceStatus,

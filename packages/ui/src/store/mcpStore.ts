@@ -153,7 +153,7 @@ export const useMcpStore = create<McpStoreState>((set, get) => {
     const effectiveWorkspaceIdentity = workspaceIdentity ?? get().currentWorkspaceIdentity;
     if (!effectiveWorkspaceIdentity?.trim()) {
       // 本地 workspace 仍要走 desktop platform 路径，才能执行旧 common MCP
-      // 到用户级 ZCode Agent MCP 的迁移；目录服务只用于远端 workspace 覆盖路由。
+      // 到用户级 Kaguya Code Agent MCP 的迁移；目录服务只用于远端 workspace 覆盖路由。
       return null;
     }
     return directoryService ?? mcpDirectoryService;
@@ -252,7 +252,7 @@ export const useMcpStore = create<McpStoreState>((set, get) => {
     loadConfig: () => {
       const config = loadPersistedConfig();
       // MCP 启停状态已经迁移到 ~/.zcode/cli/config.json，不能再读取旧 localStorage，
-      // 否则旧的本地开关会覆盖新的 ZCode Agent 配置来源。
+      // 否则旧的本地开关会覆盖新的 Kaguya Code Agent 配置来源。
       const enabledStates: Record<string, boolean> = {};
       const deletedPreload = new Set<string>(safeReadJson<string[]>(MCP_DELETED_PRELOAD_KEY, []));
       const servers = buildServerList(config, [], enabledStates, deletedPreload, []);

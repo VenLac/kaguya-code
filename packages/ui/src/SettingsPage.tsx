@@ -1,5 +1,5 @@
 /* oxlint-disable eslint(max-lines) */
-import { ArrowLeft, Rocket, type LucideIcon } from "lucide-react";
+import { ArrowLeft, Rocket, type LucideIcon } from "@zcode/lunar-icons";
 import {
   useCallback,
   useEffect,
@@ -1538,8 +1538,6 @@ export function SettingsPage({
                   onSettingsButtonClick={onBack}
                   onUsageClick={handleOpenUsageSettings}
                   onUpgradeClick={handleOpenCodingPlanUpgradeSettings}
-                  onLogin={onLogin}
-                  onLogout={onLogout}
                   settingsButtonMode="back"
                   user={user}
                   // 头像菜单是 WorkspaceSidebarFooter 的共享菜单，Settings 场景不能丢失桌面平台能力。

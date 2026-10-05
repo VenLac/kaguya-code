@@ -74,7 +74,7 @@ export function createMcpToolDisplay(
  * JSON 文本（服务端 `ToolError.Error()`）。这里只读该标识，不解析普通错误文案。
  *
  * 仅在 `metadata.official` 为真时才会走到，而该标记只对 **http** 官方 MCP 置位——那种形态的
- * 响应来自已校验 origin 的 ZCode 后端。stdio 官方 MCP 与第三方 MCP 塞同样的 payload 一律忽略：
+ * 响应来自已校验 origin 的 Kaguya Code 后端。stdio 官方 MCP 与第三方 MCP 塞同样的 payload 一律忽略：
  * 它们的结果由插件进程自己产出，可以伪造一条 Coding Plan 提示误导用户去购买。
  */
 function readOfficialMcpUnavailable(

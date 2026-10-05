@@ -1,7 +1,7 @@
 import type { MouseEvent, UIEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import type { CodingPlanResetType } from "@zcode/shared";
-import { CheckIcon, Loader2 } from "lucide-react";
+import { CheckIcon, Loader2 } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

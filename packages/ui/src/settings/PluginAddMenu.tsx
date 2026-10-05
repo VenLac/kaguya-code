@@ -1,4 +1,4 @@
-import { ChevronDown, Loader2, Plus, Sparkles } from "lucide-react";
+import { ChevronDown, Loader2, Plus, Sparkles } from "@zcode/lunar-icons";
 import type { CreateTaskRequest } from "@/app-shell/types.js";
 import { Button } from "@/components/ui/button.js";
 import {

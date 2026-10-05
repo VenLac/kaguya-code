@@ -1,5 +1,5 @@
 import type { ZCodeModelTrajectoryMessage } from "@zcode/services";
-import { Maximize2Icon, Minimize2Icon } from "lucide-react";
+import { Maximize2Icon, Minimize2Icon } from "@zcode/lunar-icons";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge.js";
 import { Button } from "@/components/ui/button.js";

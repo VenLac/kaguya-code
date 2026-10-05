@@ -28,7 +28,7 @@ import {
   Plus,
   Search,
   X,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import {
   DndContext,
   DragOverlay,
@@ -1651,8 +1651,6 @@ export const WorkspaceSidebar = memo(function WorkspaceSidebarComponent({
             onSettingsButtonClick={openSettingsTab}
             onUsageClick={openSettingsTab}
             onUpgradeClick={handleOpenCodingPlanUpgrade}
-            onLogin={onLogin}
-            onLogout={onLogout}
             user={user}
             workspacePath={workspacePath}
             workspaceIdentity={workspaceIdentity}

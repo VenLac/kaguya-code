@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { TID_WORKFLOW_ARTIFACT_PANE } from "@zcode/shared";
 import type { WorkflowRunArtifactSummary } from "@zcode/shared/zcode-protocol-v4";
-import { ChevronLeftIcon, ChevronRightIcon, CopyIcon, FolderOpenIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, CopyIcon, FolderOpenIcon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import {

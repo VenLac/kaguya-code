@@ -287,13 +287,13 @@ function createZCodeTaskServiceProxy(service: IZCodeTaskService): IZCodeTaskServ
   });
 }
 
-/** 获取 ZCode task wrapper 服务实例 */
+/** 获取 Kaguya Code task wrapper 服务实例 */
 export function useZCodeTaskService(
   workspacePath?: string,
   preferredRemoteSessionId?: string | null,
   workspaceIdentity?: string | null,
 ): IZCodeTaskService {
-  // ZCode task 服务按 workspace 身份解析，保证所有 task RPC 都落到对应的 host。
+  // Kaguya Code task 服务按 workspace 身份解析，保证所有 task RPC 都落到对应的 host。
   const services = workspacePath
     ? useWorkspaceServices(workspacePath, preferredRemoteSessionId, workspaceIdentity)
     : useServices();

@@ -300,7 +300,7 @@ function invalidParams(message: string): never {
 
 function buildRequestMeta(meta: Record<string, unknown> | undefined): NodeReplRequestMeta {
   const parsed = requestContextSchema.safeParse(meta?.["com.zcode/request-context"]);
-  // 安全边界：顶层 MCP _meta 是第三方可扩展字段，不能成为 ZCode session 路由凭据。
+  // 安全边界：顶层 MCP _meta 是第三方可扩展字段，不能成为 Kaguya Code session 路由凭据。
   // 只有 host client 写入的命名空间会进入 Browser bridge；旧 client 的普通 JS 仍可执行。
   return parsed.success ? parsed.data : {};
 }

@@ -1,5 +1,5 @@
 /* eslint-disable max-lines -- Edit 工具块同时维护单文件、多文件子块和 diff 预览引用稳定性；当前变更先保持同文件收口，避免为行数拆分引入展示回归。 */
-import { PencilIcon } from "lucide-react";
+import { PencilIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import { ToolCallBody } from "@/ToolCallBlocks/ToolCallBody.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";

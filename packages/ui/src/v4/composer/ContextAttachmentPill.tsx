@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import { XIcon } from "lucide-react";
+import { XIcon } from "@zcode/lunar-icons";
 import {
   AttachmentHoverCard,
   AttachmentHoverCardContent,

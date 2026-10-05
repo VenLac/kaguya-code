@@ -76,7 +76,7 @@ export async function openStartupSessionStore(
   startupTimer: StartupTimer,
 ): Promise<SqliteSessionStore> {
   const dbPath = getSessionDbPath(configResult);
-  startupTimer.start("ZCode SQLite migration started", {
+  startupTimer.start("Kaguya Code SQLite migration started", {
     context: { dbPath },
     event: "bootstrap.app.startup.sqlite_migration.started",
     stage: "migrate_session_db",
@@ -93,7 +93,7 @@ export async function openStartupSessionStore(
       },
     },
   );
-  startupTimer.mark("ZCode SQLite migration completed", {
+  startupTimer.mark("Kaguya Code SQLite migration completed", {
     context: { dbPath },
     event: "bootstrap.app.startup.sqlite_migration.completed",
     stage: "migrate_session_db",

@@ -127,7 +127,7 @@ export function resolveToolCallRenderer(context: ToolCallBlockRenderContext) {
 
   // 当前工具名已经是固定集合。继续用正则扫 kind/title 的话，
   // 会把 TodoWrite 里的 Write 当成文件写入。这里先解析固定 tool identity，再按 family 分流；
-  // ZCode 历史投影的工具形态由 identity resolver 统一处理。
+  // Kaguya Code 历史投影的工具形态由 identity resolver 统一处理。
   switch (identity.family) {
     case "plan-guidance":
       return PlanGuidanceToolCallBlock;

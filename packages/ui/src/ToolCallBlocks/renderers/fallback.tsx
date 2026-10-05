@@ -1,4 +1,4 @@
-import { WrenchIcon } from "lucide-react";
+import { WrenchIcon } from "@zcode/lunar-icons";
 import { useCallback, type ReactNode } from "react";
 import { ToolCallBody } from "@/ToolCallBlocks/ToolCallBody.js";
 import { ToolSnapshotFieldNotice } from "@/ToolCallBlocks/ToolSnapshotFieldNotice.js";

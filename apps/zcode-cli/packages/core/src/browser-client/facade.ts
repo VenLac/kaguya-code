@@ -468,7 +468,7 @@ export class Tab {
     return expectPayload(command, result, result.state, "state");
   }
 
-  /** 对齐 Playwright Page.setViewportSize；ZCode 额外施加内置自由尺寸的安全边界。 */
+  /** 对齐 Playwright Page.setViewportSize；Kaguya Code 额外施加内置自由尺寸的安全边界。 */
   async setViewportSize(viewportSize: BrowserViewportSize): Promise<void> {
     validateViewportSize(viewportSize);
     await this.action({ method: "browserViewportSet", ...viewportSize });

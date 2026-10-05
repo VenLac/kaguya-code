@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GlobeIcon } from "lucide-react";
+import { GlobeIcon } from "@zcode/lunar-icons";
 
 function BrowserTabFaviconImage({ faviconUrl }: { faviconUrl: string }) {
   const [hasFailed, setHasFailed] = useState(false);

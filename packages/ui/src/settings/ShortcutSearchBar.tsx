@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Keyboard, Search, X } from "lucide-react";
+import { Keyboard, Search, X } from "@zcode/lunar-icons";
 import { Input } from "@/components/ui/input.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { formatShortcutBindingLabel } from "@/shortcuts/label.js";

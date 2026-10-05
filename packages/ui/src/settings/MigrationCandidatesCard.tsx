@@ -1,4 +1,4 @@
-import { Check, Download, Loader2, TriangleAlert } from "lucide-react";
+import { Check, Download, Loader2, TriangleAlert } from "@zcode/lunar-icons";
 import type {
   ZCodeImportSessionsResult,
   ZCodeImportableSessionCandidate,

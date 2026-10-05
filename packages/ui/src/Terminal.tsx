@@ -1,4 +1,4 @@
-import { Plus, X } from "lucide-react";
+import { Plus, X } from "@zcode/lunar-icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { IServiceAccessor } from "@zcode/services";
 import { TID_TERMINAL, TID_TERMINAL_CLOSE_BUTTON } from "@zcode/shared";

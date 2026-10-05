@@ -18,7 +18,7 @@ interface WebAuthPageCopy {
 
 const WEB_AUTH_COPY = {
   "zh-CN": {
-    brand: "ZCode",
+    brand: "Kaguya Code",
     loginTitle: "登录后继续使用 Web 远程控制",
     loginDescription: "使用与桌面端一致的 Z.AI 账号身份访问当前远控入口。",
     loginAction: "用 Z.AI 登录",
@@ -33,7 +33,7 @@ const WEB_AUTH_COPY = {
     logoutAction: "断开连接",
   },
   "en-US": {
-    brand: "ZCode",
+    brand: "Kaguya Code",
     loginTitle: "Sign In To Continue",
     loginDescription: "Use the same Z.AI account identity as desktop for Web remote control.",
     loginAction: "Sign in with Z.AI",

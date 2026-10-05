@@ -167,7 +167,7 @@ function readZCodeAgentRuntimeVersion() {
   const runtimeSource = readFileSync(runtimeSourcePath, "utf8");
   const match = runtimeSource.match(/version:\s*["']([^"']+)["']/);
   if (!match?.[1]) {
-    throw new Error("Unable to parse ZCode Agent runtime version");
+    throw new Error("Unable to parse Kaguya Code Agent runtime version");
   }
   return match[1];
 }

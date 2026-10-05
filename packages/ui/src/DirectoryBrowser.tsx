@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import type { IServiceAccessor } from "@zcode/services";
 import type { FileEntry } from "@zcode/shared";
-import { FolderIcon, FolderSymlinkIcon } from "lucide-react";
+import { FolderIcon, FolderSymlinkIcon } from "@zcode/lunar-icons";
 import { Button } from "./components/ui/button.js";
 import { Input } from "./components/ui/input.js";
 import { useZCodeIntl } from "./i18n/IntlProvider.js";

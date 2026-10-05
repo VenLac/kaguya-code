@@ -1,4 +1,4 @@
-import { InfoIcon } from "lucide-react";
+import { InfoIcon } from "@zcode/lunar-icons";
 import type { McpServerFailureKind } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.js";

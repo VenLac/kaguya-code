@@ -352,13 +352,13 @@ function normalizeMcpServerConfigInput(value: unknown): unknown {
   }
   delete server.enable;
 
-  // External MCP configs may carry provider-specific timeout fields. ZCode does not migrate
+  // External MCP configs may carry provider-specific timeout fields. Kaguya Code does not migrate
   // those values, but the strict runtime schema should still accept old imported entries.
   delete server.timeout;
   delete server.startup_timeout_sec;
 
   if (server.type === "remote") {
-    // 外部 Agent 配置常把 HTTP MCP 标记为 remote；ZCode 运行态协议类型是 http。
+    // 外部 Agent 配置常把 HTTP MCP 标记为 remote；Kaguya Code 运行态协议类型是 http。
     server.type = "http";
   } else if (typeof server.type !== "string") {
     // app 管理层把 command 形态视为默认 stdio；CLI 也需要同样推断，

@@ -657,7 +657,7 @@ export interface IPlatformService {
   /** 使用系统默认应用打开本地文件；普通 Web 平台返回 unsupported。 */
   openExternalFile?(path: string): Promise<{ success: boolean; error?: string }>;
 
-  /** 打开 ZCode Computer Use 的完整权限引导。Desktop only。 */
+  /** 打开 Kaguya Code Computer Use 的完整权限引导。Desktop only。 */
   openCuaPermissionOnboarding?(
     options?: OpenCuaPermissionOnboardingOptions,
   ): Promise<CuaAccessibilitySettingsResult>;

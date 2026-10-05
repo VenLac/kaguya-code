@@ -1,5 +1,5 @@
 /**
- * ZCode Agent ConfigOptions 便捷 hooks
+ * Kaguya Code Agent ConfigOptions 便捷 hooks
  *
  * 仅保留 V4ComposerToolbar 依赖的模型目录读取 hook；配置写路径统一走
  * v4 命令（switchModelConfig 等），本文件不含写路径 hooks。

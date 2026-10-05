@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { CheckIcon, MinusIcon } from "lucide-react";
+import { CheckIcon, MinusIcon } from "@zcode/lunar-icons";
 import type { SettingsSyncCategory, SettingsSyncDiscoveryResult } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

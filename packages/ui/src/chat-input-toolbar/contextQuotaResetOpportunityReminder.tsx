@@ -1,4 +1,4 @@
-import { AlarmClock, GiftIcon, XIcon } from "lucide-react";
+import { AlarmClock, GiftIcon, XIcon } from "@zcode/lunar-icons";
 import type { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { formatCodingPlanQuotaResetCountdown } from "@/components/coding-plan-quota-reset/CodingPlanQuotaResetDialog.js";
 import { Button } from "@/components/ui/button.js";

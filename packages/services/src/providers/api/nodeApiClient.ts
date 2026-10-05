@@ -68,7 +68,7 @@ function resolveRequestHeaders(
     return headers;
   }
 
-  // ZCode 后端请求以前只有部分业务路径手动补来源头。
+  // Kaguya Code 后端请求以前只有部分业务路径手动补来源头。
   // 统一在 ApiClient 出口按 endpoint origin 注入，避免 OAuth/config/billing/snapshot 等链路遗漏。
   return withZCodeEndpointHeaders(headers, endpointOrigin);
 }

@@ -1,4 +1,4 @@
-import { MousePointerClick } from "lucide-react";
+import { MousePointerClick } from "@zcode/lunar-icons";
 
 export const CUA_FALLBACK_ICON = (
   <MousePointerClick className="size-4 shrink-0 text-foreground-subtle" />

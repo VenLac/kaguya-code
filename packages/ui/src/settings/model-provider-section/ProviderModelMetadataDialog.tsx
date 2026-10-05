@@ -1,5 +1,5 @@
 import { useId, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
-import { Loader2Icon, Pencil } from "lucide-react";
+import { Loader2Icon, Pencil } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import {
   Dialog,

@@ -9,7 +9,7 @@ import {
   testId,
 } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
-import { Info, LoaderIcon } from "lucide-react";
+import { Info, LoaderIcon } from "@zcode/lunar-icons";
 import {
   EMPTY_SCROLL_MASK_STATE,
   getVerticalScrollMaskStyle,

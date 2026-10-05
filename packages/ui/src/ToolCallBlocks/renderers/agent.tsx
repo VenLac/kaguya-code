@@ -1,4 +1,4 @@
-import { BotIcon } from "lucide-react";
+import { BotIcon } from "@zcode/lunar-icons";
 import { useCallback, useMemo, type ReactNode } from "react";
 import type { AgentColor } from "@zcode/shared";
 import { MessageResponse } from "@/components/ai-elements/message.js";

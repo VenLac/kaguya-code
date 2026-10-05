@@ -2,7 +2,7 @@
  * 资源管理器 CPU / 内存 tab 的展示零件：双层指标卡、分组列表、进程行。
  * 只做格式化与布局，不持有任何指标状态。
  */
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@zcode/lunar-icons";
 import type { ResourceUsageProcess } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import { formatBytes, formatPercent, type ResourceUsageGroupView } from "./resourceUsageView.js";
@@ -22,7 +22,7 @@ interface UsageMeterProps {
   systemLabel: string;
 }
 
-/** 双层进度条：灰色 = 整机总占用，brand = ZCode 自身占用；图例文字做颜色之外的第二编码 */
+/** 双层进度条：灰色 = 整机总占用，brand = Kaguya Code 自身占用；图例文字做颜色之外的第二编码 */
 export function UsageMeter({
   testId,
   label,

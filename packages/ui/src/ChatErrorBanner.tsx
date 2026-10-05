@@ -2,7 +2,7 @@ import { CodingPlanEntryButton } from "@/settings/CodingPlanEntryButton.js";
 /**
  * ChatErrorBanner — 错误提示组件
  *
- * 显示 ZCode Agent 链路中的错误，带 traceId 方便排查。
+ * 显示 Kaguya Code Agent 链路中的错误，带 traceId 方便排查。
  */
 import { useState } from "react";
 import {
@@ -13,7 +13,7 @@ import {
   TID_CHAT_ERROR_BANNER,
   TID_CHAT_ERROR_HOOK_ICON,
 } from "@zcode/shared";
-import { AnchorIcon, CopyIcon, InfoIcon, RocketIcon, SettingsIcon, X } from "lucide-react";
+import { AnchorIcon, CopyIcon, InfoIcon, RocketIcon, SettingsIcon, X } from "@zcode/lunar-icons";
 import { useZCodeIntl } from "./i18n/IntlProvider.js";
 import type { IntlInstance } from "./i18n/IntlProvider.js";
 import { Button } from "./components/ui/button.js";

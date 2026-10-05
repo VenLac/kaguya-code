@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Check, Globe, Info, Lock, UserRoundPen } from "lucide-react";
+import { Check, Globe, Info, Lock, UserRoundPen } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 

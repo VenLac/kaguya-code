@@ -79,7 +79,7 @@ export function buildNativeSearchToolsWindows({
     LC_ALL: "C",
   };
 
-  console.log("==> ZCode native search build");
+  console.log("==> Kaguya Code native search build");
   console.log(`    target:  ${plan.platformKey}`);
   console.log(`    output:  ${plan.outputDir}`);
   console.log(`    workdir: ${workDir}`);

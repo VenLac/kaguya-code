@@ -34,7 +34,7 @@ export class ProtocolRuntimeResources {
   };
 
   assertServing(): void {
-    if (this.stopping) throw new Error("ZCode Protocol runtime is stopping");
+    if (this.stopping) throw new Error("Kaguya Code Protocol runtime is stopping");
   }
 
   close(): Promise<void> {

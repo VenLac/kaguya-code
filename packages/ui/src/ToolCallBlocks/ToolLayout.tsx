@@ -2,7 +2,7 @@ import { memo, type ReactNode, useEffect, useRef, useState } from "react";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible.js";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { CheckIcon, CopyIcon } from "@zcode/lunar-icons";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import {
   Tooltip,

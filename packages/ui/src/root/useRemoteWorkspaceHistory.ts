@@ -764,7 +764,7 @@ export function useRemoteWorkspaceHistory({
 
       // 远程连接成功只代表 main/host 已经建好 session，
       // renderer 侧的 MessagePort 仍然可能在下一拍才注册进 zustand store。
-      // 如果此时立刻 addTab，会短暂走到本地 services，导致首屏读目录/预热 ZCode Agent 命中错误服务。
+      // 如果此时立刻 addTab，会短暂走到本地 services，导致首屏读目录/预热 Kaguya Code Agent 命中错误服务。
       // 这里等 session 真正挂进 store 再继续。
       await waitForRemoteWorkspaceSessionReady(result.sessionId);
       if (!context) {

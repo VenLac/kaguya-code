@@ -1,5 +1,5 @@
 import { useRef, useState, type DragEvent } from "react";
-import { FolderOpen, Loader2, Plus } from "lucide-react";
+import { FolderOpen, Loader2, Plus } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog.js";
 import { Input } from "@/components/ui/input.js";

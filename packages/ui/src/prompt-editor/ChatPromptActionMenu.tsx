@@ -9,7 +9,7 @@ import { getSessionMentionWorkspaceScope } from "@/mentions/mentionPanelRouting.
 import { useChatViewActiveTaskProvider } from "@/v4/activeTaskProvider.js";
 import { useMemo, useRef, useState, type MutableRefObject } from "react";
 import type { EditorState } from "lexical";
-import { GoalIcon, Info, PaperclipIcon, PlusIcon, Workflow } from "lucide-react";
+import { GoalIcon, Info, PaperclipIcon, PlusIcon, Workflow } from "@zcode/lunar-icons";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
 import { Button } from "@/components/ui/button.js";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover.js";

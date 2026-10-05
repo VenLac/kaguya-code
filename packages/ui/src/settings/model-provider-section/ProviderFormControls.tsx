@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import type { ProviderSettingsFormModel } from "@/lib/providerSettingsFormTypes.js";
 import type { ModelConnectivityResult } from "@zcode/shared";
-import { Loader2Icon, Trash2, Unplug } from "lucide-react";
+import { Loader2Icon, Trash2, Unplug } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { ModelInputCapabilityBadge } from "@/components/ModelInputCapabilityBadge.js";
 import { Switch } from "@/components/ui/switch.js";

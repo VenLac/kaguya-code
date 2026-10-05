@@ -1,5 +1,5 @@
 import type { KeyboardEvent, ReactNode } from "react";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "@zcode/lunar-icons";
 import { testId, TID_TOOL_SUMMARY_TRIGGER } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import { CollapsibleTrigger } from "@/components/ui/collapsible.js";

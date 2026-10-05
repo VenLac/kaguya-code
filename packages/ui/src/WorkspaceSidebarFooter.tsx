@@ -3,13 +3,10 @@ import type { Locale, UserInfo } from "@zcode/shared";
 import { memo, useCallback, useEffect, useState } from "react";
 import {
   DesktopCommandIds,
-  TID_LOGIN_MENU_ITEM,
   TID_LOGIN_TRIGGER,
-  TID_LOGOUT_BUTTON,
   TID_TASK_SETTINGS_BUTTON,
 } from "@zcode/shared";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.js";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 import {
@@ -26,18 +23,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.js";
 import {
+  PencilIcon,
   PencilRuler,
   Globe,
-  Loader2,
-  LogInIcon,
-  LogOut,
   Maximize,
   Palette,
   Settings,
-  User,
   ZoomIn,
   ZoomOut,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { usePlatform } from "@/hooks/usePlatform.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { useShortcutCommandLabel } from "@/shortcuts/useShortcutBindings.js";
@@ -45,6 +39,9 @@ import { useZCodeStore } from "@/store/StoreProvider.js";
 import { normalizeInterfaceMode } from "@/lib/interfaceMode.js";
 import type { Theme } from "@/useTheme.js";
 import { WorkspaceWebRemoteControlTrigger } from "@/WorkspaceWebRemoteControlTrigger.js";
+import { ProfileAvatar } from "@/profile/ProfileAvatar.js";
+import { ProfileDialog } from "@/profile/ProfileDialog.js";
+import { useLocalProfile } from "@/profile/localProfile.js";
 import {
   WorkspaceSidebarFooterPlanBadge,
   WorkspaceSidebarFooterUsageSummaryContent,
@@ -65,7 +62,7 @@ function getSidebarProfileName(user?: UserInfo | null): string {
     return username;
   }
 
-  return "ZCode";
+  return "Kaguya Code";
 }
 
 function getSidebarProfileBadge(
@@ -76,12 +73,9 @@ function getSidebarProfileBadge(
     return getSidebarProfileName(user);
   }
 
-  return formatMessage({ id: "sidebar.profile.notLoggedIn" });
-}
-
-function getAvatarFallbackText(user: UserInfo | null | undefined): string {
-  const source = user?.displayName?.trim() || user?.username?.trim() || "Z";
-  return source[0]?.toUpperCase() ?? "Z";
+  // 登录功能已移除：没有账号时显示中性的产品名，而不是“连接使用”。
+  void formatMessage;
+  return "Kaguya Code";
 }
 
 export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterComponent({
@@ -92,8 +86,6 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
   onSettingsButtonClick,
   onUsageClick,
   onUpgradeClick,
-  onLogin,
-  onLogout,
   settingsButtonMode = "settings",
   user,
   workspacePath,
@@ -112,8 +104,6 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
   onUpgradeClick?: Parameters<
     typeof WorkspaceSidebarFooterUsageSummaryContent
   >[0]["onUpgradeClick"];
-  onLogin?: () => void;
-  onLogout?: () => void;
   settingsButtonMode?: "settings" | "back";
   user?: UserInfo | null;
   workspacePath?: string;
@@ -131,10 +121,11 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
   const zoomOutShortcutLabel = useShortcutCommandLabel("zoomOut");
   const resetZoomShortcutLabel = useShortcutCommandLabel("resetZoom");
   const isRestoringOAuthSession = useZCodeStore((state) => state.isRestoringOAuthSession);
-  const profileBadge = getSidebarProfileBadge(user, intl.formatMessage);
-  const avatarFallbackText = getAvatarFallbackText(user);
-  const avatarKey = user?.avatarUrl ?? user?.id ?? "guest";
-  const showAuthRestoreLoading = !user && isRestoringOAuthSession;
+  const localProfile = useLocalProfile();
+  const defaultProfileName = getSidebarProfileBadge(user, intl.formatMessage);
+  // 本机资料优先：用户改过名字就用改过的，否则沿用默认。
+  const profileBadge = localProfile.name || defaultProfileName;
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const usageSummaryState = useWorkspaceSidebarFooterUsageSummaryState({
     enabled: true,
     workspaceIdentity,
@@ -142,24 +133,7 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
   });
   const profileContent = (
     <>
-      <Avatar key={avatarKey} size="default">
-        {user?.avatarUrl ? <AvatarImage src={user.avatarUrl} alt={profileBadge} /> : null}
-        <AvatarFallback className="bg-background text-foreground">
-          {user ? (
-            avatarFallbackText
-          ) : showAuthRestoreLoading ? (
-            <>
-              {/* OAuth 启动恢复未落定前，footer 之前会直接显示未登录头像，
-                  用户很容易把“还在校验”误判成“已经退出”。
-                  这里用 loading 图标明确表达“状态确认中”，等恢复成功或失败后再展示最终状态。 */}
-              <Loader2 className="size-4 animate-spin" />
-              <span className="sr-only">{intl.formatMessage({ id: "common.loading" })}</span>
-            </>
-          ) : (
-            <User className="size-4" />
-          )}
-        </AvatarFallback>
-      </Avatar>
+      <ProfileAvatar size={32} />
       <div className="min-w-0 flex-1 overflow-hidden text-left">
         <div className="flex min-w-0 items-center gap-1.5">
           <span className="min-w-0 truncate text-ui-base font-semibold text-foreground">
@@ -236,6 +210,11 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
           </DropdownMenuTrigger>
           {/* 菜单内容保持挂载，避免每次点击头像菜单都重建 footer 内部状态。*/}
           <DropdownMenuContent align="start" className="w-max min-w-50" forceMount>
+            <DropdownMenuItem onSelect={() => setProfileDialogOpen(true)} data-testid="profile-edit-menu-item">
+              <PencilIcon className="size-4" />
+              {intl.formatMessage({ id: "profile.edit" })}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Globe className="size-4" />
@@ -349,24 +328,6 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
               onUsageClick={usageButtonClick}
               onUpgradeClick={onUpgradeClick}
             />
-            {onLogin && !user ? (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={onLogin} data-testid={TID_LOGIN_MENU_ITEM}>
-                  <LogInIcon className="size-4" />
-                  {intl.formatMessage({ id: "app.login" })}
-                </DropdownMenuItem>
-              </>
-            ) : null}
-            {onLogout ? (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={onLogout} data-testid={TID_LOGOUT_BUTTON}>
-                  <LogOut className="size-4" />
-                  {intl.formatMessage({ id: "app.logout" })}
-                </DropdownMenuItem>
-              </>
-            ) : null}
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="flex shrink-0 items-center gap-1.5">
@@ -392,6 +353,7 @@ export const WorkspaceSidebarFooter = memo(function WorkspaceSidebarFooterCompon
           </ControlHintTooltip>
         </div>
       </div>
+      <ProfileDialog open={profileDialogOpen} onOpenChange={setProfileDialogOpen} defaultName={defaultProfileName} />
     </footer>
   );
 });

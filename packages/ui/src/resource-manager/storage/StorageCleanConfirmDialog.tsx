@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Loader2 } from "@zcode/lunar-icons";
 import {
   type StorageCategoryId,
   TID_RESOURCE_MANAGER_STORAGE_CONFIRM_ACCEPT,

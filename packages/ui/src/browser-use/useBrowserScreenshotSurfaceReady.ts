@@ -20,7 +20,7 @@ function withinOnePixel(left: BrowserViewportSize, right: BrowserViewportSize): 
 const SURFACE_SCALE_EPSILON = 0.001;
 
 // ready 过去只在
-// requestAnimationFrame 回调里上报，而 ZCode 主窗口被遮挡/最小化时 Chromium 会冻结
+// requestAnimationFrame 回调里上报，而 Kaguya Code 主窗口被遮挡/最小化时 Chromium 会冻结
 // renderer 的 rAF，ready 永远发不出去，主进程握手只能固定在 1500ms 超时。用户日志里
 // 失败全是 1501/1502ms、成功全是 146~736ms，且 app-activate 之后 461ms 立刻成功，
 // 可以印证是"窗口不在前台 → rAF 不调度"而不是截图本身慢。

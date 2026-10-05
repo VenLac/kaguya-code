@@ -51,7 +51,7 @@ export class DataRootLock {
     for (let attempt = 0; attempt < 100; attempt++) {
       const observed = await this.readOwner(this.path);
       if (observed && this.isHolderAlive(observed.record.pid)) {
-        throw new Error("Another ZCode Server instance is already running");
+        throw new Error("Another Kaguya Code Server instance is already running");
       }
       const recoveryToken = await this.tryAcquireRecoveryGate(recoveryPath);
       if (!recoveryToken) {
@@ -61,7 +61,7 @@ export class DataRootLock {
       try {
         const current = await this.readOwner(this.path);
         if (current && this.isHolderAlive(current.record.pid)) {
-          throw new Error("Another ZCode Server instance is already running");
+          throw new Error("Another Kaguya Code Server instance is already running");
         }
         if (current) {
           await this.claimStalePath(this.path, current.raw);
@@ -72,7 +72,7 @@ export class DataRootLock {
       }
       await new Promise<void>((resolve) => setTimeout(resolve, 5));
     }
-    throw new Error("Another ZCode Server instance is already running");
+    throw new Error("Another Kaguya Code Server instance is already running");
   }
 
   public async release(): Promise<void> {

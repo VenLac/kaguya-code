@@ -9,7 +9,7 @@ import {
   Moon,
   Pin,
   Smartphone,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { isCronTask, isOffPeakTask, type ZCodeTaskMeta } from "@zcode/shared";
 import { TID_TASK_ARCHIVE, TID_TASK_ITEM, testId } from "@zcode/shared";
 import { Badge } from "@/components/ui/badge.js";

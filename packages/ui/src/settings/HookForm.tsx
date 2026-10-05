@@ -1,6 +1,6 @@
 /* eslint-disable max-lines -- Hook 表单集中维护 runner 类型、Scope 与高级兼容字段。 */
 import { useCallback, useState, type ReactNode } from "react";
-import { ChevronRight, Trash2 } from "lucide-react";
+import { ChevronRight, Trash2 } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { Input } from "@/components/ui/input.js";
 import { Label } from "@/components/ui/label.js";

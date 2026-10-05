@@ -1,4 +1,4 @@
-import { Loader2Icon, CircleAlertIcon, CheckCircle2Icon } from "lucide-react";
+import { Loader2Icon, CircleAlertIcon, CheckCircle2Icon } from "@zcode/lunar-icons";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button.js";
 import { Switch } from "@/components/ui/switch.js";

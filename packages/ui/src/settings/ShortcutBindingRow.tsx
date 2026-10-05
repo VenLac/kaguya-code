@@ -1,4 +1,4 @@
-import { Keyboard, Pencil, Trash2 } from "lucide-react";
+import { Keyboard, Pencil, Trash2 } from "@zcode/lunar-icons";
 import type { ShortcutCommandEntry, ShortcutCommandId } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";
 import { Kbd, KbdGroup } from "@/components/ui/kbd.js";

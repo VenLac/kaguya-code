@@ -254,7 +254,7 @@ export function App() {
     <main className="app-shell">
       <header className="topbar">
         <div>
-          <h1>ZCode 调试台</h1>
+          <h1>Kaguya Code 调试台</h1>
           <p>Trace、甘特执行、网络抓包</p>
         </div>
         <div className="topbar-actions">

@@ -22,7 +22,7 @@ import {
   TID_MODEL_PROVIDER_NAME_INPUT,
   testId,
 } from "@zcode/shared";
-import { InfoIcon, LockKeyholeIcon, Plus, Pencil, Trash2, MoreHorizontal } from "lucide-react";
+import { InfoIcon, LockKeyholeIcon, Plus, Pencil, Trash2, MoreHorizontal } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { Input } from "@/components/ui/input.js";
 import {

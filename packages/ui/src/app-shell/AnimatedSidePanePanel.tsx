@@ -97,7 +97,7 @@ import {
   PlusIcon,
   SquareTerminalIcon,
   type LucideIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 
 const SIDE_PANE_CONTENT_WIDTH_LOCK_DURATION_MS = 200;
 const PREVIEW_PANE_RESIZE_SETTLE_DELAY_MS = 220;

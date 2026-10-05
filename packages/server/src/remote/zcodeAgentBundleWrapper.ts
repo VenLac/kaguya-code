@@ -1,4 +1,4 @@
-// 远端 ZCode Agent 以「独立 node + 编译产物 zcode.cjs」的形态运行，而不是各平台内嵌 node 的原生二进制。
+// 远端 Kaguya Code Agent 以「独立 node + 编译产物 zcode.cjs」的形态运行，而不是各平台内嵌 node 的原生二进制。
 // 远端部署时本来就有一份独立 node（用于跑 zcode-server.cjs），agent 复用它执行 zcode.cjs 即可。
 //
 // 部署布局：把 zcode.cjs 放到 agents/<provider>/zcode.cjs，再写一个同名 wrapper —— 就是 resolver

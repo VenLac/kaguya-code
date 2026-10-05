@@ -1,14 +1,14 @@
 /*
  * Derived from vercel/ai-elements (packages/elements/src/sources.tsx).
  * Copyright 2023 Vercel, Inc. Licensed under Apache-2.0.
- * Modified by ZCode: local integration, formatting and adaptations.
+ * Modified by Kaguya Code: local integration, formatting and adaptations.
  * See THIRD-PARTY-NOTICES.md in the repository root for license and provenance.
  */
 "use client";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible.js";
 import { cn } from "../lib/utils.js";
-import { BookIcon, ChevronDownIcon } from "lucide-react";
+import { BookIcon, ChevronDownIcon } from "@zcode/lunar-icons";
 import type { ComponentProps } from "react";
 
 export type SourcesProps = ComponentProps<"div">;

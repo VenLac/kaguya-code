@@ -1,4 +1,4 @@
-import { Cpu } from "lucide-react";
+import { Cpu } from "@zcode/lunar-icons";
 import { useCallback, useMemo } from "react";
 import {
   getModelProviderFamilySpec,

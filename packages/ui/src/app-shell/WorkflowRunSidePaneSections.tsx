@@ -13,7 +13,7 @@ import {
   RotateCcwIcon,
   SlidersHorizontalIcon,
   SquareIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { WorkflowRunState, WorkflowRunUsage } from "@zcode/shared/zcode-protocol-v4";
 import { Button } from "@/components/ui/button.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

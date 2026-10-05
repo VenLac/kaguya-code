@@ -1,4 +1,4 @@
-import { Check, LoaderCircle } from "lucide-react";
+import { Check, LoaderCircle } from "@zcode/lunar-icons";
 import type { BotConfig, BotWorkspaceRef } from "@zcode/shared";
 import { ALL_BOT_WORKSPACES } from "@zcode/shared";
 import {

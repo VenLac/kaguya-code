@@ -37,7 +37,7 @@ export async function cleanupProtocolRuntime(options: {
         }),
       ]);
     } catch (error) {
-      options.logger.warn(`ZCode Protocol ${resource} shutdown failed`, {
+      options.logger.warn(`Kaguya Code Protocol ${resource} shutdown failed`, {
         errorType: error instanceof Error ? error.name : typeof error,
         event: `zcode_protocol.${resource}.shutdown.failed`,
         module: "bootstrap.zcode_protocol",

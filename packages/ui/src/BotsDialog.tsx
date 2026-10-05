@@ -8,7 +8,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import QRCode from "qrcode";
-import { Bot, Loader2, Plus } from "lucide-react";
+import { Bot, Loader2, Plus } from "@zcode/lunar-icons";
 import type {
   BotConfig,
   BotProvider,

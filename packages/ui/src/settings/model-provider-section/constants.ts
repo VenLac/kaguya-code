@@ -218,9 +218,17 @@ export type ModelProviderNavItem =
       label: string;
       provider: ProviderSettingsFormProvider;
       statusActive: boolean;
+    }
+  | {
+      /** 账号渠道（目前只有 Codex / ChatGPT）：不是一个模型来源，选中后显示登录卡片。 */
+      key: string;
+      type: "codex";
+      label: string;
+      provider?: null;
+      statusActive: boolean;
     };
 
-export type ModelProviderNavGroupId = "preset" | "custom";
+export type ModelProviderNavGroupId = "preset" | "custom" | "channel";
 
 export interface ModelProviderNavGroup {
   id: ModelProviderNavGroupId;

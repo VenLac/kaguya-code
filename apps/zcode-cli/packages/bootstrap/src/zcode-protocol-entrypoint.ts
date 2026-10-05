@@ -115,7 +115,7 @@ export async function runZCodeProtocolAgent(
     },
     startupStartedAt,
   );
-  startupTimer.start("ZCode Protocol agent startup started", {
+  startupTimer.start("Kaguya Code Protocol agent startup started", {
     context: { version: options.version },
     event: "zcode_protocol.startup.started",
     stage: "start",
@@ -217,7 +217,7 @@ export async function runZCodeProtocolAgent(
       }),
       resolveZCodeApiOrigin,
       ...(workspaceIdentity ? { workspaceIdentity } : {}),
-      // 信任判定只看一条：目标 origin 等于当前 ZCode API origin（https）。pluginId 不参与。
+      // 信任判定只看一条：目标 origin 等于当前 Kaguya Code API origin（https）。pluginId 不参与。
       // origin 运行时解析（跟随 production/test 与自建环境），不硬编码域名。
       trustedOrigins: createOfficialMcpTrustedOriginRegistry({
         devTrustedOriginsRaw: (options.env ?? process.env)[OFFICIAL_MCP_DEV_TRUSTED_ORIGINS_ENV],
@@ -338,7 +338,7 @@ export async function runZCodeProtocolAgent(
       (message) => connection.send(message),
       logger,
     );
-    startupTimer.complete("ZCode Protocol agent startup completed", {
+    startupTimer.complete("Kaguya Code Protocol agent startup completed", {
       event: "zcode_protocol.startup.completed",
       stage: "total",
     });
@@ -348,7 +348,7 @@ export async function runZCodeProtocolAgent(
     options.lifecycle?.requestShutdown(
       error instanceof Error ? error : new Error("Protocol runtime failed", { cause: error }),
     );
-    startupTimer.fail("ZCode Protocol agent startup failed", error, {
+    startupTimer.fail("Kaguya Code Protocol agent startup failed", error, {
       event: "zcode_protocol.startup.failed",
       stage: "total",
     });
@@ -367,7 +367,7 @@ export async function runZCodeProtocolAgent(
       sessionStore,
       providerRegistryRuntime,
     });
-    logger.info("ZCode Protocol agent shutdown completed", {
+    logger.info("Kaguya Code Protocol agent shutdown completed", {
       ...traceContextToLogContext(traceContext),
       event: "zcode_protocol.shutdown.completed",
       module: "bootstrap.zcode_protocol",

@@ -23,7 +23,7 @@ import {
   MonitorCogIcon,
   ServerIcon,
   TerminalIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import { DirectoryBrowser } from "@/DirectoryBrowser.js";
 import { RemoteConnectionFields } from "@/RemoteConnectionFields.js";
 import type { SSHAuthMethod } from "@/hooks/useRemoteConnectionForm.js";

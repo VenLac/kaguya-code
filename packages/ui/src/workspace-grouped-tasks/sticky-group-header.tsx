@@ -1,5 +1,5 @@
 import type { ZCodeGroupedTaskViewNode, ZCodeTaskGroupColor } from "@zcode/services";
-import { ChevronDownIcon, ChevronRightIcon, MessageCirclePlus } from "lucide-react";
+import { ChevronDownIcon, ChevronRightIcon, MessageCirclePlus } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 import {

@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Blocks } from "lucide-react";
+import { Blocks } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { resolvePluginIconSource } from "@/lib/pluginIconSource.js";
 

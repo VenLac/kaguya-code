@@ -1,4 +1,4 @@
-import { QuoteIcon, Trash2Icon } from "lucide-react";
+import { QuoteIcon, Trash2Icon } from "@zcode/lunar-icons";
 import type { AttachmentHoverCardContentProps } from "@/components/ai-elements/attachments.js";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

@@ -1,7 +1,7 @@
 // ============================================================
 // AgentRuntime-backed WorkflowDriver（Boundary B）
 // ============================================================
-// 把 dynamic-workflow 引擎核心的向下副作用端口 WorkflowDriver 落到真实 ZCode AgentRuntime 上：
+// 把 dynamic-workflow 引擎核心的向下副作用端口 WorkflowDriver 落到真实 Kaguya Code AgentRuntime 上：
 // 每个 actor 一个**持久** child runtime（重复 executeTurn 累积 messageHistory），每次 ask 一次
 // executeTurn，typed ask 的结果经会话级 WorkflowSubmitPort 桥接回引擎裁决。
 //

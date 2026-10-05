@@ -9,6 +9,7 @@ export function OnboardingWelcomeAsciiVisual() {
   return (
     <ThemeHeroVisual
       className="h-full min-h-0 rounded-xl"
+      moon={{ size: 0.5, x: 0.5, y: 0.5, opacity: 0.4 }}
       contentClassName="flex h-full items-center justify-center"
     >
       <div className="space-y-4 text-center">

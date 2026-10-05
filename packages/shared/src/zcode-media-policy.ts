@@ -1,4 +1,4 @@
-/** ZCode 接受单个 video 输入的全局原始字节上限。 */
+/** Kaguya Code 接受单个 video 输入的全局原始字节上限。 */
 export const VIDEO_INPUT_MAX_BYTES = 30 * 1024 * 1024;
 
 export const MEDIA_BUDGET_CURRENT_IMAGE_TOO_LARGE_ERROR_CODE =

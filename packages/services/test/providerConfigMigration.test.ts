@@ -67,7 +67,7 @@ async function setup() {
   };
 }
 
-test("startup migrates published ZCode config into personal config without changing the source", async () => {
+test("startup migrates published Kaguya Code config into personal config without changing the source", async () => {
   const fixture = await setup();
   try {
     await fixture.runtime.start();

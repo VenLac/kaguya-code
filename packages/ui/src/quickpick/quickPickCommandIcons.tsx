@@ -16,7 +16,7 @@ import {
   SunIcon,
   UsersIcon,
   WandSparkles,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import type { QuickPickCommandIcon } from "@/quickpick/quickPickCommands.js";
 
 export const QUICK_PICK_ICON_BY_KIND = {

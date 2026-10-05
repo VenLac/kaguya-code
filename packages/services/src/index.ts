@@ -94,7 +94,7 @@ export type {
   BroadcastMessage,
 } from "./broadcast/broadcast.js";
 
-// ZCode task wrapper service — task 列表/置顶/归档等 app 侧包装状态入口。
+// Kaguya Code task wrapper service — task 列表/置顶/归档等 app 侧包装状态入口。
 export { IZCodeTaskService } from "./session/zcodeTaskService.js";
 export type {
   ZCodeArchivedTaskDeletionResult,
@@ -133,7 +133,7 @@ export type {
   WindowHostControllerTaskListResult,
 } from "./window-controller/windowController.js";
 
-// ZCode agent service — IZCodeAgentService is both a type (interface) and value (descriptor)
+// Kaguya Code agent service — IZCodeAgentService is both a type (interface) and value (descriptor)
 export {
   IZCodeAgentService,
   type ZCodeAgentLocalRuntimeChildProcesses,
@@ -177,7 +177,7 @@ export type {
   ZCodeAgentWorkspaceTarget,
 } from "./zcode-agent/zcodeAgent.js";
 
-// ZCode session service — app-facing session facade without ZCode Agent naming.
+// Kaguya Code session service — app-facing session facade without Kaguya Code Agent naming.
 export { IZCodeSessionService } from "./zcode-session/zcodeSession.js";
 export type {
   ZCodeSessionCreateParams,
@@ -222,6 +222,8 @@ export type { SessionRealtimePort } from "./session/sessionRealtimePort.js";
 // FileWatcher service — IFileWatcherService is both a type (interface) and value (descriptor)
 export { IFileWatcherService } from "./fileWatcher/fileWatcher.js";
 
+// Codex（ChatGPT 账号）渠道 — 仅导出契约；实现位于 node.ts（依赖 Node 环境）
+export { ICodexAuthService, type CodexAuthStatus } from "./codex-auth/codexAuth.js";
 // OAuth service — IOAuthService is both a type (interface) and value (descriptor)
 export { IOAuthService } from "./oauth/oauth.js";
 

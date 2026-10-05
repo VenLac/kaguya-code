@@ -297,7 +297,7 @@ async function readRawCredentialRecord(filePath: string): Promise<Record<string,
     if (getErrorCode(error) === "ENOENT") {
       return {};
     }
-    throw new Error(`Unable to read shared ZCode credentials: ${filePath}`, { cause: error });
+    throw new Error(`Unable to read shared Kaguya Code credentials: ${filePath}`, { cause: error });
   }
 
   try {
@@ -307,7 +307,7 @@ async function readRawCredentialRecord(filePath: string): Promise<Record<string,
     // 先保留现场再失败，调用方必须显式处理恢复，不能静默覆盖。
     const backupPath = await backupCorruptFile(filePath).catch(() => undefined);
     const evidence = backupPath ? ` Backup: ${backupPath}` : "";
-    throw new Error(`Shared ZCode credentials are corrupt: ${filePath}.${evidence}`, {
+    throw new Error(`Shared Kaguya Code credentials are corrupt: ${filePath}.${evidence}`, {
       cause: error,
     });
   }

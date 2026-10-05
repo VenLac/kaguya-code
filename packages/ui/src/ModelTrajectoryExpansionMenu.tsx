@@ -1,4 +1,4 @@
-import { Settings2Icon } from "lucide-react";
+import { Settings2Icon } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import {
   DropdownMenu,

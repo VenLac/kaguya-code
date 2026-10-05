@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "@zcode/lunar-icons";
 
 import { cn } from "../lib/utils.js";
 

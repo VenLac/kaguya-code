@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Anchor, Download, ShieldCheck } from "lucide-react";
+import { Anchor, Download, ShieldCheck } from "@zcode/lunar-icons";
 import type { Hook, PluginHookDetail, PluginScope } from "@zcode/shared";
 import { Badge } from "@/components/ui/badge.js";
 import { Button } from "@/components/ui/button.js";

@@ -12,7 +12,7 @@ import {
 /* New task 草稿页推荐提示词入口。
    推荐配置来自 Client Scenes 的 draft-suggestion scene。 */
 import type { CSSProperties } from "react";
-import { X, Check, Info, LoaderCircle, SquareCode, TriangleAlert } from "lucide-react";
+import { X, Check, Info, LoaderCircle, SquareCode, TriangleAlert } from "@zcode/lunar-icons";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ClientSceneLucideIcon } from "@/components/ClientSceneLucideIcon.js";
 import { Button } from "@/components/ui/button.js";

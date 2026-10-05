@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@zcode/client": "workspace:*",
+    "@zcode/lunar-icons": "workspace:*",
     "@zcode/shared": "workspace:*",
     "@zcode/ui": "workspace:*",
     "react": "^19.2.4",

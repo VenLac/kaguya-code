@@ -197,7 +197,7 @@ function resolvePromptTelemetryModelProvider(params: {
     return customProviderId || provider || "";
   }
 
-  // ghost supplier 代表尚未解析到稳定 custom provider 的临时隔离态，provider 维度统一回退到当前 ZCode Agent provider。
+  // ghost supplier 代表尚未解析到稳定 custom provider 的临时隔离态，provider 维度统一回退到当前 Kaguya Code Agent provider。
   if (selectedSupplierKey.startsWith(GHOST_SUPPLIER_KEY_PREFIX)) {
     return provider ?? "";
   }
@@ -605,7 +605,7 @@ export function buildPromptTelemetryExtraDetail(params: {
     // provider_name 当前承载 provider hostname；不改 model_provider，避免影响既有 uuid/provider id 数仓口径。
     // 这里只从 URL 解析 hostname，不上报完整 endpoint，避免泄漏路径或 query。
     ...(providerHostname ? { provider_name: providerHostname } : {}),
-    // agent 字段取 ZCode Agent provider；本仓库没有独立 session.agentId。
+    // agent 字段取 Kaguya Code Agent provider；本仓库没有独立 session.agentId。
     agent: params.provider ?? "",
     plan_status: params.planIdentitySnapshot?.planStatus ?? "unknown",
     plan_product_id: params.planIdentitySnapshot?.planProductId ?? "",
@@ -690,7 +690,7 @@ function buildPromptUsageTelemetryExtraDetail(
     reasoning_tokens: String(usage.reasoningTokens ?? 0),
     cached_input_tokens: String(usage.cachedInputTokens ?? 0),
     cache_write_input_tokens: String(usage.cachedWriteInputTokens ?? 0),
-    // ZCode Agent 链路未透出 tool use prompt token，成功态显式补 0 保持 extraDetail 字段集合完整。
+    // Kaguya Code Agent 链路未透出 tool use prompt token，成功态显式补 0 保持 extraDetail 字段集合完整。
     tool_use_prompt_tokens: "0",
     total_tokens: String(usage.totalTokens),
     ...(tokenSource ? { token_source: tokenSource } : {}),

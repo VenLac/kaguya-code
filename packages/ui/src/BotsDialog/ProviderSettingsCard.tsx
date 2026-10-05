@@ -8,7 +8,7 @@ import {
   LoaderCircle,
   QrCode,
   Unlink,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import QRCode from "qrcode";
 import { useEffect, useState, type ReactNode } from "react";
 import type { BotConfig, BotServiceStatus } from "@zcode/shared";

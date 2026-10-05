@@ -1,5 +1,5 @@
 import { CodingPlanEntryButton } from "@/settings/CodingPlanEntryButton.js";
-import { Loader2Icon, RocketIcon } from "lucide-react";
+import { Loader2Icon, RocketIcon } from "@zcode/lunar-icons";
 import type { UsageEntitlementSnapshot, UsageQuotaLimit } from "@zcode/shared";
 import { cn } from "@/components/lib/utils.js";
 import type { useZCodeIntl } from "@/i18n/IntlProvider.js";

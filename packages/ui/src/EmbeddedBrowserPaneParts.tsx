@@ -11,7 +11,7 @@ import {
   MousePointerClick,
   RefreshCw,
   TriangleAlertIcon,
-} from "lucide-react";
+} from "@zcode/lunar-icons";
 import {
   TID_BROWSER_ADDRESS_INPUT,
   TID_BROWSER_BACK_BUTTON,

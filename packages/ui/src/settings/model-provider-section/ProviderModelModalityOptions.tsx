@@ -1,4 +1,4 @@
-import { LockKeyholeIcon } from "lucide-react";
+import { LockKeyholeIcon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { Button } from "@/components/ui/button.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";

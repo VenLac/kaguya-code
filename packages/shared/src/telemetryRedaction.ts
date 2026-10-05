@@ -140,7 +140,7 @@ function redactTelemetryRouteSegment(segment: string): string {
   return segment.slice(0, TELEMETRY_ROUTE_SEGMENT_MAX_LENGTH);
 }
 
-/** 官方 GLM 名单之外的历史内置模型；仍是 ZCode 自己发布的稳定 ID，不是用户命名。 */
+/** 官方 GLM 名单之外的历史内置模型；仍是 Kaguya Code 自己发布的稳定 ID，不是用户命名。 */
 const TELEMETRY_LEGACY_BUILTIN_MODEL_IDS: readonly string[] = ["charglm-4", "codegeex-4", "emohaa"];
 
 /**
@@ -163,7 +163,7 @@ export interface TelemetryProviderIdentity {
 }
 
 /**
- * 旧报表身份（`builtin:zai` / `builtin:zai-start-plan` 等）是 ZCode 自己的固定 ID。
+ * 旧报表身份（`builtin:zai` / `builtin:zai-start-plan` 等）是 Kaguya Code 自己的固定 ID。
  *
  * 修复原因：V4 supervisor 投影 /report detail 时会用 legacyTelemetryProviderId 把运行时
  * `account:*` 映射成这些旧身份，plan_ttft / perf_ui_* 复用同一份 detail。只认 `account:*`

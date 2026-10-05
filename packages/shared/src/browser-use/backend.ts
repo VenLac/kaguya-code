@@ -73,7 +73,7 @@ export const browserSessionContextSchema = browserDiscoveryContextSchema
   .strict();
 export type BrowserSessionContext = z.infer<typeof browserSessionContextSchema>;
 
-/** ZCode Protocol 的 discovery result 包装；port 层会解包并直接返回 browsers。 */
+/** Kaguya Code Protocol 的 discovery result 包装；port 层会解包并直接返回 browsers。 */
 export const browserBackendListResultSchema = z
   .object({ browsers: z.array(browserBackendDescriptorSchema) })
   .strict();

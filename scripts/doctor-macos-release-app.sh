@@ -3,7 +3,7 @@
 set -euo pipefail
 
 APP_PATH="${1:-${ZCODE_MACOS_RELEASE_APP_PATH:-/Applications/ZCode.app}}"
-# 安装包身份与后端环境分轴：ZCODE_PREVIEW_IDENTITY=1 让生产后端的构建仍是 ZCode Preview。
+# 安装包身份与后端环境分轴：ZCODE_PREVIEW_IDENTITY=1 让生产后端的构建仍是 Kaguya Code Preview。
 # 只认 "1"，与 CI workflow / release 门的精确比较同一套语义（其它拼写一律视为未开启）。
 is_preview_identity_requested() {
   [[ "${ZCODE_PREVIEW_IDENTITY:-}" = "1" ]]

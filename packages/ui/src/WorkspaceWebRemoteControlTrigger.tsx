@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Smartphone } from "lucide-react";
+import { Smartphone } from "@zcode/lunar-icons";
 import { Button } from "@/components/ui/button.js";
 import { cn } from "@/components/lib/utils.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";

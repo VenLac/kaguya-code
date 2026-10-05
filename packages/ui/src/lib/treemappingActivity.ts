@@ -419,7 +419,7 @@ function collectWritableEvents(
         rawOutputContentAction ??
         (summary.actionLabel === "Deleted"
           ? "delete"
-          : // ZCode agent 会返回 kind=edit/title=Write/rawOutput.content.type=update。
+          : // Kaguya Code agent 会返回 kind=edit/title=Write/rawOutput.content.type=update。
             // title 只是展示文案，不能作为写入兜底；这里只信任结构化变更类型，避免 edit 被误染成 write。
             summary.actionLabel === "Created" || summary.operationKind === "write"
             ? "write"

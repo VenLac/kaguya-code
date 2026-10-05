@@ -4,7 +4,7 @@
  * 这个窗口有四个不可妥协的性质，全部来自实测：
  *
  * 1. **不能激活自己所属的 app**（`type: "panel"` + `focusable: false`，两者缺一不可）。它浮在
- *    「系统设置」之上，用户要在它和设置页之间拖拽。只设 focusable 时点击仍会激活 ZCode.app，
+ *    「系统设置」之上，用户要在它和设置页之间拖拽。只设 focusable 时点击仍会激活 Kaguya Code.app，
  *    焦点跳到主窗，引导流程当场断掉 —— 详见 `createRealCuaPermissionPanelWindow` 的注释。
  * 2. **必须压过系统设置**（`alwaysOnTop(true, "screen-saver")`）。普通 `floating` 层级在设置页
  *    激活时会被盖住。
@@ -39,7 +39,7 @@ interface CreateCuaPermissionDragPanelOptions {
   stopSettingsBounds?: () => void;
   /** 浮窗 tile 显示的应用图标（data URL）。缺省时页面回退到内置占位图形。 */
   getIconDataUrl?: () => string | null;
-  /** ZCode 当前界面语言。每次 show 都重新读取，禁止浮窗自行猜测系统语言。 */
+  /** Kaguya Code 当前界面语言。每次 show 都重新读取，禁止浮窗自行猜测系统语言。 */
   getLocale: () => Locale;
   logger: {
     info: (...args: unknown[]) => void;
@@ -140,7 +140,7 @@ export function createCuaPermissionDragPanel(
           if (!window || window.isDestroyed()) return;
           window.setBounds(lastBounds ?? initialBounds);
           // 浮窗是独立静态 renderer，不在主 React Intl 树内；不传 locale 的话
-          // 英文 ZCode 也会显示硬编码中文。先发当前 locale 再显示，避免中文 fallback 闪屏。
+          // 英文 Kaguya Code 也会显示硬编码中文。先发当前 locale 再显示，避免中文 fallback 闪屏。
           window.send(CUA_PERMISSION_PANEL_STATE_CHANNEL, {
             permission,
             locale: options.getLocale(),
@@ -194,7 +194,7 @@ export function createCuaPermissionDragPanel(
  *   alwaysOnTop("screen-saver")—— 压过系统设置窗口；floating 层级会被盖住
  *
  * `type` 与 `focusable` 必须**同时**存在，这是踩过的坑：初版只设 focusable:false，点击浮窗后
- * 焦点跳到了 ZCode 主窗。三方对比实测结论 ——
+ * 焦点跳到了 Kaguya Code 主窗。三方对比实测结论 ——
  *   focusable:false 单独          → app 仍被激活，焦点落到同 app 下一个可聚焦窗口（主窗）
  *   type:panel 单独（focusable 默认 true） → panel 自己拿焦点并激活 app，系统设置照样被踢走
  *   两者兼备                       → 点击后零 focus 事件，系统设置保持前台 ✓

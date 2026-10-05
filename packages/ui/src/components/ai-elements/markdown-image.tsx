@@ -2,7 +2,7 @@
 
 import type { FileMediaPreview } from "@zcode/shared";
 import { decodeMarkdownArtifactImageSource } from "@zcode/shared";
-import { ImageIcon, ImageOffIcon } from "lucide-react";
+import { ImageIcon, ImageOffIcon } from "@zcode/lunar-icons";
 import { Children, isValidElement } from "react";
 import type { ComponentProps, MouseEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";

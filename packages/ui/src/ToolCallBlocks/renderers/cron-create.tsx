@@ -1,4 +1,4 @@
-import { ClockIcon } from "lucide-react";
+import { ClockIcon } from "@zcode/lunar-icons";
 import { TID_CRON_CREATE_CARD, TID_CRON_CREATE_OPEN } from "@zcode/shared";
 import type { ZCodeAutomationScheduleRule } from "@zcode/shared";
 import { Button } from "@/components/ui/button.js";

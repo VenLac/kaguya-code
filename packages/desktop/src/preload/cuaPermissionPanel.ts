@@ -14,9 +14,9 @@ const CUA_PERMISSION_PANEL_STATE_CHANNEL = "zcode:cua-permission-panel-state";
 
 interface CuaPermissionPanelState {
   permission: CuaPermissionKind;
-  /** main 进程维护的 ZCode 当前界面语言；浮窗不得另读系统语言或 localStorage。 */
+  /** main 进程维护的 Kaguya Code 当前界面语言；浮窗不得另读系统语言或 localStorage。 */
   locale: Locale;
-  /** 真实 ZCode 图标（data URL）；读不到时为 null，页面保留占位图形。 */
+  /** 真实 Kaguya Code 图标（data URL）；读不到时为 null，页面保留占位图形。 */
   iconDataUrl: string | null;
 }
 
