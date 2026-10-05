@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Kaguya Code 命令行版启动器。
+#
+# 用法与 `zcode` 发行包一致：
+#   kaguya-cli                 进入终端交互界面（TUI）
+#   kaguya-cli -p "提问"       单次提问，不打开 TUI
+#   kaguya-cli --help          查看全部参数
+#
+# TUI 的原生库要求 Node 24.14.0（见 mise.toml），系统 Node 版本不对时会报
+# "Node FFI backend does not support usize"。因此优先用已安装桌面版自带的
+# Electron 运行时（内置 Node 24.14.0，通过 ELECTRON_RUN_AS_NODE 当 Node 用）。
+set -euo pipefail
+
+REPO="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+APP_DIR="${KAGUYA_APP_DIR:-/opt/Kaguya Code}"
+CLI="$REPO/apps/zcode-cli/packages/cli/dist/zcode.cjs"
+
+if [[ ! -f "$CLI" ]]; then
+  echo "找不到 $CLI" >&2
+  echo "请先构建：pnpm --filter \"@zcode/cli...\" build" >&2
+  exit 1
+fi
+
+# 内置 Provider 配置：已安装桌面版里有一份，没有就用仓库里的。
+if [[ -z "${ZCODE_BUILTIN_PROVIDER_CONFIG_FILE:-}" ]]; then
+  if [[ -f "$APP_DIR/resources/config/provider/zcode-builtin.json" ]]; then
+    export ZCODE_BUILTIN_PROVIDER_CONFIG_FILE="$APP_DIR/resources/config/provider/zcode-builtin.json"
+  else
+    export ZCODE_BUILTIN_PROVIDER_CONFIG_FILE="$REPO/config/provider/zcode-builtin.json"
+  fi
+fi
+
+if [[ -x "$APP_DIR/kaguya-code" ]]; then
+  ELECTRON_RUN_AS_NODE=1 exec "$APP_DIR/kaguya-code" "$CLI" "$@"
+fi
+
+NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)"
+if [[ "$NODE_MAJOR" != "24" ]]; then
+  echo "警告：当前 Node 是 $(node -v 2>/dev/null || echo 未安装)，TUI 需要 24.14.0；" >&2
+  echo "      请安装桌面版，或用 mise 安装项目指定的 Node。" >&2
+fi
+exec node "$CLI" "$@"

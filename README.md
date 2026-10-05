@@ -141,6 +141,24 @@ Web 模式默认工作目录为当前目录，监听 `127.0.0.1`，默认不启�
 
 构建方式见下方打包章节。`pnpm build:zcode` 只生成发行包，不会替换 `PATH` 中已有的 `zcode`。如果命令仍指向旧安装或其他源码目录，macOS / Linux 可用 `command -v zcode` 检查，Windows 可用 `where.exe zcode` 检查。
 
+### 本机快速运行（已安装桌面版）
+
+不想打发行包时，可直接用仓库里的启动器 [`scripts/kaguya-cli`](scripts/kaguya-cli)：
+
+```bash
+# 首次：构建 CLI 及其依赖（含 TUI）
+pnpm --filter "@zcode/cli..." build
+
+scripts/kaguya-cli                  # 终端交互界面（TUI）
+scripts/kaguya-cli -p "解释一下这个仓库"   # 单次提问，不打开 TUI
+scripts/kaguya-cli --help
+
+# 想在任何目录直接敲 kaguya-cli：
+ln -s "$PWD/scripts/kaguya-cli" ~/.local/bin/kaguya-cli
+```
+
+TUI 的原生库要求 Node 24.14.0；系统 Node 不是这个版本时会报 `Node FFI backend does not support usize`。启动器会优先使用已安装桌面版（`/opt/Kaguya Code`）自带的 Electron 运行时，它内置的就是 Node 24.14.0。命令行与桌面版共用 `~/.zcode` 里的配置、模型和会话，包括 ChatGPT · Codex 渠道。
+
 ### CLI 源码开发
 
 直接开发 TUI 或 Agent 时，运行源码入口：

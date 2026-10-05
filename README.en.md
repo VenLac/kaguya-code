@@ -137,6 +137,24 @@ When starting the general Web service's HTTP entry directly, configure API/WebSo
 
 See Packaging below for build instructions. `pnpm build:zcode` only creates the distribution; it does not replace an existing `zcode` on `PATH`. If the command still points to an older installation or another checkout, check it with `command -v zcode` on macOS / Linux or `where.exe zcode` on Windows.
 
+### Quick start (desktop app installed)
+
+To skip building the distribution package, use the launcher [`scripts/kaguya-cli`](scripts/kaguya-cli):
+
+```bash
+# First time: build the CLI and its dependencies (including the TUI)
+pnpm --filter "@zcode/cli..." build
+
+scripts/kaguya-cli                  # terminal UI (TUI)
+scripts/kaguya-cli -p "Explain this repo"   # one-shot prompt, no TUI
+scripts/kaguya-cli --help
+
+# To run it as `kaguya-cli` from any directory:
+ln -s "$PWD/scripts/kaguya-cli" ~/.local/bin/kaguya-cli
+```
+
+The TUI's native library needs Node 24.14.0; with another Node version it fails with `Node FFI backend does not support usize`. The launcher prefers the Electron runtime of the installed desktop app (`/opt/Kaguya Code`), which embeds Node 24.14.0. The CLI shares configuration, models and sessions with the desktop app via `~/.zcode`, including the ChatGPT · Codex channel.
+
 ### CLI Source Development
 
 Use the source entry when developing the TUI or Agent:
