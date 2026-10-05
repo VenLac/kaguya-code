@@ -20,6 +20,36 @@ Kaguya Code 是 AI 编程工作台，提供桌面应用、浏览器界面和终�
 >
 > 内部包名（`@zcode/*`）、数据目录 `~/.zcode`、`zcode://` 协议和 `ZCODE_*` 环境变量沿用上游，未改动。应用仍会访问上游的遥测、配置与 CDN 端点。
 
+## 界面预览
+
+<p align="center">
+  <img src="docs/screenshots/home-light.png" alt="浅色主题首页：字符月亮与输入框" width="860" />
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/home-dark.png" alt="深色主题" /><br /><sub>深色主题，同一套字符月亮</sub></td>
+    <td width="50%"><img src="docs/screenshots/model-picker.png" alt="模型选择" /><br /><sub>模型选择：ChatGPT · Codex 渠道下的 GPT 模型</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/settings-codex.png" alt="Codex 账号渠道" /><br /><sub>设置 → 模型设置 → 账号渠道：用 ChatGPT 账号登录</sub></td>
+    <td width="50%"><img src="docs/screenshots/profile.png" alt="个人资料" /><br /><sub>头像与昵称可自定义，默认头像是旋转的月亮</sub></td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="docs/screenshots/icons.png" alt="手绘图标库" width="860" /><br />
+  <sub>手绘图标库（<a href="packages/lunar-icons/">packages/lunar-icons</a>）</sub>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/onboarding.png" alt="首次引导" width="640" />
+  <img src="docs/screenshots/logo.png" alt="Kaguya Code 图标" width="360" /><br />
+  <sub>首次引导，以及应用图标：夜空蓝底上由圆点排成的字符月亮</sub>
+</p>
+
+> 截图均在全新的空白配置下截取，未包含任何个人数据；模型列表来自 ChatGPT · Codex 渠道的内置清单，未登录状态。
+
 ## 更新
 
 - 2026-10-05：改名为 Kaguya Code，新增 Codex 渠道，更换图标。

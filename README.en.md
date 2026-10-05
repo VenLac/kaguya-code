@@ -20,6 +20,36 @@ Kaguya Code is an AI coding workspace with desktop, browser, and terminal interf
 >
 > Internal package names (`@zcode/*`), the `~/.zcode` data directory, the `zcode://` protocol and `ZCODE_*` environment variables are kept from upstream. The app still contacts upstream telemetry, config and CDN endpoints.
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home-light.png" alt="Light theme home: the character moon and the composer" width="860" />
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/home-dark.png" alt="Dark theme" /><br /><sub>Dark theme, same character moon</sub></td>
+    <td width="50%"><img src="docs/screenshots/model-picker.png" alt="Model picker" /><br /><sub>Model picker: GPT models under the ChatGPT · Codex channel</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/settings-codex.png" alt="Codex account channel" /><br /><sub>Settings → Model settings → Account channels: sign in with a ChatGPT account</sub></td>
+    <td width="50%"><img src="docs/screenshots/profile.png" alt="Profile" /><br /><sub>Editable avatar and name; the default avatar is a rotating moon</sub></td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="docs/screenshots/icons.png" alt="Hand-drawn icon set" width="860" /><br />
+  <sub>Hand-drawn icon set (<a href="packages/lunar-icons/">packages/lunar-icons</a>)</sub>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/onboarding.png" alt="First-run onboarding" width="640" />
+  <img src="docs/screenshots/logo.png" alt="Kaguya Code app icon" width="360" /><br />
+  <sub>First-run onboarding, and the app icon: a dot-matrix character moon on a night-blue tile</sub>
+</p>
+
+> All screenshots were taken on a clean, empty profile and contain no personal data. The model list comes from the built-in ChatGPT · Codex list, signed-out.
+
 ## Updates
 
 - 2026-10-05: Renamed to Kaguya Code, added the Codex channel, new icon.
