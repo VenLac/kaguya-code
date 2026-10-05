@@ -19,6 +19,7 @@
     "build": "tsc",
     "clean": "node ../../scripts/clean-dist.mjs",
     "typecheck": "tsc --noEmit",
+    "test:permission": "node --import tsx --test test/external-permission-broker.test.ts",
     "lint": "oxlint src",
     "lint:fix": "oxlint --write src"
   },
