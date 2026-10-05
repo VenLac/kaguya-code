@@ -312,6 +312,8 @@ import { ConversationShareHttpClient } from "./conversation-share/conversationSh
 import { IBotsService } from "./bots/bots.js";
 import { IFileWatcherService } from "./fileWatcher/fileWatcher.js";
 import { IOAuthService } from "./oauth/oauth.js";
+import { IClaudeCodeService } from "./claude-code/claudeCode.js";
+import { createClaudeCodeService } from "./claude-code/claudeCodeService.js";
 import { ICodexAuthService } from "./codex-auth/codexAuth.js";
 import { createCodexAuthService } from "./codex-auth/codexAuthService.js";
 import { purgeLegacyZhipuCredentials } from "./oauth/purgeLegacyZhipuCredentials.js";
@@ -2472,6 +2474,10 @@ export function createLocalServices(options: {
     .register(
       ICodexAuthService,
       createCodexAuthService({ providerSettings: providerRuntime.providerSettings }),
+    )
+    .register(
+      IClaudeCodeService,
+      createClaudeCodeService({ providerSettings: providerRuntime.providerSettings }),
     )
     .register(
       IUsageStatsService,
