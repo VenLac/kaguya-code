@@ -12,10 +12,7 @@ import {
 import armsRum from "@arms/rum-electron";
 import { createArmsUserIdentitySync } from "./armsUserIdentity.js";
 import { ensureDesktopDeviceMidSync } from "./desktopDeviceMid.js";
-import {
-  createDesktopContextPromptRollout,
-  createElectronDesktopContextPromptConfigFetcher,
-} from "./desktopContextPromptRollout.js";
+import { createDesktopContextPromptRollout } from "./desktopContextPromptRollout.js";
 import { buildBrowserViewCloseTabNotification } from "./browserView/browserCloseTabNotification.js";
 import { BrowserGuestManager } from "./browserView/browserGuestManager.js";
 import { createElectronBrowserWebmRecorder } from "./browserView/electronBrowserWebmRecorder.js";
@@ -132,7 +129,6 @@ import { applyAppIcon } from "./desktopWindowChrome.js";
 import { resolveWindowsAppUserModelIdForFlavor } from "../../scripts/desktop-product-identity.mjs";
 import type { DesktopWindowSize } from "./desktopWindowSize.js";
 import { maybeWarnArchitectureMismatch } from "./desktopArchitectureGuard.js";
-import { maybeBlockStartupForForceUpdate } from "./forceUpdateGuard.js";
 import { createWindowsDesktopTray, updateWindowsDesktopTrayMenu } from "./desktopTray.js";
 import { createWindowsCuaOperationIndicator } from "./windowsCuaOperationIndicator.js";
 import {
@@ -197,7 +193,6 @@ import {
   listRegisteredHostAgentProcessIds,
   setBrowserUseGuestWebContentsIdsProvider,
 } from "./resourceManagerWindow.js";
-import { createDesktopHelpConfigReader } from "./desktopHelpConfig.js";
 import { registerPlatformIpcHandlers } from "./desktopMainIpcPlatform.js";
 import {
   loadCliMcpFromUserDirectory,
@@ -789,27 +784,10 @@ const remoteSessionManager = createRemoteWorkspaceSessionManager({
 });
 
 const deviceMid = ensureDesktopDeviceMidSync();
-// 帮助配置是公开读取，不能复用下面附带账号鉴权的灰度响应缓存。
-const readHelpConfig = createDesktopHelpConfigReader({
-  appVersion: ZCODE_VERSION || app.getVersion(),
-  deviceMid,
-  resolveEndpointOrigin: resolveCurrentZCodeEndpointOrigin,
-});
-// 同一个 /api/v1/client/configs fetcher 供两个灰度 rollout 共用（请求参数与鉴权完全一致，
-// 各自独立缓存/去重，服务端按 data.configs.<key> 区分功能）。
-const electronClientConfigsFetcher = createElectronDesktopContextPromptConfigFetcher({
-  appVersion: ZCODE_VERSION || app.getVersion(),
-  deviceMid,
-  resolveEndpointOrigin: resolveCurrentZCodeEndpointOrigin,
-});
-desktopContextPromptRollout = createDesktopContextPromptRollout({
-  fetchConfig: electronClientConfigsFetcher,
-  logger,
-});
-const rendererActionTraceRollout = createRendererActionTraceRollout({
-  fetchConfig: electronClientConfigsFetcher,
-  logger,
-});
+// 不再向上游服务端拉取帮助配置或灰度配置：这些请求会带上版本、平台和设备标识。
+// 灰度开关因此固定为默认值（均为关闭），反馈与社区入口只使用本地配置。
+desktopContextPromptRollout = createDesktopContextPromptRollout({ logger });
+const rendererActionTraceRollout = createRendererActionTraceRollout({ logger });
 const localTtftExporter = createLocalTtftExporter({
   env: { ...hostProcessLocalEnv, ...process.env },
   version: ZCODE_VERSION || app.getVersion(),
@@ -1351,7 +1329,6 @@ async function executeDesktopCommandForApp(
   senderWindow?: BrowserWindow | null,
 ) {
   return executeDesktopCommand({
-    fetchHelpConfig: readHelpConfig,
     command,
     senderWindow,
     logger,
@@ -2013,7 +1990,8 @@ app.whenReady().then(async () => {
   // Preview 身份无论连接哪个后端都不自动更新：stable feed 上只分发正式 Kaguya Code 安装包，
   // 不向 Preview 渠道提供更新。
   void initAutoUpdater({
-    enabled: ZCODE_PRODUCT_FLAVOR === "production",
+    // Kaguya Code 没有更新源：自动更新固定关闭，也就不会向上游发送设备标识。
+    enabled: false,
     onBeforeQuitAndInstall: async () => {
       notifyStabilityLifecycle("update_install");
       await prepareAppQuit("auto-update quitAndInstall", "update-install");
@@ -2057,7 +2035,6 @@ app.whenReady().then(async () => {
   });
 
   registerPlatformIpcHandlers({
-    fetchHelpConfig: readHelpConfig,
     logger,
     // CDP-on-guest pivot：renderer `<webview>` dom-ready 上报 guest webContentsId → attach。
     attachBrowserGuest: (key, webContentsId, options) => {
@@ -2254,23 +2231,8 @@ app.whenReady().then(async () => {
   // 分支不 bump 版本），会被 release minimalVersion 误判为"需强制升级"而启动秒退。force-update
   // 是面向打包发布客户端的安全门，对未打包 dev 运行时无意义。打包版 app.isPackaged === true，
   // gate 照常生效，对真实用户零影响。
-  const skipForceUpdateForLocalDevRuntime = !app.isPackaged;
-  const forceUpdateGuardResult =
-    ZCODE_PRODUCT_FLAVOR === "production" && !skipForceUpdateForLocalDevRuntime
-      ? await maybeBlockStartupForForceUpdate({
-          locale: currentApplicationLocale,
-          logger,
-          endpointOrigin: await resolveCurrentZCodeEndpointOrigin(),
-          onBlocked: () => {
-            forceUpdateMainWindowCreationBlocked = true;
-          },
-        })
-      : { blocked: false };
-  if (ZCODE_PRODUCT_FLAVOR !== "production") {
-    logger.info("[force-update] Preview 跳过远端强制升级检查");
-  } else if (skipForceUpdateForLocalDevRuntime) {
-    logger.info("[force-update] 本地 dev 构建（未打包）跳过远端强制升级检查");
-  }
+  // 远端强制升级检查已移除（它会向上游发送版本与设备标识）。
+  const forceUpdateGuardResult = { blocked: false } as const;
   if (forceUpdateGuardResult.blocked) {
     return;
   }

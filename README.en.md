@@ -18,7 +18,9 @@ Kaguya Code is an AI coding workspace with desktop, browser, and terminal interf
 > - New ChatGPT (Codex account OAuth) channel for GPT models.
 > - Editable avatar and display name in the sidebar; the default avatar is a rotating moon.
 >
-> Internal package names (`@zcode/*`), the `~/.zcode` data directory, the `zcode://` protocol and `ZCODE_*` environment variables are kept from upstream. The app still contacts upstream telemetry, config and CDN endpoints.
+> Internal package names (`@zcode/*`), the `~/.zcode` data directory, the `zcode://` protocol and `ZCODE_*` environment variables are kept from upstream.
+>
+> Privacy: the app no longer sends any request to the upstream server at startup (client-config fetch, help config, rollout flags, forced-update check and auto-update were removed; they used to carry version, platform and a device ID). Telemetry and crash-report endpoints are empty by default, so nothing is reported. The remaining upstream-related features only run when you use them (feedback, conversation share) or on demand (CDN refresh of the built-in provider config, the official plugin marketplace).
 
 ## Screenshots
 

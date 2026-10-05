@@ -1,9 +1,4 @@
-import {
-  buildZCodeEndpointUrls,
-  buildZCodeSourceHeadersFromContext,
-  ZCODE_ENV,
-  ZCODE_DESKTOP_CONTEXT_PROMPT_ENABLED_ENV,
-} from "@zcode/shared";
+import { ZCODE_DESKTOP_CONTEXT_PROMPT_ENABLED_ENV } from "@zcode/shared";
 import {
   createSingleFeatureRollout,
   type SingleFeatureRollout,
@@ -14,7 +9,6 @@ export { ZCODE_DESKTOP_CONTEXT_PROMPT_ENABLED_ENV };
 
 type DesktopContextPromptRolloutLogger = SingleFeatureRolloutLogger;
 export const DESKTOP_CONTEXT_PROMPT_CACHE_TTL_MS = 60 * 60 * 1_000;
-const DESKTOP_CONTEXT_PROMPT_MAX_RESPONSE_BYTES = 1024 * 1024;
 
 interface DesktopContextPromptConfig {
   enabled: boolean;
@@ -61,7 +55,7 @@ function resolveDesktopContextPromptConfig(payload: unknown): DesktopContextProm
 }
 
 export function createDesktopContextPromptRollout(options: {
-  fetchConfig: (signal: AbortSignal) => Promise<unknown>;
+  fetchConfig?: (signal: AbortSignal) => Promise<unknown>;
   logger: DesktopContextPromptRolloutLogger;
   timeoutMs?: number;
   cacheTtlMs?: number;
@@ -75,85 +69,4 @@ export function createDesktopContextPromptRollout(options: {
     timeoutMs: options.timeoutMs,
     cacheTtlMs: options.cacheTtlMs,
   });
-}
-
-export function createElectronDesktopContextPromptConfigFetcher(options: {
-  appVersion: string;
-  deviceMid: string;
-  resolveEndpointOrigin: () => Promise<string>;
-}): (signal: AbortSignal) => Promise<unknown> {
-  return async (signal) => {
-    const { net } = await import("electron");
-    const endpointOrigin = await options.resolveEndpointOrigin();
-    const url = new URL(`${buildZCodeEndpointUrls(endpointOrigin).origin}/api/v1/client/configs`);
-    url.searchParams.set("app_version", options.appVersion);
-    url.searchParams.set("platform", `${process.platform}-${process.arch}`);
-
-    return await new Promise<unknown>((resolve, reject) => {
-      const request = net.request(url.toString());
-      let responseBytes = 0;
-      let body = "";
-      let settled = false;
-
-      function onAbort() {
-        request.abort();
-        settle(() => reject(new Error("desktop context prompt config aborted")));
-      }
-
-      const settle = (callback: () => void) => {
-        if (settled) {
-          return;
-        }
-        settled = true;
-        signal.removeEventListener("abort", onAbort);
-        callback();
-      };
-      signal.addEventListener("abort", onAbort, { once: true });
-
-      const sourceHeaders = buildZCodeSourceHeadersFromContext({
-        appVersion: options.appVersion,
-        arch: process.arch,
-        deviceMid: options.deviceMid,
-        endpointOrigin,
-        platform: process.platform,
-        releaseChannel: ZCODE_ENV,
-        sourceTitle: "electron",
-      });
-      for (const [name, value] of Object.entries(sourceHeaders)) {
-        request.setHeader(name, value);
-      }
-      request.on("response", (response) => {
-        const statusCode = response.statusCode ?? 0;
-        if (statusCode < 200 || statusCode >= 300) {
-          settle(() => reject(new Error(`desktop context prompt config failed: ${statusCode}`)));
-          request.abort();
-          return;
-        }
-        response.on("data", (chunk: Buffer | string) => {
-          responseBytes += Buffer.byteLength(chunk);
-          if (responseBytes > DESKTOP_CONTEXT_PROMPT_MAX_RESPONSE_BYTES) {
-            settle(() => reject(new Error("desktop context prompt config response too large")));
-            request.abort();
-            return;
-          }
-          body += chunk.toString();
-        });
-        response.on("end", () => {
-          try {
-            const parsed = JSON.parse(body);
-            settle(() => resolve(parsed));
-          } catch (error) {
-            settle(() => reject(error instanceof Error ? error : new Error(String(error))));
-          }
-        });
-        response.on("error", (error) => {
-          settle(() => reject(error instanceof Error ? error : new Error(String(error))));
-        });
-      });
-      request.on("error", (error) => {
-        settle(() => reject(error instanceof Error ? error : new Error(String(error))));
-      });
-      request.end();
-    });
-  };
 }

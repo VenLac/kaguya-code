@@ -45,7 +45,11 @@ interface CreateSingleFeatureRolloutOptions<T extends SingleFeatureRolloutConfig
   defaultValue: T;
   /** 日志前缀，如 "desktop-context-prompt" / "renderer-action-trace"。 */
   logTag: string;
-  fetchConfig: (signal: AbortSignal) => Promise<unknown>;
+  /**
+   * 省略即离线：不发任何请求，始终使用 defaultValue。Kaguya Code 不再向上游服务端拉取灰度配置，
+   * 所以这里不会带出设备标识、版本号或平台信息。
+   */
+  fetchConfig?: (signal: AbortSignal) => Promise<unknown>;
   logger: SingleFeatureRolloutLogger;
   timeoutMs?: number;
   cacheTtlMs?: number;
@@ -55,6 +59,14 @@ export function createSingleFeatureRollout<T extends SingleFeatureRolloutConfig>
   options: CreateSingleFeatureRolloutOptions<T>,
 ): SingleFeatureRollout<T> {
   let snapshot: T = options.defaultValue;
+  const fetchConfig = options.fetchConfig;
+  if (!fetchConfig) {
+    return {
+      refresh: () => Promise.resolve(snapshot),
+      getSnapshot: () => snapshot,
+      awaitFirstDecision: () => Promise.resolve(snapshot),
+    };
+  }
   let snapshotExpiresAt = 0;
   let inFlight: Promise<T> | undefined;
   const timeoutMs = Math.max(options.timeoutMs ?? SINGLE_FEATURE_REQUEST_TIMEOUT_MS, 1);
@@ -79,7 +91,7 @@ export function createSingleFeatureRollout<T extends SingleFeatureRolloutConfig>
           timeout.unref?.();
         });
         const payload = await Promise.race([
-          options.fetchConfig(controller.signal),
+          fetchConfig(controller.signal),
           timeoutPromise,
         ]);
         const next = options.resolveConfig(payload);

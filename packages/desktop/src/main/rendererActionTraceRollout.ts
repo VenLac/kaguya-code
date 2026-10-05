@@ -58,7 +58,7 @@ function resolveRendererActionTraceConfig(payload: unknown): RendererActionTrace
 }
 
 export function createRendererActionTraceRollout(options: {
-  fetchConfig: (signal: AbortSignal) => Promise<unknown>;
+  fetchConfig?: (signal: AbortSignal) => Promise<unknown>;
   logger: SingleFeatureRolloutLogger;
   timeoutMs?: number;
   cacheTtlMs?: number;
