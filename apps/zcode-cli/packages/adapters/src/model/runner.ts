@@ -55,6 +55,7 @@ export type {
 export { normalizeUsage, toModelStreamEvent } from "./runner-normalization.js";
 
 export interface AiSdkModelAdapterOptions {
+  claudeCode?: AiSdkModelExecutionConfig["claudeCode"];
   defaultHeaders?: AiSdkModelExecutionConfig["defaultHeaders"];
   network?: AiSdkNetworkConfig;
   runtime?: AiSdkModelRuntime;
@@ -92,6 +93,7 @@ export class AiSdkModelAdapter {
     this.execution = new AiSdkModelExecution(
       {
         defaultHeaders: options.defaultHeaders,
+        ...(options.claudeCode ? { claudeCode: options.claudeCode } : {}),
         ...(options.network ? { network: options.network } : {}),
         ...(options.env ? { env: options.env } : {}),
       },

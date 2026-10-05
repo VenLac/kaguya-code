@@ -96,12 +96,15 @@
     "clean": "node ../../scripts/clean-dist.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint src",
-    "lint:fix": "oxlint --write src"
+    "lint:fix": "oxlint --write src",
+    "test:claude-code": "node --import tsx --test \"test/claude-code/*.test.ts\"",
+    "typecheck:test": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "3.0.81",
     "@ai-sdk/openai": "^3.0.58",
     "@ai-sdk/openai-compatible": "^2.0.58",
+    "@ai-sdk/provider": "3.0.10",
     "@modelcontextprotocol/client": "2.0.0",
     "@zcode/contracts": "workspace:*",
     "@zcode/dynamic-workflow": "workspace:*",

@@ -142,6 +142,9 @@ importers:
       '@ai-sdk/openai-compatible':
         specifier: ^2.0.58
         version: 2.0.60(patch_hash=9632fe9d821b3dc20939ae509cc35b968d90d018bbd1d812390718898182a38b)(zod@4.6.5)
+      '@ai-sdk/provider':
+        specifier: 3.0.10
+        version: 3.0.10
       '@modelcontextprotocol/client':
         specifier: 2.0.0
         version: 2.0.0

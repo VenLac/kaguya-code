@@ -11,7 +11,7 @@ import { isAnthropicFirstPartyModelId, toStrictToolSchema } from "./strict-tool-
 export interface AiSdkToolTransformOptions {
   requiresMfjsToolSchema?: boolean;
   supportsNativeWebSearch?: boolean;
-  providerKind?: "openai" | "anthropic" | "openai-compatible" | "gateway" | "custom";
+  providerKind?: "openai" | "anthropic" | "openai-compatible" | "gateway" | "custom" | "claude-code";
 
   /** 本次请求的模型 id，仅用于首方 strict 资格判定；缺席即不启用 strict。 */
   modelId?: string;
