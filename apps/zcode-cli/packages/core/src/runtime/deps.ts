@@ -185,6 +185,8 @@ export type {
   DynamicWorkflowRunProgressPayload,
   TargetChangedPayload,
   UserInputAutoResolutionUpdatedPayload,
+  PermissionRequestedPayload,
+  PermissionResolvedPayload,
   TargetCompletionVerificationPayload,
   TimelinePart,
   TimelinePartDraft,
