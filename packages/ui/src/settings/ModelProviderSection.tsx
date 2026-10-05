@@ -27,6 +27,7 @@ import { useModelProviders } from "@/hooks/useModelProviders.js";
 import { resolveEntitledAccountProviderAccess } from "@/lib/accountProviderAccess.js";
 import { usePlatform } from "@/hooks/usePlatform.js";
 import { useServices } from "@/hooks/useServices.js";
+import { ClaudeCodeCard } from "@/settings/ClaudeCodeCard.js";
 import { CodexAuthCard } from "@/settings/CodexAuthCard.js";
 import { useZCodeStore } from "@/store/StoreProvider.js";
 import { logger } from "@/logger.js";
@@ -1101,6 +1102,8 @@ export function ModelProviderSection({
         />
       ) : selectedNavItem?.type === "codex" ? (
         <CodexAuthCard />
+      ) : selectedNavItem?.type === "claudeCode" ? (
+        <ClaudeCodeCard />
       ) : (
         <ModelProviderSectionDetail
           connectionSelections={effectiveConnectionSelections}

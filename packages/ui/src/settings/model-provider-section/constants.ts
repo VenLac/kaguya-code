@@ -220,9 +220,17 @@ export type ModelProviderNavItem =
       statusActive: boolean;
     }
   | {
-      /** 账号渠道（目前只有 Codex / ChatGPT）：不是一个模型来源，选中后显示登录卡片。 */
+      /** 账号渠道（Codex / ChatGPT）：不是一个模型来源，选中后显示登录卡片。 */
       key: string;
       type: "codex";
+      label: string;
+      provider?: null;
+      statusActive: boolean;
+    }
+  | {
+      /** 本机 Claude Code 渠道：选中后显示检测/启用卡片，不涉及任何登录。 */
+      key: string;
+      type: "claudeCode";
       label: string;
       provider?: null;
       statusActive: boolean;
