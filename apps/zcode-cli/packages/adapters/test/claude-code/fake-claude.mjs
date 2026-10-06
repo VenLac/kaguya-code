@@ -27,6 +27,31 @@ const result = (extra = {}) =>
     total_cost_usd: 0.01,
     ...extra,
   });
+const toolBlock = (index, id, name, input) => {
+  stream({
+    type: "content_block_start",
+    index,
+    content_block: { type: "tool_use", id, name, input: {} },
+  });
+  const json = JSON.stringify(input);
+  stream({
+    type: "content_block_delta",
+    index,
+    delta: { type: "input_json_delta", partial_json: json.slice(0, 5) },
+  });
+  stream({
+    type: "content_block_delta",
+    index,
+    delta: { type: "input_json_delta", partial_json: json.slice(5) },
+  });
+  out({
+    type: "assistant",
+    session_id: SESSION,
+    parent_tool_use_id: null,
+    message: { id: `m-${id}`, content: [{ type: "tool_use", id, name, input }] },
+  });
+  stream({ type: "content_block_stop", index });
+};
 const textBlock = (index, chunks) => {
   stream({ type: "content_block_start", index, content_block: { type: "text", text: "" } });
   for (const text of chunks)
@@ -72,55 +97,96 @@ if (scenario === "text") {
   textBlock(0, ["```json\n", '{"title":"X"}', "\n```"]);
   result();
 } else if (scenario === "tool") {
+  // 两条 assistant 消息：第 1 条含文本 + 工具调用（需要确认），第 2 条是最终文本。
+  const toolName = process.env.FAKE_CLAUDE_TOOL ?? "Write";
+  const toolInput = { file_path: "/w/a.txt", content: "hello world" };
+  const toolResultFor = {
+    Write: {
+      type: "create",
+      filePath: "/w/a.txt",
+      content: "hello world",
+      structuredPatch: [],
+      originalFile: null,
+      userModified: false,
+    },
+    Bash: { stdout: "ok", stderr: "", interrupted: false, isImage: false },
+    Read: {
+      type: "text",
+      file: {
+        filePath: "/w/a.txt",
+        content: "hello world",
+        numLines: 1,
+        startLine: 1,
+        totalLines: 1,
+      },
+    },
+  };
   stream({ type: "message_start" });
   textBlock(0, ["Running."]);
-  out({
-    type: "assistant",
-    session_id: SESSION,
-    parent_tool_use_id: null,
-    message: {
-      id: "m1",
-      content: [
-        {
-          type: "tool_use",
-          id: "toolu_1",
-          name: process.env.FAKE_CLAUDE_TOOL ?? "Bash",
-          input: { command: "touch x" },
-        },
-      ],
-    },
+  toolBlock(1, "toolu_1", toolName, toolName === "Bash" ? { command: "ls" } : toolInput);
+  stream({
+    type: "message_delta",
+    delta: { stop_reason: "tool_use" },
+    usage: { input_tokens: 7, output_tokens: 3 },
   });
-  out({
-    type: "control_request",
-    request_id: "req-1",
-    request: {
-      subtype: "can_use_tool",
-      tool_name: process.env.FAKE_CLAUDE_TOOL ?? "Bash",
-      tool_use_id: "toolu_1",
-      input: { command: "touch x" },
-      description: "Create x",
-    },
-  });
-  const response = await next();
-  const answer = response.response?.response;
-  record({ permissionAnswer: answer });
+  stream({ type: "message_stop" });
+  if (toolName !== "Read") {
+    out({
+      type: "control_request",
+      request_id: "req-1",
+      request: {
+        subtype: "can_use_tool",
+        tool_name: toolName,
+        tool_use_id: "toolu_1",
+        input: toolInput,
+        description: "Do it",
+      },
+    });
+  }
+  const response = toolName === "Read" ? undefined : await next();
+  const answer = response?.response?.response;
+  record({ permissionAnswer: answer ?? null });
+  const denied = answer && answer.behavior !== "allow";
   out({
     type: "user",
     session_id: SESSION,
     parent_tool_use_id: null,
+    tool_use_result: denied ? undefined : toolResultFor[toolName],
     message: {
       content: [
         {
           type: "tool_result",
           tool_use_id: "toolu_1",
-          content: answer?.behavior === "allow" ? "ok" : String(answer?.message),
-          is_error: answer?.behavior !== "allow",
+          content: denied ? String(answer.message) : "result-text",
+          is_error: Boolean(denied),
         },
       ],
     },
   });
   stream({ type: "message_start" });
   textBlock(0, ["Done."]);
+  stream({
+    type: "message_delta",
+    delta: { stop_reason: "end_turn" },
+    usage: { input_tokens: 2, output_tokens: 1 },
+  });
+  stream({ type: "message_stop" });
+  result();
+} else if (scenario === "thinking") {
+  stream({ type: "message_start" });
+  stream({
+    type: "content_block_start",
+    index: 0,
+    content_block: { type: "thinking", thinking: "" },
+  });
+  stream({
+    type: "content_block_delta",
+    index: 0,
+    delta: { type: "thinking_delta", thinking: "hmm" },
+  });
+  stream({ type: "content_block_stop", index: 0 });
+  textBlock(1, ["Answer."]);
+  stream({ type: "message_stop" });
   result();
 } else if (scenario === "auth") {
   out({

@@ -8,6 +8,7 @@ import {
   getCurrentModelInvocationContext,
 } from "@zcode/contracts";
 import type {
+  ExternalToolExecutionPort,
   Logger,
   Model,
   ModelOptions,
@@ -109,6 +110,11 @@ export class AiSdkModelAdapter {
     this.statusSink = options.statusSink;
     this.streamIdleTimeoutMs = options.streamIdleTimeoutMs ?? DEFAULT_MODEL_STREAM_IDLE_TIMEOUT_MS;
     this.modelIoFullRetentionEnabled = options.modelIoFullRetentionEnabled ?? false;
+  }
+
+  /** 本机 Claude 渠道正在执行的工具调用：交给 core 的 tool executor 当原生调用记录。 */
+  get externalToolPort(): ExternalToolExecutionPort {
+    return this.execution.claudeCodeRuntime.externalTools;
   }
 
   setModelIoFullRetentionEnabled(enabled: boolean): void {

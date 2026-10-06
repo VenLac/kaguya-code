@@ -7,16 +7,17 @@ import { CLAUDE_CODE_PROVIDER_OPTIONS_KEY } from "./constants.js";
 export function mergeClaudeCodeRequestContext(input: {
   providerKind: string | undefined;
   providerOptions: Record<string, unknown> | undefined;
-  context: { sessionId?: string; traceId?: string; turnId?: string };
+  context: { sessionId?: string; traceId?: string; turnId?: string; collaborationMode?: string };
 }): Record<string, unknown> | undefined {
   if (input.providerKind !== "claude-code") return input.providerOptions;
-  const { sessionId, traceId, turnId } = input.context;
+  const { sessionId, traceId, turnId, collaborationMode } = input.context;
   return {
     ...input.providerOptions,
     [CLAUDE_CODE_PROVIDER_OPTIONS_KEY]: {
       ...(sessionId ? { sessionId } : {}),
       ...(traceId ? { traceId } : {}),
       ...(turnId ? { turnId } : {}),
+      ...(collaborationMode ? { mode: collaborationMode } : {}),
     },
   };
 }

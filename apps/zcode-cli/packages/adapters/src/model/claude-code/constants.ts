@@ -37,10 +37,6 @@ export const CLAUDE_EXIT_WAIT_MS = 15_000;
 /** 保留的 stderr 尾部大小，用于错误诊断，避免无界增长。 */
 export const CLAUDE_STDERR_TAIL_BYTES = 8_192;
 
-/** 工具结果渲染进对话文本时的截断上限。 */
-export const CLAUDE_TOOL_OUTPUT_PREVIEW_CHARS = 2_000;
-export const CLAUDE_TOOL_INPUT_PREVIEW_CHARS = 400;
-
 /** 这些工具只读、无副作用：权限请求到达时直接放行，不打扰用户。 */
 export const CLAUDE_READ_ONLY_TOOLS: ReadonlySet<string> = new Set([
   "Read",

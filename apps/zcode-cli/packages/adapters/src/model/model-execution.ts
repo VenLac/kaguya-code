@@ -21,7 +21,11 @@ import {
 import type { RegistryProviderConfig } from "@zcode/provider";
 import { withOpenRouterAttributionHeaders } from "@zcode/shared";
 import { createCodexAuthFetch, isClaudeCodeBaseUrl, isCodexBaseUrl } from "@zcode/shared/node";
-import { ClaudeCodeLanguageModel, type ClaudeCodeExecutionConfig } from "./claude-code/index.js";
+import {
+  ClaudeCodeLanguageModel,
+  ClaudeCodeRuntime,
+  type ClaudeCodeExecutionConfig,
+} from "./claude-code/index.js";
 import { createAnthropicCompatFetch } from "./anthropic-stream-compat.js";
 import { createOpenAIResponsesJsonCompatFetch } from "./openai-responses-json-compat.js";
 import { createModelOptionMapFetch, type RawRequestBodyCapture } from "./model-option-map-fetch.js";
@@ -160,6 +164,8 @@ export class AiSdkModelExecution {
   private readonly defaultHeaders: Record<string, string>;
   private readonly network: AiSdkNetworkConfig;
   private readonly claudeCode: ClaudeCodeExecutionConfig;
+  /** 本机 Claude 渠道的进程与外部工具状态；模型对象每次请求新建，这份状态跨步骤存活。 */
+  readonly claudeCodeRuntime = new ClaudeCodeRuntime();
   private readonly logger?: Logger;
   private readonly baseTransport?: ProviderFetch;
   private readonly providerTransports = new Map<string, ProviderFetch>();
@@ -272,6 +278,7 @@ export class AiSdkModelExecution {
         new ClaudeCodeLanguageModel({
           modelId,
           config: this.claudeCode,
+          runtime: this.claudeCodeRuntime,
           env: this.env,
           reasoningLevel: optionValues?.reasoningLevel,
           logger: this.logger,

@@ -25,7 +25,7 @@ export interface ClaudePermissionAnswer {
   updatedInput?: unknown;
 }
 
-interface ClaudeRunRequest {
+export interface ClaudeRunRequest {
   executable: string;
   args: string[];
   cwd: string;

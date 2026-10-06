@@ -29,7 +29,8 @@ export type ClaudeStreamEvent =
   | { type: "content_block_start"; index: number; block: ClaudeContentBlock }
   | { type: "content_block_delta"; index: number; delta: ClaudeStreamDelta }
   | { type: "content_block_stop"; index: number }
-  | { type: "message_start" | "message_delta" | "message_stop" | "other" };
+  | { type: "message_delta"; stopReason?: string; usage?: ClaudeUsage }
+  | { type: "message_start" | "message_stop" | "other" };
 
 export interface ClaudePermissionRequest {
   requestId: string;
@@ -52,7 +53,13 @@ export type ClaudeCliMessage =
       error?: string;
       text?: string;
     }
-  | { kind: "user"; parentToolUseId?: string; blocks: ClaudeContentBlock[] }
+  | {
+      kind: "user";
+      parentToolUseId?: string;
+      blocks: ClaudeContentBlock[];
+      /** claude 随 tool_result 附带的结构化结果（Write/Edit 的 structuredPatch、Bash 的 stdout 等）。 */
+      toolUseResult?: unknown;
+    }
   | {
       kind: "result";
       sessionId?: string;
@@ -143,8 +150,15 @@ function parseStreamEvent(value: unknown): ClaudeStreamEvent {
       return { type: "content_block_delta", index, delta: parseDelta(record.delta) };
     case "content_block_stop":
       return { type: "content_block_stop", index };
+    case "message_delta": {
+      const delta = asRecord(record.delta);
+      return {
+        type: "message_delta",
+        stopReason: asString(delta?.stop_reason),
+        usage: parseUsage(record.usage),
+      };
+    }
     case "message_start":
-    case "message_delta":
     case "message_stop":
       return { type: record.type };
     default:
@@ -204,7 +218,12 @@ export function parseClaudeCliLine(line: string): ClaudeCliMessage | undefined {
     }
     case "user": {
       const message = asRecord(record.message);
-      return { kind: "user", parentToolUseId, blocks: parseBlocks(message?.content) };
+      return {
+        kind: "user",
+        parentToolUseId,
+        blocks: parseBlocks(message?.content),
+        ...(record.tool_use_result === undefined ? {} : { toolUseResult: record.tool_use_result }),
+      };
     }
     case "result":
       return {

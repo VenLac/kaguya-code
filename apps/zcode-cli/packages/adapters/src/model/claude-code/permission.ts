@@ -14,6 +14,8 @@ export interface ClaudeRequestContext {
   sessionId?: string;
   traceId?: string;
   turnId?: string;
+  /** Kaguya 当前协作模式。 */
+  mode?: string;
 }
 
 const PERMISSION_RULE_ID = "claude-code.can-use-tool";
@@ -40,6 +42,8 @@ export function createClaudePermissionHandler(options: {
   broker?: PermissionBrokerPort;
   context: ClaudeRequestContext;
   newId: () => string;
+  /** 弹确认卡片前先等工具行出现，保证卡片出现在对应的工具调用之后。 */
+  beforeAsk?: (request: ClaudePermissionRequest) => Promise<void>;
 }): (request: ClaudePermissionRequest, signal: AbortSignal) => Promise<ClaudePermissionAnswer> {
   return async (request, signal) => {
     if (CLAUDE_READ_ONLY_TOOLS.has(request.toolName)) {
@@ -49,6 +53,7 @@ export function createClaudePermissionHandler(options: {
       return { behavior: "deny", message: DENY_NO_BROKER };
     }
 
+    await options.beforeAsk?.(request);
     const result = await options.broker.requestPermission(
       {
         requestId: options.newId(),
