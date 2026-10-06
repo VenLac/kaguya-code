@@ -449,7 +449,14 @@ async function runModelBackedTurnStepImpl(
     this.messageHistory.setCacheHit(result.usage.cacheReadTokens);
   }
 
-  let toolCalls = this.extractToolCallsFromResult(result);
+  // 外部进程（本机 Claude Code）执行的工具带 providerExecuted 标记以绕过 AI SDK 的本地校验，
+  // 但对 core 来说它们是要记录的原生调用：去掉标记，历史里才是普通的 tool-call/tool-result 配对，
+  // 切换到任何其他模型都合法。
+  let toolCalls = this.extractToolCallsFromResult(result).map((toolCall) =>
+    toolCall.providerExecuted && this.externalToolPort?.claim(toolCall.id)
+      ? { ...toolCall, providerExecuted: false }
+      : toolCall,
+  );
   const providerToolCallCount = toolCalls.length;
   const localTerminalResponse = state.automationCreateLimitReached === true;
   if (state.automationCreateLimitReached && toolCalls.length > 0) {

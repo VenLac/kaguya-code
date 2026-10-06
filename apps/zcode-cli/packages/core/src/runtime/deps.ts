@@ -165,6 +165,7 @@ export type {
   TurnAttachmentMeta,
   PartId,
   PermissionBrokerPort,
+  ExternalToolExecutionPort,
   PermissionBrokerRequest,
   PermissionBrokerRequestOptions,
   PermissionBrokerResult,

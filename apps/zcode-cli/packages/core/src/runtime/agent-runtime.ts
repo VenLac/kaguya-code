@@ -22,6 +22,7 @@ import type {
   ModelSelectionOrigin,
   ModelToolContract,
   PermissionBrokerPort,
+  ExternalToolExecutionPort,
   PermissionBrokerRequest,
   ProjectId,
   SessionEventSink,
@@ -138,6 +139,7 @@ export class AgentRuntime {
   private appVersion: string;
   private permissionService: PermissionService;
   private permissionBroker: PermissionBrokerPort;
+  private externalToolPort?: ExternalToolExecutionPort;
   private toolScheduler: ToolScheduler;
   private eventReducer: EventReducer;
   private eventStore: SessionEventStorePort;
@@ -249,6 +251,7 @@ export class AgentRuntime {
     this.permissionService =
       deps.permissionService ?? new PermissionService(defaultPermissionConfig);
     this.permissionBroker = deps.permissionBroker ?? createDenyPermissionBroker();
+    this.externalToolPort = deps.externalToolPort;
     this.toolScheduler =
       deps.toolScheduler ??
       new ToolScheduler({

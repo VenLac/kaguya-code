@@ -30,6 +30,7 @@ import {
   isToolHandlerFailureError,
 } from "./errors.js";
 import { emitToolCallError, emitToolCallResult, emitToolCallStarted } from "./events.js";
+import { executeExternalToolCall } from "./external-call.js";
 import {
   formatHookAdditionalContexts,
   runPostToolUseFailureHooks,
@@ -117,6 +118,22 @@ async function executeToolCallImpl(
   });
   const traceId = traceContext.traceId;
   const turnId = traceContext.turnId ?? deps.turnId;
+
+  // 外部进程（本机 Claude Code）执行的调用：在注册表查找与本地校验之前分流，
+  // 它们的工具名/入参来自外部进程，且调用在外部早已开始执行。
+  const externalClaim = deps.externalToolPort?.claim(toolCall.id);
+  if (externalClaim) {
+    return executeExternalToolCall({
+      deps,
+      claim: externalClaim,
+      toolCall: canonicalToolCall,
+      traceContext,
+      turnId,
+      totalStartedAt,
+      options,
+      telemetry,
+    });
+  }
 
   if (!entry) {
     const result = createErrorResult(

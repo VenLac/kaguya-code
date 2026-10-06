@@ -158,6 +158,7 @@ function createRuntimeToolExecutor(
     registry: runtime.registry,
     permissionService: runtime.permissionService,
     permissionBroker: runtime.permissionBroker,
+    externalToolPort: runtime.externalToolPort,
     emitEvent: async (event) => {
       await runtime.appendEvent(event, getCurrentTraceContext() ?? runtime.rootTraceContext);
     },

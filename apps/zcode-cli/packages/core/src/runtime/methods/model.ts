@@ -78,7 +78,12 @@ export async function runModelTextRequest(
   // 正常请求传递模型级 effective 预算，Compact 传递 min(effective, 20K) 的 summary
   // 任务预算；adapter 只做 provider 兼容映射，不再施加独立 global cap。
   const modelInvocationContext = {
-    metadata: traceContextToLogContext(projectedOptions.traceContext),
+    // 协作模式随请求元数据下发：本机 Claude 渠道据此映射它自己的 --permission-mode。
+    metadata: {
+      ...traceContextToLogContext(projectedOptions.traceContext),
+      // 「计划」是独立开关（planEnabled），底层 mode 仍是 build/edit/yolo/auto；计划开关优先。
+      collaborationMode: this.getPlanEnabled() ? "plan" : this.getMode(),
+    },
     modelRequestSessionType: resolveModelRequestSessionTypeFromTaskType(this.config.taskType),
     // 重试预算与准入端口不在这里设：它们是 runtime 层字段，由 createRuntimeModel 绑在句柄上，turn step 与工具内部的模型调用同一来源。
     modelCall: {
