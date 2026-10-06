@@ -1,93 +1,95 @@
 # Claude Code（本机）渠道
 
-状态：已实现。本文取代最初的「独立 claude-host 进程」草案——调研发现把 Claude 做成**模型层 provider** 改动面小得多，且自动继承会话、事件、远控与权限链路。
+状态：已实现。
 
 ## 目标
 
-- 在 Kaguya Code 里直接使用本机已安装、已登录的 Claude Code。
+- 在 Kaguya Code 里直接使用本机已安装、已登录的 Claude Code，**界面与原生工具完全一致**：写入/编辑带 diff 统计，读取/命令/搜索是原生卡片，权限、提问、计划审批用原生面板，文件改动可撤销。
 - Kaguya 不做 Claude 登录、不读取/保存/转发任何 Claude 凭证；认证和额度完全由本机 `claude` 决定。
 - 不使用订阅 OAuth token 调 Anthropic API（不符合 Anthropic 使用条款）；API key 用户本来就能用已有的 `anthropic-messages` 来源。
 
 ## 非目标
 
 - 不加 `@anthropic-ai/claude-agent-sdk` 依赖：它为每个平台附带一份原生 claude 二进制（可选依赖）并要求额外 peer 依赖，而我们本来就用用户本机的 `claude`。这里直接讲 SDK 底层使用的同一套 `claude -p --input-format stream-json --output-format stream-json` 协议。
-- 不重写 Claude 的工具、权限判定、compact。
+- 不重写 Claude 的工具、权限判定、compact：这些由 Claude 自己执行，Kaguya 只负责**记录与展示**。
 - 不另做「Claude 历史会话浏览/导入」：仓库已有 `session/claude-native/*` 导入链路与设置里的迁移卡片，读取同一份 `~/.claude/projects/**/*.jsonl`。
+
+## 设计演进（为什么不是「把工具渲染成文字」）
+
+第一版把 Claude 的工具活动渲染成 markdown 文本：历史干净，但界面里只有一段代码块，没有文件内容/diff/命令卡片。参照 codex-host「把 harness 的流式、工具状态、diff、审批、提问映射成宿主**原生条目**」的做法，改为：
+
+> **一条 Claude assistant 消息 ＝ 一个 Kaguya 原生模型步骤；其中的 `tool_use` ＝ Kaguya 原生工具调用；`tool_result`（含 Claude 回传的结构化 `tool_use_result`）被翻译成 Kaguya 原生输出形状。**
+
+Kaguya 的内置工具集本就对齐 Claude Code（`Write`/`Edit`/`Read`/`Bash`/`Glob`/`Grep`/`WebFetch`/`WebSearch`/`TodoWrite`/`AskUserQuestion`/`ExitPlanMode` 同名同形，Write/Edit 的输出 schema 与 Claude 的 `structuredPatch` 结果几乎同构），所以翻译层很薄，却能让消息片段、事件、历史、展示卡片、文件变更追踪与撤销全部走原生链路，历史对任何其他模型也是合法的 tool-call/tool-result 配对。
 
 ## 架构
 
 ```text
-UI 设置卡片 ──> IClaudeCodeService (services, host) ──> 检测本机 claude / 注册个人模型来源
-                                                            │ baseUrl = https://claude-code.invalid（哨兵）
-会话回合 ──> core turn-machine ──> AiSdkModelExecution ──kind=claude-code──> ClaudeCodeLanguageModel
-                                                                              │ spawn claude -p … (stdin/stdout JSONL)
-                                                                              ├─ 文本增量  → text 片段
-                                                                              ├─ 工具活动  → 文本片段（见下）
-                                                                              └─ can_use_tool → PermissionBroker (+ permission.* 事件)
+设置卡片 ─> IClaudeCodeService (services/host)           检测本机 claude；注册「Claude Code（本机）」个人模型来源（哨兵 baseUrl）
+
+core turn loop ──模型步骤──> ClaudeCodeLanguageModel (adapters)
+   ▲                           │  一个 ClaudeRun = 一个后台 claude 进程，跨步骤存活（按 Kaguya 会话登记）
+   │                           │  每个步骤读取队列里的下一条 assistant 消息 → text / reasoning / tool-input-* / tool-call
+   │ finish=tool-calls         │  读到 tool_use 就登记到 ExternalToolRegistry；读到 tool_result 就翻译并交付
+   │                           ▼
+tool executor ──claim(toolCallId)──> ExternalToolRegistry (实现 contracts 的 ExternalToolExecutionPort)
+   不跑本地 handler / 不走本地权限；发 ToolCallStarted、等待外部结果、发 ToolCallResult|Error；展示卡片由「工具名+输出形状」决定
+
+claude can_use_tool ──> 权限处理（等工具行出现后）──> PermissionBroker(+补发 permission.requested/resolved) ──> 原生权限/提问/计划审批面板
 ```
 
 ### 状态所有者
 
 | 状态 | 唯一所有者 |
 | --- | --- |
-| 对话 transcript、工具循环、compact、权限规则 | Claude Code（jsonl 是其持久化） |
-| Kaguya 会话 ↔ Claude 会话映射 | 无需存储：`sess_<uuid>` 去前缀即 Claude 会话 id；非 UUID 用 UUIDv5 稳定派生 |
-| 会话消息、事件、序号、远控重放 | Kaguya core（与其他 provider 完全相同） |
-| 在途权限请求 | 复用现有 PermissionBroker + `permission.requested/resolved` 事件 |
-| 模型来源配置 | 现有 Provider 配置（个人来源） |
+| 对话、工具循环、compact、权限规则、会话 jsonl | Claude Code |
+| 消息片段、事件、序号、历史、文件变更追踪、重放 | Kaguya core（与其他 provider 完全相同） |
+| 进行中的 claude 进程与未交付的工具结果 | `ClaudeCodeRuntime`（模型执行层持有，模型对象每次请求新建，它跨步骤存活） |
+| 工具权限的最终决定 | 用户，经原生 PermissionBroker；Claude 的 `can_use_tool` 是唯一的确认入口 |
+| 会话映射 | 无需存储：`sess_<uuid>` 去前缀即 Claude 会话 id；非 UUID 用 UUIDv5 派生 |
 
-### 渠道识别
+### 步骤划分与续接
 
-沿用 `anthropic-messages` 的配置形态，靠保留 TLD 的哨兵 baseUrl `https://claude-code.invalid` 识别（与 Codex 渠道同法，不改 provider schema）。`.invalid` 永不解析：即使旧版本 agent 不认识该渠道，请求也只会在 DNS 阶段失败，不会发往任何真实主机。
+- 步骤结束：含可见 tool_use 的消息在 `message_stop` 处以 `finishReason=tool-calls` 结束；最终消息在 `result` 到达时以 `stop` 结束。只含 Claude 内部元工具（`ToolSearch`）的消息不结束步骤。
+- core 执行完工具后发起下一步，prompt 最后一条是 `tool` 消息 → 续接同一个 run；是新的用户输入 → 结束遗留 run、按计划起新进程；没有存活 run 却要续接 → 抛 `CLAUDE_PROTOCOL_ERROR`（不乱起新进程）。
+- 取消：abort → SIGTERM（宽限期后 SIGKILL），未出结果的工具调用统一收口为失败；正常结束不打断 claude 写 jsonl。
+
+### 工具映射
+
+- `tool-mapping.ts`：入参只保留 Kaguya schema 认识的字段并用原生 Zod schema 校验，通过则按原生工具名下发；对不上（或 Kaguya 里语义不同，如 `Task`→`ClaudeTask`）则改名为 `Claude<Name>`/原名并标记 `dynamic`，避免被 AI SDK 的本地校验判为非法。
+- 结果翻译：`Write`/`Edit`（`structuredPatch` 原样带过去 → 自动得到 `file_diff` 卡片）、`Bash`（`stdout/stderr/interrupted`，非零退出码保留为「执行完成但失败」）、`Read`、`Glob`、`Grep`、`WebFetch`、`WebSearch`、`TodoWrite`、`AskUserQuestion`（答案）、`ExitPlanMode`。拿不到结构化结果时回退为只带文本的输出，卡片仍会出现。
+- 隐藏：`ToolSearch`（Claude 的内部检索管线）不转发。子 agent 内部活动不展示，只展示发起它的 `ClaudeTask` 与最终结果。
+- thinking 作为原生 reasoning 片段下发（换模型时由现有 `removeCrossModelReasoning` 清理，不会回放给别家）。
 
 ### 请求映射
 
-- **主回合**（`x-zcode-session-type: main` 且有会话 id）：
-  - 对应的 Claude jsonl 已存在 → `--resume <id>`，只发最后一条 assistant 之后的用户输入（Claude 自己持有历史）。
-  - 不存在 → `--session-id <id>` 新建；若 Kaguya 已有历史（如中途切换到 Claude），把历史转写在首条消息前。
-- **辅助请求**（标题、摘要、子 agent）：一次性 `--no-session-persistence --tools ""`，不落盘。其 system 提示写入 0600 临时文件经 `--system-prompt-file` 作为**真正的 system prompt** 传入（塞进用户消息会被 Claude 当成「提示注入」而拒答，已实测）；文本缓冲到结果到达后一次发出，并剥掉「整段被代码围栏包裹」的围栏（Claude 常把「只返回 JSON」包进 ```json）。
-- **过滤 Kaguya 注入的 `<system-reminder>`**：core 会把技能列表、环境信息、项目指令整块塞进用户消息，描述的是 Kaguya 自己的工具与路径；转发给 Claude 无用且会被当成「藏在用户消息里的指令」而拒答（实测）。只过滤「整块被 system-reminder 包裹」的文本块。
-- 思考强度：`reasoningLevel`（low/medium/high）→ `--effort`。
-- 图片：base64 图片块透传，其他附件降级为文字说明。
+- 主回合：对应 jsonl 已存在 → `--resume <id>`，只发最后一条 assistant 之后的用户输入；不存在 → `--session-id <id>` 新建，已有历史则转写在前。
+- 辅助请求（标题、摘要、子 agent）：一次性 `--no-session-persistence --tools ""`；system 提示写 0600 临时文件经 `--system-prompt-file` 作为**真正的 system prompt**（塞进用户消息会被 Claude 当成注入而拒答）；文本缓冲到结果后一次发出，并剥掉「整段被代码围栏包裹」的围栏。
+- 过滤 Kaguya 注入的整块 `<system-reminder>`（技能列表、环境信息、项目指令）：对 claude 无用且会被当成「藏在用户消息里的指令」。
+- 协作模式：plan（`planEnabled` 优先）→ `plan`、edit → `acceptEdits`、yolo → `bypassPermissions`、auto → `auto`；build 不传参。模式在 run 创建时确定。
+- 思考强度 `low/medium/high` → `--effort`；图片作为 base64 块透传。
 
-### 为什么工具活动渲染成文本
+### 权限、提问、计划
 
-core 对 provider 自己执行的工具（`providerExecuted`）只会跳过、**不接收结果**（流里的 `tool-result` 被丢弃），历史里会留下没有结果的 tool call，换模型时违反协议。所以 Claude 的 `tool_use` / `tool_result` 渲染为 `▸ **Bash** \`cmd\`` 加围栏输出的 markdown 文本：历史保持纯文本，任意模型都能继续这段对话。thinking 同理不下发（无签名的 reasoning 会进入历史并在换模型时回放）。子 agent 内部活动不展示。
-
-代价：UI 里没有结构化工具卡片；权限确认卡片是结构化的（见下）。
-
-### 权限
-
-claude 以 `--permission-prompt-tool stdio` 运行，工具需要确认时下发 `control_request(can_use_tool)`：
-
-- 只读工具（Read/Glob/Grep/LS/TodoWrite…）自动放行。
-- 其余经 PermissionBroker 交给用户；没有 broker 时一律**拒绝**而不是放行；broker 抛错按拒绝处理。
-- 外部执行的工具不经 tool executor，而 v4（Web / 手机重放链路）的确认卡片由 `permission.requested` 事件投影。因此在 bootstrap 用 `createEventedPermissionBroker` 包一层，经 core 新增的 `recordExternalPermissionRequested/Resolved` 在同一个 broker 调用前后补发事件；requested 写入失败则不调 broker（宁可拒绝也不在用户看不到卡片时放行），broker 取消/超时/失败也会补发 deny 收口。决策仍只由原 broker 给出。
+- claude 以 `--permission-prompt-tool stdio` 运行；只读工具自动放行，其余经 PermissionBroker；没有 broker 或 broker 抛错一律**拒绝**。
+- 权限请求等待工具行出现（executor 调 `markStarted`）后再弹，保证确认卡片锚定在对应的工具行；超时 10 秒兜底放行请求。
+- v4（Web/手机重放链路）的确认卡片由 `permission.requested` 事件投影，外部工具不经 executor，所以 bootstrap 用 `createEventedPermissionBroker` 在同一个 broker 调用前后补发事件（core 新增 `recordExternalPermissionRequested/Resolved`）；requested 写入失败则不调 broker。`AskUserQuestion` / `ExitPlanMode` 由现有投影直接转成结构化提问/计划审批卡片，答案经 broker 的 `modify`/`allow` 回给 claude。
 
 ### 时序与投递语义
 
-```text
-turn started → ClaudeCodeLanguageModel.doStream → 子进程 JSONL
-   text 增量 ─────────────────────────────────────────────▶ model stream（desktop 与 web 同一路径）
-   can_use_tool ─▶ permission.requested ─▶ 用户答复 ─▶ permission.resolved ─▶ control_response
-   result ─▶ finish(usage, providerMetadata.claudeCode.sessionId)
-取消：abort → SIGTERM（宽限期后 SIGKILL）；未拿到 result 才强杀，正常结束不打断 claude 写 jsonl。
-```
+desktop-continuous 与 web-remote-replayable 消费的是同一组 session 事件（消息片段、`tool_call_*`、`permission_*`），本渠道位于 provider 层之下，不改 stream/snapshot/queue/重连。已在真实 Web 页面（replayable）验证；desktop-continuous 路径经 `interaction/requestPermission`/`requestUserInput` 在协议层验证，未在 Electron 窗口里实测。
 
-渠道位于 provider 层之下，不改 stream/snapshot/queue/重连：`desktop-continuous` 与 `web-remote-replayable` 消费的是同一组 session 事件，权限卡片已在 Web（replayable）真实验证；desktop-continuous 路径经 `interaction/requestPermission` 在协议层验证，未在 Electron 窗口里实测。
+## 认证与状态检测
 
-### 认证与状态检测
-
-`IClaudeCodeService`（host）：`getStatus` / `enable` / `disable`。状态来自 `claude --version` 与 `claude auth status`（不耗额度），只取 loggedIn/authMethod/subscriptionType，**不读取邮箱、组织等账号信息**。未安装返回 `CLAUDE_NOT_FOUND`，未登录返回 `CLAUDE_AUTH_REQUIRED`（401），UI 只提示去终端执行 `claude`。其他稳定错误码：`CLAUDE_SPAWN_FAILED`、`CLAUDE_EXITED_ABNORMALLY`（带退出码与 stderr 尾部）、`CLAUDE_RUN_FAILED`、`CLAUDE_PROTOCOL_ERROR`。
-
-`claude` 的位置：PATH（Windows 按 PATHEXT）→ `~/.local/bin`、`~/.claude/local`、`~/.npm-global/bin`、`~/bin`。远程 workspace 上由 agent 所在主机解析，所以需要装在 agent 所在主机上。
+`IClaudeCodeService`（host）：`getStatus`/`enable`/`disable`。状态来自 `claude --version` 与 `claude auth status`（不耗额度），只取 loggedIn/authMethod/subscriptionType，不读取邮箱、组织。稳定错误码：`CLAUDE_NOT_FOUND`、`CLAUDE_AUTH_REQUIRED`（401）、`CLAUDE_SPAWN_FAILED`、`CLAUDE_EXITED_ABNORMALLY`（带退出码与 stderr 尾部）、`CLAUDE_RUN_FAILED`、`CLAUDE_PROTOCOL_ERROR`。`claude` 的位置：PATH（Windows 按 PATHEXT）→ `~/.local/bin`、`~/.claude/local`、`~/.npm-global/bin`、`~/bin`；远程 workspace 在 agent 所在主机解析。
 
 ## 已知限制
 
-- Kaguya 内「重试/编辑后重发」不会回滚 Claude 的会话；两边历史可能分叉。
+- Kaguya 内「重试/编辑后重发/回滚」不会回滚 Claude 自己的会话；两边历史可能分叉。
 - 中途 Claude→其他模型→Claude 时，Claude 看不到中间那段其他模型的回复。
-- Kaguya 的权限模式（plan/edit/yolo…）不映射到 Claude 的 `--permission-mode`；yolo 下 Claude 仍逐次确认。
-- 工具是文本而非结构化卡片；不展示 thinking。
+- 子 agent（`Task`）只展示为一个 `ClaudeTask` 工具行与最终文本，没有子会话下钻。
+- 计划模式：Kaguya 的计划开关映射到 Claude 的 plan 模式，但 Kaguya 侧的计划状态不会随 `ExitPlanMode` 自动退出。
+- 模型只提供 `sonnet/opus/haiku` 别名（200k 上下文）；1M 上下文变体、`xhigh/max` 思考强度未提供。
 - `claude` 的 stream-json 与 jsonl 没有稳定公开契约；解析器容错（未知行类型忽略），格式大改需要跟进。
 - Windows/macOS 未实测；`.cmd` 包装经 shell 启动，参数限定为保守字符集，用户内容只走 stdin。
 - 使用本机 claude 的订阅额度是否符合 Anthropic 对第三方产品的条款，需使用者自行核对（本渠道不接触 token，只调用本机 `claude`）。
@@ -95,8 +97,8 @@ turn started → ClaudeCodeLanguageModel.doStream → 子进程 JSONL
 
 ## 验收与测试
 
-- adapters（`pnpm --dir apps/zcode-cli/packages/adapters test:claude-code`，`node:test` + 假 claude 脚本）：协议解析、参数安全、渲染、流映射、prompt 转换（含 reminder 过滤、system 分离）、可执行文件定位、会话规划、子进程集成（正常/工具放行/拒绝/无 broker/broker 抛错/未登录/失败/崩溃/取消/doGenerate）。
-- 真实 claude（`CLAUDE_CODE_LIVE_TEST=1`，消耗额度，默认跳过）：流式回复、跨调用 `--resume` 记忆、jsonl 落盘、放行/拒绝对文件系统的真实效果。
-- services（`packages/services/test/claudeCodeService.test.ts`）：启用/移除/幂等、状态不含账号信息、探测解析。
-- bootstrap（`pnpm --dir apps/zcode-cli/packages/bootstrap test:permission`）：权限事件装饰器。
-- 手工端到端（已执行）：完整 agent 经 `app-server --stdio` 的多轮对话与权限放行/拒绝；真实 Web 页面里启用渠道、选择模型、发送、权限卡片放行、标题生成。
+- core（`pnpm --dir apps/zcode-cli/packages/core test:external-tool`）：外部工具走原生事件/结果/diff 卡片、不跑本地 handler、不走本地权限；失败/未知工具名/中止；未认领的调用仍走本地权限。
+- adapters（`pnpm --dir apps/zcode-cli/packages/adapters test:claude-code`，`node:test` + 假 claude）：协议解析、参数安全、流映射（含 thinking/工具入参流/隐藏工具/dynamic 与改名）、工具与结果翻译、外部工具登记表、prompt 转换、会话规划、可执行文件定位、子进程集成（多步骤工具回合、放行/拒绝/无 broker/broker 抛错、续接同一进程、遗留 run、模式映射、未登录/失败/崩溃/取消）。
+- 真实 claude（`CLAUDE_CODE_LIVE_TEST=1`，消耗额度，默认跳过）：多步骤 Write/Edit/Read/Bash（真实 diff、文件真被改）、`--resume` 记忆、拒绝后文件不被创建。
+- services（`packages/services/test/claudeCodeService.test.ts`）、bootstrap（`test:permission`）。
+- 手工端到端（已执行）：完整 agent 经 `app-server --stdio`（多轮、权限放行/拒绝、AskUserQuestion、计划审批、权限模式）；真实 Web 页面里启用渠道、选模型、多工具回合、权限卡片、展开 diff、文件变更撤销。
