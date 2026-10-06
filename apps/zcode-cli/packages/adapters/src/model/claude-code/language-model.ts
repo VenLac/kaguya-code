@@ -5,6 +5,7 @@ import type {
   LanguageModelV3StreamPart,
   LanguageModelV3StreamResult,
 } from "@ai-sdk/provider";
+import { stat } from "node:fs/promises";
 import { resolveClaudeExecutable } from "@zcode/shared/node";
 import {
   CLAUDE_CODE_PROVIDER_LABEL,
@@ -12,7 +13,7 @@ import {
   SESSION_TYPE_HEADER,
 } from "./constants.js";
 import { streamEphemeral } from "./ephemeral-stream.js";
-import { ClaudeCodeError, claudeNotFoundError } from "./errors.js";
+import { ClaudeCodeError, claudeNotFoundError, workspaceMissingError } from "./errors.js";
 import { streamMainStep } from "./main-step.js";
 import {
   SESSION_HEADER,
@@ -50,6 +51,8 @@ export class ClaudeCodeLanguageModel implements LanguageModelV3 {
     const context = readRequestContext(callOptions.providerOptions);
     const headers = callOptions.headers ?? {};
     const cwd = config.workingDirectory ?? process.cwd();
+    // 修复依据：cwd 不存在时 spawn 抛 `spawn <claude> ENOENT`，曾被误报为「无法启动 claude」。
+    if (!(await isDirectory(cwd))) throw workspaceMissingError(cwd);
     const kaguyaSessionId =
       context.sessionId ??
       (headers[SESSION_HEADER] ? `${SESSION_ID_PREFIX}${headers[SESSION_HEADER]}` : undefined);
@@ -106,5 +109,13 @@ export class ClaudeCodeLanguageModel implements LanguageModelV3 {
       providerMetadata: finish.providerMetadata,
       warnings: [],
     };
+  }
+}
+
+async function isDirectory(path: string): Promise<boolean> {
+  try {
+    return (await stat(path)).isDirectory();
+  } catch {
+    return false;
   }
 }

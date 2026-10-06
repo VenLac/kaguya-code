@@ -20,6 +20,7 @@ export const CLAUDE_STREAM_ARGS: readonly string[] = [
 export const ClaudeCodeErrorCode = {
   NotFound: "CLAUDE_NOT_FOUND",
   AuthRequired: "CLAUDE_AUTH_REQUIRED",
+  WorkspaceMissing: "CLAUDE_WORKSPACE_MISSING",
   SpawnFailed: "CLAUDE_SPAWN_FAILED",
   ExitedAbnormally: "CLAUDE_EXITED_ABNORMALLY",
   ProtocolError: "CLAUDE_PROTOCOL_ERROR",

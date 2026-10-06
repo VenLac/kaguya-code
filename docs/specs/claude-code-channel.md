@@ -81,14 +81,16 @@ desktop-continuous 与 web-remote-replayable 消费的是同一组 session 事�
 
 ## 认证与状态检测
 
-`IClaudeCodeService`（host）：`getStatus`/`enable`/`syncModels`/`disable`。`enable` 要求本机已安装且已登录，否则拒绝并说明原因。状态来自 `claude --version` 与 `claude auth status`（不耗额度），只取 loggedIn/authMethod/subscriptionType，不读取邮箱、组织。稳定错误码：`CLAUDE_NOT_FOUND`、`CLAUDE_AUTH_REQUIRED`（401）、`CLAUDE_SPAWN_FAILED`、`CLAUDE_EXITED_ABNORMALLY`（带退出码与 stderr 尾部）、`CLAUDE_RUN_FAILED`、`CLAUDE_PROTOCOL_ERROR`。`claude` 的位置：PATH（Windows 按 PATHEXT）→ `~/.local/bin`、`~/.claude/local`、`~/.npm-global/bin`、`~/bin`；远程 workspace 在 agent 所在主机解析。
+`IClaudeCodeService`（host）：`getStatus`/`enable`/`syncModels`/`disable`。`enable` 要求本机已安装且已登录，否则拒绝并说明原因。状态来自 `claude --version` 与 `claude auth status`（不耗额度），只取 loggedIn/authMethod/subscriptionType，不读取邮箱、组织。稳定错误码：`CLAUDE_NOT_FOUND`、`CLAUDE_AUTH_REQUIRED`（401）、`CLAUDE_WORKSPACE_MISSING`、`CLAUDE_SPAWN_FAILED`、`CLAUDE_EXITED_ABNORMALLY`（带退出码与 stderr 尾部）、`CLAUDE_RUN_FAILED`、`CLAUDE_PROTOCOL_ERROR`。工作目录：claude 以 workspace 路径为 cwd 运行（远程 workspace 则是 agent 所在主机上的路径）。请求前先确认该目录存在，不存在直接抛 `CLAUDE_WORKSPACE_MISSING` 并在 `details.cwd` 带上路径——Node 对「cwd 不存在」报的是 `spawn <claude> ENOENT`，不先检查会被误判成找不到 claude。`CLAUDE_SPAWN_FAILED` 保留系统错误：消息带 errno 代码（如 `EACCES`）与 `cwd`，`details` 含 `errno/syscall/cwd`，`cause` 保留原始错误，不再只剩「无法启动」。远程 workspace 的 claude 可执行文件与登录态取决于 agent 所在主机，设置卡片只探测本机，远程没有预检。
+
+`claude` 的位置：PATH（Windows 按 PATHEXT）→ `~/.local/bin`、`~/.claude/local`、`~/.npm-global/bin`、`~/bin`；远程 workspace 在 agent 所在主机解析。
 
 ## 模型与上下文
 
 - 不再写死 `sonnet/opus/haiku` 别名和 200k 上下文。启用或点「同步模型」时，对每个别名向本机 claude 发一次最小请求（`--output-format json --tools "" --no-session-persistence`），从 `modelUsage` 读取**真实模型 id、`contextWindow`、`maxOutputTokens`**，并据此注册/更新模型（例如 sonnet→`claude-sonnet-5-5` 1M/128k，haiku→`claude-haiku-4-5-20251001` 200k/32k）。
 - 旧版本留下的别名模型（`sonnet` 等）通过 `savePersonalModelDraft` 改名为真实 id 并修正配置，不会与新模型并存。
 - 某个别名探测失败（无权限、超时）时跳过并在状态里说明，其余照常同步；全部失败则报错。探测会消耗少量额度。
-- 思考强度仍只提供 `low/medium/high`。
+- 思考强度仍只提供 `low/medium/high`，作为 `--effort` 传给 claude。实测 claude `-p` 的 stream-json 在 `low/high` 下都不输出 thinking 块，所以界面不会出现思考片段；thinking → reasoning 的映射已就绪，claude 一旦输出即显示。
 
 ## Kaguya skill
 

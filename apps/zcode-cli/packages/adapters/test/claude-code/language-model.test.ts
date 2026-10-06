@@ -444,6 +444,33 @@ test("找不到 claude：在 doStream 阶段直接抛 CLAUDE_NOT_FOUND", async (
   );
 });
 
+test("工作目录不存在：doStream 阶段直接抛 CLAUDE_WORKSPACE_MISSING，并带上路径（而不是被误判为无法启动 claude）", async () => {
+  const missingCwd = join(workDir, "not-created", "Bolg");
+  const log = newLog();
+  const { model } = makeModel({ scenario: "text" }, log);
+  const broken = new ClaudeCodeLanguageModel({
+    modelId: "sonnet",
+    runtime: new ClaudeCodeRuntime(),
+    env: { ...process.env, FAKE_CLAUDE_SCENARIO: "text", FAKE_CLAUDE_LOG: log },
+    config: { workingDirectory: missingCwd, executablePath: FAKE },
+  });
+  await assert.rejects(
+    () => broken.doStream(callOptions(userPrompt())),
+    (error: { providerCode?: string; message?: string; responseBodySummary?: { cwd?: string } }) =>
+      error.providerCode === "CLAUDE_WORKSPACE_MISSING" &&
+      String(error.message).includes(missingCwd) &&
+      error.responseBodySummary?.cwd === missingCwd,
+  );
+  // 一次性辅助请求同样先检查，不启动 claude。
+  await assert.rejects(
+    () => broken.doStream(callOptions(userPrompt(), { sessionId: null })),
+    (error: { providerCode?: string }) => error.providerCode === "CLAUDE_WORKSPACE_MISSING",
+  );
+  assert.deepEqual(await readLog(log).catch(() => []), []);
+  // 目录存在的模型不受影响。
+  await drain((await model.doStream(callOptions(userPrompt()))).stream);
+});
+
 test("取消：abort 后子进程被终止，流以错误结束，未完成的工具调用收口为失败", async () => {
   const controller = new AbortController();
   const { model } = makeModel({ scenario: "hang" }, newLog());

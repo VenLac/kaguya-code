@@ -7,7 +7,7 @@ import {
   CLAUDE_STDERR_TAIL_BYTES,
   ClaudeCodeErrorCode,
 } from "./constants.js";
-import { ClaudeCodeError } from "./errors.js";
+import { ClaudeCodeError, spawnFailedError } from "./errors.js";
 import {
   parseClaudeCliLine,
   type ClaudeCliMessage,
@@ -111,9 +111,7 @@ export async function* runClaudeCli(request: ClaudeRunRequest): AsyncGenerator<C
     });
   } catch (error) {
     request.signal?.removeEventListener("abort", onExternalAbort);
-    throw new ClaudeCodeError(ClaudeCodeErrorCode.SpawnFailed, "无法启动本机 claude。", {
-      cause: error,
-    });
+    throw spawnFailedError(error, request.cwd);
   }
 
   const stderr = new StderrTail();
@@ -130,13 +128,8 @@ export async function* runClaudeCli(request: ClaudeRunRequest): AsyncGenerator<C
   abort.signal.addEventListener("abort", terminate, { once: true });
 
   const spawnFailure = new Promise<never>((_, reject) => {
-    child.once("error", (error) =>
-      reject(
-        new ClaudeCodeError(ClaudeCodeErrorCode.SpawnFailed, "无法启动本机 claude。", {
-          cause: error,
-        }),
-      ),
-    );
+    // 修复依据：原先丢弃 errno 与 cwd，ENOENT（cwd 不存在）与 claude 缺失无法区分；这里原样保留。
+    child.once("error", (error) => reject(spawnFailedError(error, request.cwd)));
   });
   // 迭代提前结束时不应留下未处理的 rejection。
   spawnFailure.catch(() => undefined);

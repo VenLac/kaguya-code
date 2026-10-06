@@ -50,3 +50,33 @@ export function claudeAuthRequiredError(): ClaudeCodeError {
     { statusCode: HTTP_UNAUTHORIZED },
   );
 }
+
+/**
+ * Node 对「cwd 不存在」报的是 `spawn <claude> ENOENT`，和「找不到 claude」无法区分，
+ * 所以在启动前单独检查目录，把真正的原因（路径）告诉用户。
+ */
+export function workspaceMissingError(cwd: string): ClaudeCodeError {
+  return new ClaudeCodeError(
+    ClaudeCodeErrorCode.WorkspaceMissing,
+    `工作目录不存在或不是目录：${cwd}。请确认该 workspace 仍在原位置，或重新选择工作目录。`,
+    { details: { cwd } },
+  );
+}
+
+/** spawn 失败：保留 errno/syscall/cwd 与原始 cause，避免只剩一句「无法启动」。 */
+export function spawnFailedError(cause: unknown, cwd: string): ClaudeCodeError {
+  const errno = (cause as NodeJS.ErrnoException | undefined)?.code;
+  const syscall = (cause as NodeJS.ErrnoException | undefined)?.syscall;
+  return new ClaudeCodeError(
+    ClaudeCodeErrorCode.SpawnFailed,
+    `无法启动本机 claude${errno ? `（${errno}）` : ""}，工作目录：${cwd}。`,
+    {
+      cause,
+      details: {
+        cwd,
+        ...(errno ? { errno } : {}),
+        ...(syscall ? { syscall } : {}),
+      },
+    },
+  );
+}
