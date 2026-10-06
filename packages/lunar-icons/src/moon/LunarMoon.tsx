@@ -1,10 +1,22 @@
 import { useEffect, useRef } from "react";
+import {
+  MOON_MOTION,
+  approach,
+  frameDelta,
+  mapPointerToCanvas,
+  needsRebuild,
+  resolveCanvasMetrics,
+  type CanvasSignature,
+} from "./moonMotion.js";
 import { getMoonTexture, getMoonTextureU8, sampleMoonTexture, TEX_H, TEX_W } from "./texture.js";
 
 /**
  * 字符月亮：由数千个圆润字符（· ∘ c o O 0 @ ●）按明暗排布成的月球。
  * 字符固定在屏幕网格上，月面纹理在它们底下缓缓自转；光标靠近时字符被轻轻推开并泛起主题强调色，
  * 光源会朝光标偏移（像月相）。深色主题“越亮越密”，浅色主题自动反相成“越暗越密”的铅笔素描感。
+ *
+ * 尺寸一律取布局尺寸（clientWidth/Height，不受祖先 transform 影响），并在每帧自检，
+ * 签名变化（含入场动画、缩放、DPR、drawing buffer）即重建；规则见 docs/specs/lunar-moon.md。
  *
  * 性能：WebGL2 实例化绘制——月面采样、光照、选字符全在着色器里完成，整轮月亮只有 1–2 次 draw call，
  * JS 每帧只处理光标附近被扰动的字符。无交互时降到 30fps，使用省电 GPU，窗口不可见时完全暂停。
@@ -23,6 +35,8 @@ export interface LunarMoonProps {
   interactive?: boolean;
   /** 整体不透明度，默认 1 */
   opacity?: number;
+  /** 诊断日志：lunar-icons 不依赖 UI 包，由调用方接到自己的 logger */
+  onDiagnostic?: (level: "info" | "warn", message: string, detail?: Record<string, unknown>) => void;
 }
 
 const RAMP = [" ", "·", ".", ":", "∘", "c", "o", "O", "0", "@", "●"] as const;
@@ -99,8 +113,11 @@ function resolveCssColor(value: string): string {
   return c;
 }
 
-export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSpeed = 0.09, interactive = true, opacity = 1 }: LunarMoonProps) {
+export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSpeed = 0.09, interactive = true, opacity = 1, onDiagnostic }: LunarMoonProps) {
   const ref = useRef<HTMLCanvasElement>(null);
+  // 回调放进 ref：调用方每次渲染传新函数也不会让 effect 重跑（重跑会销毁并重建 GL 上下文）
+  const diagnosticRef = useRef(onDiagnostic);
+  diagnosticRef.current = onDiagnostic;
 
   useEffect(() => {
     const cv = ref.current;
@@ -111,10 +128,15 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
     const ctx2d = gl ? null : cv.getContext("2d");
     if (!gl && !ctx2d) return undefined;
 
+    const report = (level: "info" | "warn", message: string, detail?: Record<string, unknown>) => diagnosticRef.current?.(level, message, detail);
+    // 现场属性：生产构建下 UI logger 被禁用，排查「月亮异常」时只能读这个
+    const setState = (state: "ready" | "lost" | "error") => { cv.dataset.lunarMoon = state; };
+
     // ---------- 布局（CSS 像素） ----------
     let W = 0, H = 0, dpr = 1, cx = 0, cy = 0, R = 0, rh = 10, cw = 6, maxD = 7, MR = 90, sprSize = 0, N = 0;
     let gx = new Float32Array(0), gy = new Float32Array(0);
-    let dyn = new Float32Array(0), vx = new Float32Array(0), vy = new Float32Array(0);
+    let dyn = new Float32Array(0);
+    let built: CanvasSignature | null = null;
     let invert = false;
     let atlasCv: HTMLCanvasElement | null = null;
     let staticCells: { u: number; v: number; w: number; rim: number }[] = [];
@@ -146,11 +168,20 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
       atlasCv = a;
     };
 
+    // 当前签名：每帧与 built 比较，不一致就重建（不依赖某个事件一定触发）
+    const readSignature = (): CanvasSignature => ({
+      width: Math.max(1, cv.clientWidth), height: Math.max(1, cv.clientHeight),
+      dpr: Math.min(window.devicePixelRatio || 1, 1.5),
+      bufferWidth: gl ? gl.drawingBufferWidth : cv.width, bufferHeight: gl ? gl.drawingBufferHeight : cv.height,
+    });
+
     const layout = () => {
-      const r = cv.getBoundingClientRect();
-      W = Math.max(1, r.width); H = Math.max(1, r.height);
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      // 布局尺寸取 clientWidth/Height：getBoundingClientRect 含 transform，入场动画的 scale(0.9)
+      // 会让画布内部分辨率按 0.9 倍确定，而 ResizeObserver 不会因 transform 再次触发
+      const m = resolveCanvasMetrics(cv.clientWidth, cv.clientHeight, window.devicePixelRatio);
+      W = m.width; H = m.height; dpr = m.dpr;
+      cv.width = m.pixelWidth; cv.height = m.pixelHeight;
+      built = readSignature();
       cx = W * x; cy = H * y; R = Math.min(W, H) * size;
       rh = clamp(R * 0.034, 7, 12); cw = rh * 0.62; maxD = rh * 0.7; MR = clamp(R * 0.3, 70, 180);
       buildAtlas();
@@ -167,7 +198,7 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
       }
       N = gxA.length;
       gx = Float32Array.from(gxA); gy = Float32Array.from(gyA);
-      dyn = new Float32Array(N * 3); vx = new Float32Array(N); vy = new Float32Array(N);
+      dyn = new Float32Array(N * 3);
       return new Float32Array(sd);
     };
 
@@ -254,43 +285,68 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
     };
 
     // ---------- 交互 ----------
-    let px = -9999, py = -9999, pOn = false, smx = -9999, smy = -9999;
-    const onMove = (e: PointerEvent) => { px = e.clientX; py = e.clientY; pOn = true; wake(); };
+    // 光标位置不再单独平滑：直接用最近一次 pointermove（已换算到画布布局坐标）。
+    // 位移/热度/光源都是一阶逼近（无速度状态，无过冲），速率见 MOON_MOTION。
+    let px = -9999, py = -9999, pOn = false;
+    const onMove = (e: PointerEvent) => {
+      px = e.clientX; py = e.clientY; pOn = true;
+      busy = true; // 光标一动就满帧率，不等下一帧的 busy 判定，否则首帧会被 30fps 节流
+      wake();
+    };
     const onLeave = () => { pOn = false; wake(); };
     if (gl && interactive && !reduce) {
       window.addEventListener("pointermove", onMove, { passive: true });
       document.documentElement.addEventListener("mouseleave", onLeave);
     }
 
-    let theta = 0, last = performance.now(), lastDraw = 0, visible = true, raf = 0, disposed = false, needDraw = true, busy = false;
+    // last 为 null 表示刚被唤醒：第一帧用固定步长，避免 performance.now() 与 rAF 时间戳相减得到负数
+    let theta = 0, last: number | null = null, lastDraw = 0, visible = true, raf = 0, disposed = false, needDraw = true, busy = false;
     const light = [-0.4, 0.3, 0.85], lightT = [-0.4, 0.3, 0.85];
+
+    const handleLost = (reason: string) => {
+      if (!glReady && cv.dataset.lunarMoon === "lost") return;
+      glReady = false;
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      setState("lost");
+      report("warn", "WebGL 上下文丢失，等待恢复", { reason });
+    };
 
     const frame = (now: number) => {
       raf = 0;
       if (disposed || !visible || document.hidden || !glReady || N === 0) return;
+      // 上下文丢失事件可能晚到，先主动问一次
+      if (gl!.isContextLost()) { handleLost("isContextLost"); return; }
+      // 自检：入场动画、缩放、DPR 变化、drawing buffer 被驱动改动……只要签名变了就重建，不依赖事件
+      if (needsRebuild(built, readSignature())) {
+        report("info", "画布签名变化，重建月亮", { from: built, to: readSignature() });
+        rebuild();
+        if (N === 0) return;
+      }
       // 无交互时 30fps 足够（自转很慢）；有交互时跑满刷新率
       const interval = busy ? 0 : 30;
       if (now - lastDraw < interval) { raf = requestAnimationFrame(frame); return; }
-      const dt = Math.min(0.05, (now - last) / 1000); last = now; lastDraw = now;
-      const s = dt * 60;
+      const dt = frameDelta(now, last); last = now; lastDraw = now;
       theta += omega * dt;
 
       const rect = cv.getBoundingClientRect();
-      const lx = px - rect.left, ly = py - rect.top;
       const track = pOn;
+      let smx = 0, smy = 0;
       if (track) {
-        if (smx < -9000) { smx = lx; smy = ly; }
-        const k = 1 - Math.exp(-dt * 22); smx += (lx - smx) * k; smy += (ly - smy) * k;
+        const p = mapPointerToCanvas(px, py, rect, cv.clientWidth, cv.clientHeight);
+        smx = p.x; smy = p.y;
         const nx = clamp((smx - cx) / R, -1.4, 1.4), ny = clamp((smy - cy) / R, -1.4, 1.4), l = Math.hypot(nx * 1.1, ny * 1.1, 0.8);
         lightT[0] = (nx * 1.1) / l; lightT[1] = (-ny * 1.1) / l; lightT[2] = 0.8 / l;
-      } else { smx = -9999; lightT[0] = -0.4; lightT[1] = 0.3; lightT[2] = 0.85; }
-      const lk = Math.min(1, dt * 3);
+      } else { lightT[0] = -0.4; lightT[1] = 0.3; lightT[2] = 0.85; }
       let lightMoving = false;
-      for (let i = 0; i < 3; i++) { const dl = lightT[i]! - light[i]!; light[i]! += dl * lk; if (Math.abs(dl) > 1e-3) lightMoving = true; }
+      for (let i = 0; i < 3; i++) {
+        const dl = lightT[i]! - light[i]!;
+        light[i] = approach(light[i]!, lightT[i]!, MOON_MOTION.lightRate, dt);
+        if (Math.abs(dl) > 1e-3) lightMoving = true;
+      }
       const ll = Math.hypot(light[0]!, light[1]!, light[2]!);
 
       // 只有光标附近、或还在回位的字符才需要 JS 计算；其余完全交给 GPU
-      const MR2 = MR * MR, damp = Math.pow(0.84, s), kS = 0.075 * s, cap = maxD * 1.25;
+      const MR2 = MR * MR, cap = maxD * 1.25;
       let dirty = false, hotCount = 0, moving = false;
       for (let i = 0; i < N; i++) {
         const o3 = i * 3;
@@ -305,15 +361,17 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
             }
           }
         }
-        let oxi = dyn[o3]!, oyi = dyn[o3 + 1]!, hv = dyn[o3 + 2]!, vxi = vx[i]!, vyi = vy[i]!;
-        if (tx === 0 && ty === 0 && h === 0 && oxi === 0 && oyi === 0 && hv === 0 && vxi === 0 && vyi === 0) continue;
+        let oxi = dyn[o3]!, oyi = dyn[o3 + 1]!, hv = dyn[o3 + 2]!;
+        if (tx === 0 && ty === 0 && h === 0 && oxi === 0 && oyi === 0 && hv === 0) continue;
         const tl = Math.hypot(tx, ty); if (tl > cap) { tx *= cap / tl; ty *= cap / tl; }
-        vxi = (vxi + (tx - oxi) * kS) * damp; oxi += vxi * s;
-        vyi = (vyi + (ty - oyi) * kS) * damp; oyi += vyi * s;
-        hv += (h - hv) * Math.min(1, (h > hv ? 0.45 : 0.06) * s);
-        if (h === 0 && tx === 0 && ty === 0 && Math.abs(oxi) + Math.abs(oyi) + Math.abs(vxi) + Math.abs(vyi) < 2e-3) { oxi = oyi = vxi = vyi = 0; }
+        // 推开时快跟、回位时慢落：都是一阶逼近，不会像旧弹簧那样过冲抖动
+        const pushing = tx !== 0 || ty !== 0;
+        const rate = pushing ? MOON_MOTION.pushRate : MOON_MOTION.returnRate;
+        oxi = approach(oxi, tx, rate, dt); oyi = approach(oyi, ty, rate, dt);
+        hv = approach(hv, h, h > hv ? MOON_MOTION.heatRiseRate : MOON_MOTION.heatFallRate, dt);
+        if (!pushing && Math.abs(oxi) + Math.abs(oyi) < 2e-3) { oxi = oyi = 0; }
         if (h === 0 && hv < 2e-3) hv = 0;
-        dyn[o3] = oxi; dyn[o3 + 1] = oyi; dyn[o3 + 2] = hv; vx[i] = vxi; vy[i] = vyi;
+        dyn[o3] = oxi; dyn[o3 + 1] = oyi; dyn[o3 + 2] = hv;
         dirty = true; moving = true; if (hv > 0.01) hotCount++;
       }
       busy = track || moving || lightMoving;
@@ -332,14 +390,17 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
       needDraw = false;
       raf = requestAnimationFrame(frame);
     };
-    function wake() { if (!raf && visible && !document.hidden && glReady) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+    function wake() { if (!raf && visible && !document.hidden && glReady) { last = null; raf = requestAnimationFrame(frame); } }
     const start = () => {
       if (gl) wake();
       else if (needDraw) { drawStatic(); needDraw = false; }
     };
 
-    const onLost = (e: Event) => { e.preventDefault(); glReady = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } };
-    const onRestored = () => { try { setupGL(); rebuild(); start(); } catch { /* 无法恢复则保持空白 */ } };
+    const onLost = (e: Event) => { e.preventDefault(); handleLost("webglcontextlost"); };
+    const onRestored = () => {
+      try { setupGL(); rebuild(); setState("ready"); report("info", "WebGL 上下文已恢复"); start(); }
+      catch (error) { setState("error"); report("warn", "WebGL 上下文恢复失败", { error: String(error) }); }
+    };
     cv.addEventListener("webglcontextlost", onLost);
     cv.addEventListener("webglcontextrestored", onRestored);
 
@@ -348,7 +409,7 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
     const onVis = () => { if (!document.hidden) start(); };
     document.addEventListener("visibilitychange", onVis);
     // 主题切换（<html> 的 class 变化）后重建图集以换色
-    const mo = new MutationObserver(() => { if (!atlasCv) return; buildAtlas(); uploadAtlas(); needDraw = true; if (!gl) drawStatic(); start(); });
+    const mo = new MutationObserver(() => { if (!atlasCv || (gl && !glReady)) return; buildAtlas(); uploadAtlas(); needDraw = true; if (!gl) drawStatic(); start(); });
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
 
     // 贴图首次生成放到下一个宏任务，避免阻塞首屏
@@ -358,7 +419,13 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
         else getMoonTexture();
         ro.observe(cv); io.observe(cv);
         rebuild(); if (!gl) drawStatic(); start();
-      } catch { /* 着色器失败：保持空白，不影响界面 */ }
+        setState("ready");
+        report("info", "月亮初始化完成", { webgl2: !!gl, width: W, height: H, dpr, cells: N });
+      } catch (error) {
+        // 着色器失败：保持空白，不影响界面；原因留给诊断回调和现场属性
+        setState("error");
+        report("warn", "月亮初始化失败", { error: String(error) });
+      }
     }, 0);
 
     return () => {
@@ -371,6 +438,7 @@ export function LunarMoon({ className, size = 0.46, x = 0.5, y = 0.5, rotationSp
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("mouseleave", onLeave);
+      delete cv.dataset.lunarMoon;
       if (gl) gl.getExtension("WEBGL_lose_context")?.loseContext(); // 及时释放 GPU 上下文
     };
   }, [size, x, y, rotationSpeed, interactive]);

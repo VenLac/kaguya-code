@@ -20,7 +20,12 @@ import {
 } from "@zcode/contracts";
 import type { RegistryProviderConfig } from "@zcode/provider";
 import { withOpenRouterAttributionHeaders } from "@zcode/shared";
-import { createCodexAuthFetch, isCodexBaseUrl } from "@zcode/shared/node";
+import { createCodexAuthFetch, isClaudeCodeBaseUrl, isCodexBaseUrl } from "@zcode/shared/node";
+import {
+  ClaudeCodeLanguageModel,
+  ClaudeCodeRuntime,
+  type ClaudeCodeExecutionConfig,
+} from "./claude-code/index.js";
 import { createAnthropicCompatFetch } from "./anthropic-stream-compat.js";
 import { createOpenAIResponsesJsonCompatFetch } from "./openai-responses-json-compat.js";
 import { createModelOptionMapFetch, type RawRequestBodyCapture } from "./model-option-map-fetch.js";
@@ -29,7 +34,7 @@ import { createOfficialCodingPlanGatewayFetch } from "./official-coding-plan-gat
 import { normalizeModelTlsFailure } from "./failure-tls.js";
 import { mergeModelRequestHeaders } from "./model-request-headers.js";
 
-export type AiSdkProviderKind = "openai" | "anthropic" | "openai-compatible";
+export type AiSdkProviderKind = "openai" | "anthropic" | "openai-compatible" | "claude-code";
 
 export type EnvRecord = Record<string, string | undefined>;
 
@@ -44,6 +49,8 @@ interface AiSdkProviderConfig {
 }
 
 export interface AiSdkModelExecutionConfig {
+  /** Claude Code（本机）渠道的运行上下文：工作区目录与权限桥接，仅该渠道使用。 */
+  claudeCode?: ClaudeCodeExecutionConfig;
   /** 执行环境提供的默认来源信息，不属于 Provider 持久化配置。 */
   defaultHeaders?: Readonly<Record<string, string>>;
   env?: EnvRecord;
@@ -156,6 +163,9 @@ export class AiSdkModelExecution {
   private readonly env: EnvRecord;
   private readonly defaultHeaders: Record<string, string>;
   private readonly network: AiSdkNetworkConfig;
+  private readonly claudeCode: ClaudeCodeExecutionConfig;
+  /** 本机 Claude 渠道的进程与外部工具状态；模型对象每次请求新建，这份状态跨步骤存活。 */
+  readonly claudeCodeRuntime = new ClaudeCodeRuntime();
   private readonly logger?: Logger;
   private readonly baseTransport?: ProviderFetch;
   private readonly providerTransports = new Map<string, ProviderFetch>();
@@ -164,6 +174,7 @@ export class AiSdkModelExecution {
     this.env = config.env ?? process.env;
     this.defaultHeaders = { ...config.defaultHeaders };
     this.network = { ...config.network };
+    this.claudeCode = { ...config.claudeCode };
     this.logger = options.logger;
     this.baseTransport = options.transport;
   }
@@ -261,6 +272,18 @@ export class AiSdkModelExecution {
     rawRequestBodyCapture: RawRequestBodyCapture,
     supportsJsonSchemaOutput: boolean,
   ): LanguageModelFactory {
+    if (providerConfig.kind === "claude-code") {
+      // 本机 claude 自己完成认证与网络访问：不走 provider fetch、不读 apiKey。
+      return (modelId) =>
+        new ClaudeCodeLanguageModel({
+          modelId,
+          config: this.claudeCode,
+          runtime: this.claudeCodeRuntime,
+          env: this.env,
+          reasoningLevel: optionValues?.reasoningLevel,
+          logger: this.logger,
+        });
+    }
     const apiKey = this.resolveApiKey(providerConfig);
     const headers = providerConfig.headers;
     const baseTransport = this.resolveProviderTransport(providerId);
@@ -365,6 +388,11 @@ function toAiSdkProviderConfig(
     providerOptions: { apiFormat: config.api.type },
     access: config.access,
   };
+  // Claude Code（本机）渠道沿用 anthropic-messages 的配置形态，靠保留域名的哨兵 baseUrl 识别，
+  // 与 Codex 渠道的识别方式一致，无需扩展 provider 配置 schema。
+  if (isClaudeCodeBaseUrl(config.api.baseUrl)) {
+    return { kind: "claude-code", name: providerId, ...common };
+  }
   switch (config.api.type) {
     case "anthropic-messages":
       return { kind: "anthropic", ...common };

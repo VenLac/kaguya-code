@@ -1,6 +1,7 @@
 import { Output, jsonSchema } from "ai";
 import type { ModelToolChoice } from "@zcode/contracts";
 import type { EnvRecord } from "./model-execution.js";
+import { mergeClaudeCodeRequestContext } from "./claude-code/request-context.js";
 import { toAiSdkMessages } from "./transform.js";
 import { toAiSdkTools } from "./tool-transform.js";
 import type {
@@ -50,10 +51,14 @@ export function createGenerateTextOptions(input: {
     providerKind: input.resolved.providerKind,
     providerOptions,
   });
-  const requestProviderOptions = withNativeGenerateOutputFormat({
-    providerOptions: providerOptionsWithMetadata,
-    responseJsonSchema: input.request.responseJsonSchema,
-    resolved: input.resolved,
+  const requestProviderOptions = mergeClaudeCodeRequestContext({
+    providerKind: input.resolved.providerKind,
+    providerOptions: withNativeGenerateOutputFormat({
+      providerOptions: providerOptionsWithMetadata,
+      responseJsonSchema: input.request.responseJsonSchema,
+      resolved: input.resolved,
+    }),
+    context: input.statusContext,
   });
   return removeUndefined({
     model: input.resolved.model,
@@ -111,10 +116,14 @@ export function createStreamTextOptions(input: {
     input.resolved.providerOptions,
     input.request.providerOptions,
   );
-  const requestProviderOptions = mergeAnthropicRequestMetadata({
-    metadataUserId: input.anthropicMetadataUserId,
+  const requestProviderOptions = mergeClaudeCodeRequestContext({
     providerKind: input.resolved.providerKind,
-    providerOptions,
+    providerOptions: mergeAnthropicRequestMetadata({
+      metadataUserId: input.anthropicMetadataUserId,
+      providerKind: input.resolved.providerKind,
+      providerOptions,
+    }),
+    context: input.statusContext,
   });
   return removeUndefined({
     model: input.resolved.model,

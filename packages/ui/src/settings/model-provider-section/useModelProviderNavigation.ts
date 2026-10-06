@@ -65,6 +65,7 @@ interface UseModelProviderNavigationOptions {
 
 /** Codex 渠道在导航里的固定 key。 */
 export const CODEX_NAV_KEY = "channel:codex";
+const CLAUDE_CODE_NAV_KEY = "channel:claude-code";
 
 export function useModelProviderNavigation({
   presetProviders,
@@ -203,6 +204,12 @@ export function useModelProviderNavigation({
             key: CODEX_NAV_KEY,
             type: "codex" as const,
             label: intl.formatMessage({ id: "codex.title" }),
+            statusActive: false,
+          },
+          {
+            key: CLAUDE_CODE_NAV_KEY,
+            type: "claudeCode" as const,
+            label: intl.formatMessage({ id: "claudeCode.title" }),
             statusActive: false,
           },
         ],
@@ -505,7 +512,7 @@ export function connectionSelectionMatchesNavigationItem(
   selection: ProviderFamilyConnectionSelection,
   item: Exclude<ModelProviderNavGroup["items"][number], { type: "codingPlanLoading" }>,
 ): boolean {
-  if (item.type === "custom" || item.type === "codex") return false;
+  if (item.type === "custom" || item.type === "codex" || item.type === "claudeCode") return false;
   const familySpec = resolveModelProviderFamilySpecByProviderId(item.presetId ?? "");
   if (familySpec?.id !== family) return false;
   if (selection.kind === "start-plan") {

@@ -22,6 +22,7 @@ import type {
   ModelSelectionOrigin,
   ModelToolContract,
   PermissionBrokerPort,
+  ExternalToolExecutionPort,
   PermissionBrokerRequest,
   ProjectId,
   SessionEventSink,
@@ -34,6 +35,8 @@ import type {
   TargetChangedPayload,
   DynamicWorkflowRunProgressPayload,
   UserInputAutoResolutionUpdatedPayload,
+  PermissionRequestedPayload,
+  PermissionResolvedPayload,
   ContextSourcePort,
   ExecutionPort,
   FileSystemPort,
@@ -136,6 +139,7 @@ export class AgentRuntime {
   private appVersion: string;
   private permissionService: PermissionService;
   private permissionBroker: PermissionBrokerPort;
+  private externalToolPort?: ExternalToolExecutionPort;
   private toolScheduler: ToolScheduler;
   private eventReducer: EventReducer;
   private eventStore: SessionEventStorePort;
@@ -247,6 +251,7 @@ export class AgentRuntime {
     this.permissionService =
       deps.permissionService ?? new PermissionService(defaultPermissionConfig);
     this.permissionBroker = deps.permissionBroker ?? createDenyPermissionBroker();
+    this.externalToolPort = deps.externalToolPort;
     this.toolScheduler =
       deps.toolScheduler ??
       new ToolScheduler({
@@ -527,6 +532,13 @@ export interface AgentRuntime {
   /** workflow run 进度的出回合追加（事件源在 bootstrap 的 run service）。 */
   recordDynamicWorkflowRunProgress(
     input: DynamicWorkflowRunProgressPayload & { traceContext?: TraceContext },
+  ): Promise<void>;
+  /** 外部进程（Claude Code）执行的工具发起/结束权限请求时追加事件，让 v4 确认卡片能投影出来。 */
+  recordExternalPermissionRequested(
+    input: PermissionRequestedPayload & { traceContext?: TraceContext },
+  ): Promise<void>;
+  recordExternalPermissionResolved(
+    input: PermissionResolvedPayload & { traceContext?: TraceContext },
   ): Promise<void>;
   /** 恢复的 workflow run 的追踪重臂（registry 登记 + started 事件 + waiter + 结算通知）。 */
   trackResumedDynamicWorkflowRun(input: {

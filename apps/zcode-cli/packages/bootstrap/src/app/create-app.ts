@@ -41,6 +41,7 @@ import {
 } from "@zcode/shared/zcode-protocol-v4";
 
 import { createModelAdapter } from "../model-factory.js";
+import { createEventedPermissionBroker } from "./external-permission-broker.js";
 import { StartupTimer, startupNow } from "../startup-logging.js";
 import { scheduleStartupLogRetentionCleanup } from "../log-retention.js";
 import type {
@@ -532,7 +533,20 @@ export async function createZCodeApp(options: ZCodeAppOptions): Promise<ZCodeApp
         logger: modelLogger,
         modelIoDir,
         modelIoFullRetentionEnabled: options.modelIoFullRetentionEnabled,
-        executionConfig: modelExecutionConfig,
+        // Claude Code（本机）渠道需要工作区目录来归档会话，并借现有权限 broker 向用户确认工具调用。
+        executionConfig: {
+          ...modelExecutionConfig,
+          claudeCode: {
+            workingDirectory,
+            // 外部进程执行的工具不经 tool executor，需要补发 permission 事件 v4 才能展示确认卡片。
+            // runtime 在适配器之后才构造，延迟获取。
+            permissionBroker: createEventedPermissionBroker({
+              inner: options.permissionBroker,
+              getRuntime: () => runtime,
+              traceContext,
+            }),
+          },
+        },
         statusSink: modelTelemetry.statusSink,
         streamIdleTimeoutMs: configResult.config.modelStream.idleTimeoutMs,
       });
@@ -767,6 +781,8 @@ export async function createZCodeApp(options: ZCodeAppOptions): Promise<ZCodeApp
       isRemoteWorkspace: () =>
         isRemoteWorkspaceIdentity(runtimeConfig.memory?.workspaceIdentity ?? ""),
       permissionBroker: options.permissionBroker,
+      // 本机 Claude 渠道在自己的进程里执行工具：executor 把这些调用记录为原生调用并等待回传结果。
+      externalToolPort: modelAdapter.externalToolPort,
       permissionService,
       workflowPort: scriptWorkflowFacade.workflowPort,
       dynamicWorkflowRunPort,

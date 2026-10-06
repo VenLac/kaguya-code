@@ -1,7 +1,7 @@
 import type { ModelReasoningContentBlock } from "@zcode/contracts";
 
 type ReasoningTransformOptions = {
-  providerKind?: "openai" | "anthropic" | "openai-compatible" | "gateway" | "custom";
+  providerKind?: "openai" | "anthropic" | "openai-compatible" | "gateway" | "custom" | "claude-code";
 };
 type ReasoningProviderOptions =
   | { providerOptions: Record<string, unknown> }

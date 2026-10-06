@@ -5,6 +5,7 @@ export * from "./context-source.port.js";
 export * from "./http-client.port.js";
 export * from "./image-processor.port.js";
 export * from "./pdf-document.port.js";
+export * from "./external-tool.port.js";
 export * from "./permission.port.js";
 export * from "./session.port.js";
 export * from "./session-mailbox.port.js";

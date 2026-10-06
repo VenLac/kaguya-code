@@ -34,6 +34,8 @@ export interface ModelStatusContext {
   turnId?: ModelNetworkStatusEvent["turnId"];
   parentSessionId?: ModelNetworkStatusEvent["parentSessionId"];
   toolCallId?: string;
+  /** Kaguya 当前协作模式（plan/build/edit/yolo/auto）；本机 Claude 渠道映射成它的权限模式。 */
+  collaborationMode?: string;
   spanId?: string;
   parentSpanId?: string;
   querySource?: string;
@@ -91,6 +93,7 @@ export function createStatusContext(input: {
       | ModelStatusContext["parentSessionId"]
       | undefined,
     toolCallId: stringMetadata(metadata.toolCallId),
+    collaborationMode: stringMetadata(metadata.collaborationMode),
     modelCall: {
       ...resolvedModelCall,
       agentName: resolvedModelCall.agentName ?? stringMetadata(metadata.agentName),

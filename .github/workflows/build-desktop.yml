@@ -1,0 +1,169 @@
+name: Build desktop apps
+
+# 手动触发：在 Actions 页选择分支运行，产物在运行页的 Artifacts 里下载。
+# 推送 v* 标签：构建全部平台；全部成功后自动发行 Release 并标记为 Latest（附带安装包）。
+# 版本号由我们自己定：改根目录 package.json 的 version，再打同名标签（version 1.0.2 ↔ 标签 v1.0.2）。
+# 标签与 package.json 不一致时直接失败，避免安装包文件名里的版本与 Release 对不上。
+# 标签带连字符（如 v1.0.3-rc.1）视为预发布，不会占用 Latest。
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+    # 临时：workflow_dispatch 要求工作流文件已在默认分支上；合并到 main 前先靠推送功能分支触发构建。
+    branches:
+      - feat/claude-code-channel
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # 仓库默认走 npmmirror（见 electron-builder.config.js），GitHub 托管的 runner 直接用官方源。
+  # 不能设置全局 ELECTRON_MIRROR：它会覆盖 dmg-builder 等辅助包的下载地址，macOS 打包会 404。
+  ZCODE_ELECTRON_RUNTIME_MIRROR: https://github.com/electron/electron/releases/download/
+
+jobs:
+  version:
+    name: Check version
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag must match package.json version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "v${pkg}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::标签 ${GITHUB_REF_NAME} 与 package.json 的 version（${pkg}）不一致；先改 version 再打标签 v${pkg}"
+            exit 1
+          fi
+          echo "Releasing ${GITHUB_REF_NAME}"
+
+  build:
+    name: ${{ matrix.name }}
+    needs: version
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux x64
+            os: ubuntu-24.04
+            target_os: linux
+            target_arch: x64
+            builder_args: --linux --x64
+          - name: Linux arm64
+            os: ubuntu-24.04-arm
+            target_os: linux
+            target_arch: arm64
+            builder_args: --linux --arm64
+          - name: Windows x64
+            os: windows-2025
+            target_os: win32
+            target_arch: x64
+            builder_args: --win --x64
+          - name: macOS arm64
+            os: macos-15
+            target_os: darwin
+            target_arch: arm64
+            builder_args: --mac --arm64
+          - name: macOS x64
+            os: macos-15-intel
+            target_os: darwin
+            target_arch: x64
+            builder_args: --mac --x64
+    env:
+      ZCODE_TARGET_OS: ${{ matrix.target_os }}
+      ZCODE_TARGET_ARCH: ${{ matrix.target_arch }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        # 版本取自 package.json 的 packageManager 字段。
+
+      - uses: actions/setup-node@v4
+        with:
+          # 与 mise.toml 保持一致。
+          node-version: 24.14.0
+          cache: pnpm
+
+      # rpm / pacman 目标由 fpm 生成，需要 rpmbuild 与 bsdtar。
+      - name: Install Linux packaging tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends rpm libarchive-tools zstd
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # agent bundle、native search 等运行时资产 + 桌面端生产构建。
+      - name: Build
+        run: pnpm --filter @zcode/desktop build
+
+      # 未设置 ZCODE_ENABLE_MAC_SIGN 时 macOS 产物为未签名包（首次打开需在系统设置里放行）。
+      - name: Package
+        working-directory: packages/desktop
+        run: pnpm exec electron-builder ${{ matrix.builder_args }} --publish never --config electron-builder.config.js
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: kaguya-code-${{ matrix.target_os }}-${{ matrix.target_arch }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            packages/desktop/dist/*.AppImage
+            packages/desktop/dist/*.deb
+            packages/desktop/dist/*.rpm
+            packages/desktop/dist/*.pkg.tar.zst
+            packages/desktop/dist/*.exe
+            packages/desktop/dist/*.dmg
+            packages/desktop/dist/*.zip
+            packages/desktop/dist/latest*.yml
+
+  release:
+    name: Publish release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: false
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 各平台都会产出 latest*.yml，同名文件互相覆盖没有意义，只上传安装包本身。
+          mkdir -p assets
+          find release -type f ! -name 'latest*.yml' -exec cp {} assets/ \;
+
+          # 带连字符的标签是预发布，不占用 Latest。
+          if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+            channel=(--prerelease --latest=false)
+          else
+            channel=(--latest)
+          fi
+
+          # 重跑同一个标签时覆盖已有附件，而不是因为 Release 已存在而失败。
+          if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" assets/* --repo "${GITHUB_REPOSITORY}" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" assets/* \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "${GITHUB_REF_NAME}" \
+              --generate-notes \
+              --verify-tag \
+              "${channel[@]}"
+          fi

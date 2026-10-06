@@ -20,6 +20,8 @@ import type {
   TargetChangedPayload,
   DynamicWorkflowRunProgressPayload,
   UserInputAutoResolutionUpdatedPayload,
+  PermissionRequestedPayload,
+  PermissionResolvedPayload,
   TraceContext,
   TurnSteerInput,
   TurnInputIntentMetadata,
@@ -97,6 +99,12 @@ export interface AgentRuntimeCoreMethods {
   ): Promise<void>;
   recordDynamicWorkflowRunProgress(
     input: DynamicWorkflowRunProgressPayload & { traceContext?: TraceContext },
+  ): Promise<void>;
+  recordExternalPermissionRequested(
+    input: PermissionRequestedPayload & { traceContext?: TraceContext },
+  ): Promise<void>;
+  recordExternalPermissionResolved(
+    input: PermissionResolvedPayload & { traceContext?: TraceContext },
   ): Promise<void>;
   maybeStartGoalSummaryTitleGeneration(
     input: string,

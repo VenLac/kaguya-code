@@ -22,6 +22,19 @@ export {
   type NodeSelfResourceSamplerOptions,
 } from "./node/nodeSelfResourceTelemetry.js";
 export {
+  CLAUDE_CODE_BASE_URL,
+  CLAUDE_CODE_PLACEHOLDER_API_KEY,
+  findClaudeSessionFile,
+  isClaudeCodeBaseUrl,
+  isClaudeSessionId,
+  resolveClaudeConfigDir,
+  type FindClaudeSessionFileOptions,
+} from "./node/claudeCodePaths.js";
+export {
+  resolveClaudeExecutable,
+  type ResolveClaudeExecutableOptions,
+} from "./node/claudeExecutable.js";
+export {
   CODEX_API_BASE_URL,
   CODEX_OAUTH_CLIENT_ID,
   CODEX_OAUTH_PORT,

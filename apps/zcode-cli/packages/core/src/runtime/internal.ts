@@ -7,6 +7,7 @@ import type {
   TurnId,
   ModelToolContract,
   PermissionBrokerPort,
+  ExternalToolExecutionPort,
   SessionEventSink,
   SessionEventStorePort,
   SessionId,
@@ -64,6 +65,7 @@ export interface AgentRuntimeInternal
   config: AgentRuntimeConfig;
   permissionService: PermissionService;
   permissionBroker: PermissionBrokerPort;
+  externalToolPort?: ExternalToolExecutionPort;
   toolScheduler: ToolScheduler;
   eventReducer: EventReducer;
   eventStore: SessionEventStorePort;

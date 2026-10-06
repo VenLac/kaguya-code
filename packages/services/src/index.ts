@@ -222,6 +222,8 @@ export type { SessionRealtimePort } from "./session/sessionRealtimePort.js";
 // FileWatcher service — IFileWatcherService is both a type (interface) and value (descriptor)
 export { IFileWatcherService } from "./fileWatcher/fileWatcher.js";
 
+// Claude Code（本机）渠道 — 仅导出契约；实现位于 node.ts（依赖 Node 环境）
+export { IClaudeCodeService, type ClaudeCodeStatus } from "./claude-code/claudeCode.js";
 // Codex（ChatGPT 账号）渠道 — 仅导出契约；实现位于 node.ts（依赖 Node 环境）
 export { ICodexAuthService, type CodexAuthStatus } from "./codex-auth/codexAuth.js";
 // OAuth service — IOAuthService is both a type (interface) and value (descriptor)

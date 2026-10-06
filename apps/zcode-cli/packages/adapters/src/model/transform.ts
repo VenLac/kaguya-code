@@ -27,7 +27,7 @@ import { normalizeOpenAiCompatibleSystemMessages } from "./system-message-compat
 export interface AiSdkMessageTransformOptions {
   apiFormat?: string;
   providerOptions?: Record<string, unknown>;
-  providerKind?: "openai" | "anthropic" | "openai-compatible" | "gateway" | "custom";
+  providerKind?: "openai" | "anthropic" | "openai-compatible" | "gateway" | "custom" | "claude-code";
   stripMedia?: boolean;
   inputFormat?: ModelInputFormat;
 }

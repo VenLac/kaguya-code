@@ -12,7 +12,8 @@
     "gen": "node tools/gen.mjs",
     "sheet": "node tools/sheet.mjs dsl/icons.txt dsl/preview.html 12",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint"
+    "lint": "oxlint",
+    "test": "node --import tsx --test test/*.test.ts"
   },
   "peerDependencies": {
     "lucide-react": "^1.17.0",

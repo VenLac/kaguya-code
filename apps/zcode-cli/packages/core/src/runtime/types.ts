@@ -51,6 +51,7 @@ import type {
   TurnSteerResult,
   PartId,
   PermissionBrokerPort,
+  ExternalToolExecutionPort,
   PermissionUpdate,
   QueryId,
   RewindScope,
@@ -321,6 +322,8 @@ export interface AgentRuntimeDeps {
   providerRuntimeHeadersPort?: ProviderRuntimeHeadersPort;
   permissionService?: PermissionService;
   permissionBroker?: PermissionBrokerPort;
+  /** 由外部进程（本机 Claude Code）执行的工具调用：executor 记录为原生调用，但等待外部回传结果。 */
+  externalToolPort?: ExternalToolExecutionPort;
   toolScheduler?: ToolScheduler;
   toolRegistry?: ToolRegistry;
   toolExecutor?: ToolExecutor;

@@ -20,6 +20,7 @@ import type {
   Logger,
   Model,
   PermissionBrokerPort,
+  ExternalToolExecutionPort,
   SessionEvent,
   SessionId,
   SessionModePort,
@@ -78,6 +79,7 @@ export interface ToolExecutorOptions {
   registry: ToolRegistry;
   permissionService: PermissionService;
   permissionBroker?: PermissionBrokerPort;
+  externalToolPort?: ExternalToolExecutionPort;
   emitEvent: (event: SessionEvent) => Promise<void>;
   enqueueBackgroundTaskNotification?: EnqueueBackgroundTaskNotification;
   shouldEnqueueBackgroundTaskNotification?: ShouldEnqueueBackgroundTaskNotification;
@@ -184,6 +186,7 @@ export interface ToolExecutorDeps {
   registry: ToolRegistry;
   permissionService: PermissionService;
   permissionBroker: PermissionBrokerPort;
+  externalToolPort?: ExternalToolExecutionPort;
   emitEvent: (event: SessionEvent) => Promise<void>;
   enqueueBackgroundTaskNotification?: EnqueueBackgroundTaskNotification;
   shouldEnqueueBackgroundTaskNotification?: ShouldEnqueueBackgroundTaskNotification;

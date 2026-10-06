@@ -106,6 +106,8 @@ export const ServiceChannels = {
   OAuth: "oauth",
   /** Codex（ChatGPT 账号）登录与 GPT 渠道 */
   CodexAuth: "codex-auth",
+  /** Claude Code（本机）渠道：检测本机 claude 并注册模型来源 */
+  ClaudeCode: "claude-code",
   /** 新 Provider Config 的设置读写 Facade */
   ProviderSettings: "provider-settings",
   /** 新 Provider Registry 的模型选择 Facade */

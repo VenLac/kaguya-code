@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { LunarMoon, type LunarMoonProps } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
+import { logLunarMoonDiagnostic } from "@/lib/lunarMoonDiagnostic.js";
 import { useZCodeStore } from "@/store/StoreProvider.js";
 import { resolveTheme } from "@/useTheme.js";
 import type { Theme } from "@/useTheme.js";
@@ -99,7 +100,10 @@ export function ThemeHeroVisual(props: {
       />
       {props.moon ? (
         <div className="pointer-events-none absolute inset-0 text-foreground">
-          <LunarMoon {...(props.moon === true ? {} : props.moon)} />
+          <LunarMoon
+            {...(props.moon === true ? {} : props.moon)}
+            onDiagnostic={logLunarMoonDiagnostic}
+          />
         </div>
       ) : null}
       {props.children ? (

@@ -18,6 +18,7 @@ import {
   IBotsService,
   IFileWatcherService,
   IOAuthService,
+  IClaudeCodeService,
   ICodexAuthService,
   IModelSelectionService,
   IProviderSettingsService,
@@ -72,6 +73,7 @@ export class RemoteServiceAccess implements IServiceAccessor {
   readonly fileWatcherService: IFileWatcherService;
   readonly oauthService: IOAuthService;
   readonly codexAuthService: ICodexAuthService;
+  readonly claudeCodeService: IClaudeCodeService;
   readonly providerSettingsService: IProviderSettingsService;
   readonly modelSelectionService: IModelSelectionService;
   /** Host-only target proxy；不属于 IServiceAccessor，避免向 Renderer 暴露 Secret 写入接口。 */
@@ -154,6 +156,9 @@ export class RemoteServiceAccess implements IServiceAccessor {
     );
     this.oauthService = ProxyChannel.toService<IOAuthService>(
       channelClient.getChannel(IOAuthService.channelName),
+    );
+    this.claudeCodeService = ProxyChannel.toService<IClaudeCodeService>(
+      channelClient.getChannel(IClaudeCodeService.channelName),
     );
     this.codexAuthService = ProxyChannel.toService<ICodexAuthService>(
       channelClient.getChannel(ICodexAuthService.channelName),

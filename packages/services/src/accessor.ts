@@ -15,6 +15,7 @@ import type { ICuaPermissionService } from "./cua-permission-broker/cuaPermissio
 import type { IBotsService } from "./bots/bots.js";
 import type { IFileWatcherService } from "./fileWatcher/fileWatcher.js";
 import type { IOAuthService } from "./oauth/oauth.js";
+import type { IClaudeCodeService } from "./claude-code/claudeCode.js";
 import type { ICodexAuthService } from "./codex-auth/codexAuth.js";
 import type {
   IModelSelectionService,
@@ -67,6 +68,8 @@ export interface IServiceAccessor {
   readonly oauthService: IOAuthService;
   /** Codex（ChatGPT 账号）渠道；旧测试 double / 不支持的 host 可不提供。 */
   readonly codexAuthService?: ICodexAuthService;
+  /** Claude Code（本机）渠道；旧测试 double / 不支持的 host 可不提供。 */
+  readonly claudeCodeService?: IClaudeCodeService;
   /** 当前 Environment 的 Provider 配置与设置视图。 */
   readonly providerSettingsService: IProviderSettingsService;
   /** 当前 Environment Registry 发布的唯一模型选择 View。 */
