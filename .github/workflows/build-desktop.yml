@@ -19,9 +19,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # 仓库默认走 npmmirror（见 mise.toml / electron-builder.config.js），GitHub 托管的 runner 直接用官方源。
+  # 仓库默认走 npmmirror（见 electron-builder.config.js），GitHub 托管的 runner 直接用官方源。
+  # 不能设置全局 ELECTRON_MIRROR：它会覆盖 dmg-builder 等辅助包的下载地址，macOS 打包会 404。
   ZCODE_ELECTRON_RUNTIME_MIRROR: https://github.com/electron/electron/releases/download/
-  ELECTRON_MIRROR: https://github.com/electron/electron/releases/download/
 
 jobs:
   build:
