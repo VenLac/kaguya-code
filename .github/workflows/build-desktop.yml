@@ -1,7 +1,10 @@
 name: Build desktop apps
 
 # 手动触发：在 Actions 页选择分支运行，产物在运行页的 Artifacts 里下载。
-# 推送 v* 标签：构建全部平台并创建草稿 Release（附带安装包），确认后再手动发布。
+# 推送 v* 标签：构建全部平台；全部成功后自动发行 Release 并标记为 Latest（附带安装包）。
+# 版本号由我们自己定：改根目录 package.json 的 version，再打同名标签（version 1.0.2 ↔ 标签 v1.0.2）。
+# 标签与 package.json 不一致时直接失败，避免安装包文件名里的版本与 Release 对不上。
+# 标签带连字符（如 v1.0.3-rc.1）视为预发布，不会占用 Latest。
 on:
   workflow_dispatch:
   push:
@@ -24,8 +27,25 @@ env:
   ZCODE_ELECTRON_RUNTIME_MIRROR: https://github.com/electron/electron/releases/download/
 
 jobs:
+  version:
+    name: Check version
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag must match package.json version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "v${pkg}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::标签 ${GITHUB_REF_NAME} 与 package.json 的 version（${pkg}）不一致；先改 version 再打标签 v${pkg}"
+            exit 1
+          fi
+          echo "Releasing ${GITHUB_REF_NAME}"
+
   build:
     name: ${{ matrix.name }}
+    needs: version
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     strategy:
@@ -109,7 +129,7 @@ jobs:
             packages/desktop/dist/latest*.yml
 
   release:
-    name: Draft release
+    name: Publish release
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-24.04
@@ -121,15 +141,29 @@ jobs:
           path: release
           merge-multiple: false
 
-      - name: Create draft release
+      - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           # 各平台都会产出 latest*.yml，同名文件互相覆盖没有意义，只上传安装包本身。
           mkdir -p assets
           find release -type f ! -name 'latest*.yml' -exec cp {} assets/ \;
-          gh release create "${GITHUB_REF_NAME}" assets/* \
-            --repo "${GITHUB_REPOSITORY}" \
-            --title "${GITHUB_REF_NAME}" \
-            --generate-notes \
-            --draft
+
+          # 带连字符的标签是预发布，不占用 Latest。
+          if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+            channel=(--prerelease --latest=false)
+          else
+            channel=(--latest)
+          fi
+
+          # 重跑同一个标签时覆盖已有附件，而不是因为 Release 已存在而失败。
+          if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" assets/* --repo "${GITHUB_REPOSITORY}" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" assets/* \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "${GITHUB_REF_NAME}" \
+              --generate-notes \
+              --verify-tag \
+              "${channel[@]}"
+          fi
