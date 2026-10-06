@@ -276,3 +276,7 @@ node dist/zcode/debug/zcode/bin/zcode.mjs --web \
 ## 项目声明
 
 功能与优惠范围、维护规则、执行与数据风险，以及许可和第三方版权说明，详见 [NOTICE.md](NOTICE.md)。
+
+## 致谢
+
+感谢 LINUX DO 社区的交流与反馈。
