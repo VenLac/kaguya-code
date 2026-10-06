@@ -9,6 +9,7 @@ import { LunarMoon } from "@zcode/lunar-icons";
 import { cn } from "@/components/lib/utils.js";
 import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { useIsOfficeMode } from "@/hooks/useInterfaceMode.js";
+import { logLunarMoonDiagnostic } from "@/lib/lunarMoonDiagnostic.js";
 import { logger } from "@/logger.js";
 
 const GREETING_BOUNDARY_HOURS = [5, 9, 12, 14, 18, 23] as const;
@@ -183,7 +184,7 @@ export function ConversationDraftEmptyState({ className }: { className?: string 
           "-translate-x-1/2 -translate-y-1/2 text-foreground",
         )}
       >
-        <LunarMoon size={0.5} opacity={0.62} />
+        <LunarMoon size={0.5} opacity={0.62} onDiagnostic={logLunarMoonDiagnostic} />
       </div>
       <p
         ref={greetingContainerRef}
