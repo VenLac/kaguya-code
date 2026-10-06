@@ -17,11 +17,12 @@ import type { ClaudeCodeLanguageModelOptions } from "./types.js";
 export async function streamEphemeral(
   options: ClaudeCodeLanguageModelOptions,
   input: {
-  callOptions: LanguageModelV3CallOptions;
-  executable: string;
-  cwd: string;
-  requestToolNames: ReadonlySet<string>;
-}): Promise<LanguageModelV3StreamResult> {
+    callOptions: LanguageModelV3CallOptions;
+    executable: string;
+    cwd: string;
+    requestToolNames: ReadonlySet<string>;
+  },
+): Promise<LanguageModelV3StreamResult> {
   const { callOptions, executable, cwd } = input;
   const { env, logger } = options;
   const content = buildClaudeContent(callOptions.prompt, "ephemeral");
@@ -104,4 +105,3 @@ export async function streamEphemeral(
   });
   return { stream };
 }
-

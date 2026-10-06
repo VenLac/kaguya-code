@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -486,4 +486,59 @@ test("Kaguya 协作模式映射成 claude 的 --permission-mode；build 不显�
     const index = argv.indexOf("--permission-mode");
     assert.equal(index === -1 ? undefined : argv[index + 1], expected, `mode=${mode}`);
   }
+});
+
+test("Kaguya 的 skill 清单变成临时插件交给 claude（--plugin-dir），run 结束后清理；原 skill 目录不受影响", async () => {
+  const skillDir = await mkdtemp(join(tmpdir(), "kaguya-skill-src-"));
+  await writeFile(
+    join(skillDir, "SKILL.md"),
+    "---\nname: pelican-notes\ndescription: d\n---\nbody",
+  );
+  const reminder = `<system-reminder>\nThe following skills are available for use with the Skill tool:\n\n- pelican-notes: d (file: ${join(skillDir, "SKILL.md")})\n</system-reminder>`;
+  const prompt: LanguageModelV3Prompt = [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: reminder },
+        { type: "text", text: "use it" },
+      ],
+    },
+  ];
+  const log = newLog();
+  const { model } = makeModel({ scenario: "text" }, log);
+  await drain((await model.doStream(callOptions(prompt))).stream);
+  const logged = await readLog(log);
+  const argv: string[] = logged[0].argv;
+  const pluginDir = logged.find((l) => l.pluginDir)?.pluginDir;
+  assert.equal(argv[argv.indexOf("--plugin-dir") + 1], pluginDir.root);
+  assert.equal(pluginDir.manifest.name, "kaguya-skills");
+  assert.deepEqual(pluginDir.skills, { "pelican-notes": skillDir });
+  // reminder 本身仍然不会进入用户消息
+  assert.deepEqual(logged.find((l) => l.stdin).stdin.message.content, [
+    { type: "text", text: "use it" },
+  ]);
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.equal(
+    await stat(pluginDir.root).then(
+      () => true,
+      () => false,
+    ),
+    false,
+    "run 结束后临时插件应被清理",
+  );
+  assert.equal(
+    await stat(join(skillDir, "SKILL.md")).then(
+      () => true,
+      () => false,
+    ),
+    true,
+  );
+  await rm(skillDir, { recursive: true, force: true });
+});
+
+test("没有 skill 清单时不传 --plugin-dir；一次性请求从不加载 skill", async () => {
+  const log = newLog();
+  const { model } = makeModel({ scenario: "text" }, log);
+  await drain((await model.doStream(callOptions(userPrompt()))).stream);
+  assert.ok(!(await readLog(log))[0].argv.includes("--plugin-dir"));
 });

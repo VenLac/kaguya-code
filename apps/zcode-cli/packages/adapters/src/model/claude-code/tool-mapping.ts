@@ -1,8 +1,10 @@
+import { stripSkillNamespace } from "./skills.js";
 import {
   AskUserQuestionInputSchema,
   BashInputSchema,
   EditInputSchema,
   ExitPlanModeInputSchema,
+  SkillInputSchema,
   GlobInputSchema,
   GrepInputSchema,
   ReadInputSchema,
@@ -55,6 +57,7 @@ const NATIVE_TOOLS: Readonly<Record<string, NativeToolSpec>> = {
   TodoWrite: { schema: TodoWriteInputSchema, keys: ["todos"] },
   AskUserQuestion: { schema: AskUserQuestionInputSchema, keys: ["questions"] },
   ExitPlanMode: { schema: ExitPlanModeInputSchema, keys: ["plan", "allowedPrompts"] },
+  Skill: { schema: SkillInputSchema, keys: ["skill", "args"] },
 };
 
 export interface MappedToolCall {
@@ -89,6 +92,12 @@ function normalizeTodos(input: JsonRecord): JsonRecord {
   };
 }
 
+/** claude 把 Kaguya 的 skill 挂在插件命名空间下（kaguya-skills:name）；还原成 Kaguya 里的名字。 */
+function normalizeSkillInput(input: JsonRecord): JsonRecord {
+  const skill = typeof input.skill === "string" ? stripSkillNamespace(input.skill) : input.skill;
+  return { ...pick(input, ["args"]), skill };
+}
+
 export function isHiddenClaudeTool(name: string): boolean {
   return HIDDEN_CLAUDE_TOOLS.has(name);
 }
@@ -98,7 +107,12 @@ export function mapClaudeToolCall(name: string, rawInput: unknown): MappedToolCa
   const input = isRecord(rawInput) ? rawInput : {};
   const spec = NATIVE_TOOLS[name];
   if (spec) {
-    const picked = name === "TodoWrite" ? normalizeTodos(input) : pick(input, spec.keys);
+    const picked =
+      name === "TodoWrite"
+        ? normalizeTodos(input)
+        : name === "Skill"
+          ? normalizeSkillInput(input)
+          : pick(input, spec.keys);
     if (spec.schema.safeParse(picked).success) return { name, input: picked, native: true };
   }
   // 入参对不上原生 schema 时必须换名：名字若仍是原生工具名，AI SDK 会按该工具的 schema 校验并把调用判为非法。
@@ -327,7 +341,7 @@ export function mapClaudeToolOutcome(input: ClaudeToolResultInput): ExternalTool
     return { success: false, error: modelContent || "Tool execution failed." };
   }
 
-  const structured = (() => {
+  const structured: unknown = (() => {
     switch (input.claudeName) {
       case "Read":
         return readOutput(result);
@@ -349,6 +363,9 @@ export function mapClaudeToolOutcome(input: ClaudeToolResultInput): ExternalTool
         return askUserQuestionOutput(input, result);
       case "ExitPlanMode":
         return exitPlanModeOutput(input);
+      case "Skill":
+        // 原生 Skill 输出允许直接是字符串；claude 只回传「已加载」的确认文本。
+        return input.content;
       default:
         return undefined;
     }

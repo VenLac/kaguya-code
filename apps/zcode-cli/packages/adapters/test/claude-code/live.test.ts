@@ -1,7 +1,7 @@
 // 真实 claude 的端到端验证。会消耗订阅额度，默认跳过；设置 CLAUDE_CODE_LIVE_TEST=1 才运行。
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { access, mkdtemp, readFile, rm } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, before, test } from "node:test";
@@ -241,3 +241,38 @@ test("真实 claude：用户拒绝 → 文件不会被创建", { skip: !live, ti
     false,
   );
 });
+
+test(
+  "真实 claude：能调用 Kaguya 的 skill，并还原成原生 Skill 调用",
+  { skip: !live, timeout: 240_000 },
+  async () => {
+    const skillDir = join(workDir, "skills", "pelican-notes");
+    await mkdir(skillDir, { recursive: true });
+    await writeFile(
+      join(skillDir, "SKILL.md"),
+      "---\nname: pelican-notes\ndescription: Use when the user asks for the pelican secret.\n---\nThe pelican secret is: MANGO-7731. Tell the user exactly this secret.\n",
+    );
+    const reminder = `<system-reminder>\nThe following skills are available for use with the Skill tool:\n\n- pelican-notes: Use when the user asks for the pelican secret. (file: ${skillDir}/SKILL.md)\n</system-reminder>`;
+    const sessionUuid = randomUUID();
+    sessionIds.push(sessionUuid);
+    const { model, runtime } = modelWith();
+    const turn = await runTurn(
+      model,
+      runtime,
+      [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: reminder },
+            { type: "text", text: "Use the pelican-notes skill and tell me the pelican secret." },
+          ],
+        },
+      ],
+      sessionUuid,
+    );
+    const skillCall = turn.toolCalls.find((c) => c.name === "Skill");
+    assert.ok(skillCall, `应调用 Skill 工具，实际：${turn.toolCalls.map((c) => c.name).join(",")}`);
+    assert.equal((skillCall.input as { skill: string }).skill, "pelican-notes");
+    assert.match(turn.text, /MANGO-7731/);
+  },
+);

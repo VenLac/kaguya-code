@@ -249,3 +249,20 @@ test("AskUserQuestion / ExitPlanMode：入参保留原生字段，答案与计�
     { success: false, error: "user rejected the plan" },
   );
 });
+
+test("Skill：还原 Kaguya 里的名字，输出为原生 Skill 的字符串形式", () => {
+  const mapped = mapClaudeToolCall("Skill", { skill: "kaguya-skills:pelican-notes", args: "x" });
+  assert.equal(mapped.native, true);
+  assert.deepEqual(mapped.input, { skill: "pelican-notes", args: "x" });
+  assert.deepEqual(
+    outcome("Skill", { skill: "pelican-notes" }, "Launching skill: pelican-notes", {
+      success: true,
+      commandName: "pelican-notes",
+    }),
+    {
+      success: true,
+      output: "Launching skill: pelican-notes",
+      modelContent: "Launching skill: pelican-notes",
+    },
+  );
+});

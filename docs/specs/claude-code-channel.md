@@ -40,13 +40,13 @@ claude can_use_tool ──> 权限处理（等工具行出现后）──> Permi
 
 ### 状态所有者
 
-| 状态 | 唯一所有者 |
-| --- | --- |
-| 对话、工具循环、compact、权限规则、会话 jsonl | Claude Code |
-| 消息片段、事件、序号、历史、文件变更追踪、重放 | Kaguya core（与其他 provider 完全相同） |
-| 进行中的 claude 进程与未交付的工具结果 | `ClaudeCodeRuntime`（模型执行层持有，模型对象每次请求新建，它跨步骤存活） |
-| 工具权限的最终决定 | 用户，经原生 PermissionBroker；Claude 的 `can_use_tool` 是唯一的确认入口 |
-| 会话映射 | 无需存储：`sess_<uuid>` 去前缀即 Claude 会话 id；非 UUID 用 UUIDv5 派生 |
+| 状态                                           | 唯一所有者                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------- |
+| 对话、工具循环、compact、权限规则、会话 jsonl  | Claude Code                                                               |
+| 消息片段、事件、序号、历史、文件变更追踪、重放 | Kaguya core（与其他 provider 完全相同）                                   |
+| 进行中的 claude 进程与未交付的工具结果         | `ClaudeCodeRuntime`（模型执行层持有，模型对象每次请求新建，它跨步骤存活） |
+| 工具权限的最终决定                             | 用户，经原生 PermissionBroker；Claude 的 `can_use_tool` 是唯一的确认入口  |
+| 会话映射                                       | 无需存储：`sess_<uuid>` 去前缀即 Claude 会话 id；非 UUID 用 UUIDv5 派生   |
 
 ### 步骤划分与续接
 
@@ -81,7 +81,18 @@ desktop-continuous 与 web-remote-replayable 消费的是同一组 session 事�
 
 ## 认证与状态检测
 
-`IClaudeCodeService`（host）：`getStatus`/`enable`/`disable`。状态来自 `claude --version` 与 `claude auth status`（不耗额度），只取 loggedIn/authMethod/subscriptionType，不读取邮箱、组织。稳定错误码：`CLAUDE_NOT_FOUND`、`CLAUDE_AUTH_REQUIRED`（401）、`CLAUDE_SPAWN_FAILED`、`CLAUDE_EXITED_ABNORMALLY`（带退出码与 stderr 尾部）、`CLAUDE_RUN_FAILED`、`CLAUDE_PROTOCOL_ERROR`。`claude` 的位置：PATH（Windows 按 PATHEXT）→ `~/.local/bin`、`~/.claude/local`、`~/.npm-global/bin`、`~/bin`；远程 workspace 在 agent 所在主机解析。
+`IClaudeCodeService`（host）：`getStatus`/`enable`/`syncModels`/`disable`。`enable` 要求本机已安装且已登录，否则拒绝并说明原因。状态来自 `claude --version` 与 `claude auth status`（不耗额度），只取 loggedIn/authMethod/subscriptionType，不读取邮箱、组织。稳定错误码：`CLAUDE_NOT_FOUND`、`CLAUDE_AUTH_REQUIRED`（401）、`CLAUDE_SPAWN_FAILED`、`CLAUDE_EXITED_ABNORMALLY`（带退出码与 stderr 尾部）、`CLAUDE_RUN_FAILED`、`CLAUDE_PROTOCOL_ERROR`。`claude` 的位置：PATH（Windows 按 PATHEXT）→ `~/.local/bin`、`~/.claude/local`、`~/.npm-global/bin`、`~/bin`；远程 workspace 在 agent 所在主机解析。
+
+## 模型与上下文
+
+- 不再写死 `sonnet/opus/haiku` 别名和 200k 上下文。启用或点「同步模型」时，对每个别名向本机 claude 发一次最小请求（`--output-format json --tools "" --no-session-persistence`），从 `modelUsage` 读取**真实模型 id、`contextWindow`、`maxOutputTokens`**，并据此注册/更新模型（例如 sonnet→`claude-sonnet-5-5` 1M/128k，haiku→`claude-haiku-4-5-20251001` 200k/32k）。
+- 旧版本留下的别名模型（`sonnet` 等）通过 `savePersonalModelDraft` 改名为真实 id 并修正配置，不会与新模型并存。
+- 某个别名探测失败（无权限、超时）时跳过并在状态里说明，其余照常同步；全部失败则报错。探测会消耗少量额度。
+- 思考强度仍只提供 `low/medium/high`。
+
+## Kaguya skill
+
+Kaguya 注入的 `<system-reminder>` 里的技能列表对 claude 不可见（该块被过滤）。每次新建 run 时把列表里的 skill 以符号链接（失败回退为复制）放进临时插件目录 `kaguya-skills`，经 `--plugin-dir` 交给 claude，由它自己的 `Skill` 工具调用；claude 返回的 `kaguya-skills:<name>` 在映射时还原为 Kaguya 的原生 `Skill` 调用。插件目录随 run 结束清理，生成失败只记录警告、本回合不带 skill。
 
 ## 已知限制
 
@@ -89,7 +100,8 @@ desktop-continuous 与 web-remote-replayable 消费的是同一组 session 事�
 - 中途 Claude→其他模型→Claude 时，Claude 看不到中间那段其他模型的回复。
 - 子 agent（`Task`）只展示为一个 `ClaudeTask` 工具行与最终文本，没有子会话下钻。
 - 计划模式：Kaguya 的计划开关映射到 Claude 的 plan 模式，但 Kaguya 侧的计划状态不会随 `ExitPlanMode` 自动退出。
-- 模型只提供 `sonnet/opus/haiku` 别名（200k 上下文）；1M 上下文变体、`xhigh/max` 思考强度未提供。
+- `xhigh/max` 思考强度未提供；模型清单是启用/同步时的快照，claude 升级后需点「同步模型」。
+- skill 只在新建 run 时交给 claude；同一 run 中途新增的 skill 下一回合才可用。
 - `claude` 的 stream-json 与 jsonl 没有稳定公开契约；解析器容错（未知行类型忽略），格式大改需要跟进。
 - Windows/macOS 未实测；`.cmd` 包装经 shell 启动，参数限定为保守字符集，用户内容只走 stdin。
 - 使用本机 claude 的订阅额度是否符合 Anthropic 对第三方产品的条款，需使用者自行核对（本渠道不接触 token，只调用本机 `claude`）。

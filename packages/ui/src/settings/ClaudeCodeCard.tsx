@@ -10,7 +10,7 @@ import { useZCodeIntl } from "@/i18n/IntlProvider.js";
 import { useServices } from "@/hooks/useServices.js";
 import { logger } from "@/logger.js";
 
-type Busy = "enable" | "disable" | "refresh";
+type Busy = "enable" | "disable" | "refresh" | "sync";
 
 function statusBadgeId(status: ClaudeCodeStatus | null): string {
   if (!status || !status.installed) return "claudeCode.status.notInstalled";
@@ -129,21 +129,33 @@ export function ClaudeCodeCard() {
             {intl.formatMessage({ id: "claudeCode.recheck" })}
           </Button>
           {status?.enabled ? (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={busy !== null}
-              onClick={() => void run("disable", () => claudeCodeService.disable())}
-            >
-              <Trash2 className="size-3.5" aria-hidden="true" />
-              {intl.formatMessage({ id: "claudeCode.disable" })}
-            </Button>
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={busy !== null || !ok}
+                onClick={() => void run("sync", () => claudeCodeService.syncModels())}
+              >
+                <RefreshCw className="size-3.5" aria-hidden="true" />
+                {intl.formatMessage({ id: "claudeCode.sync" })}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={busy !== null}
+                onClick={() => void run("disable", () => claudeCodeService.disable())}
+              >
+                <Trash2 className="size-3.5" aria-hidden="true" />
+                {intl.formatMessage({ id: "claudeCode.disable" })}
+              </Button>
+            </>
           ) : (
             <Button
               type="button"
               size="sm"
-              disabled={busy !== null || !status?.installed}
+              disabled={busy !== null || !ok}
               onClick={() => void run("enable", () => claudeCodeService.enable())}
             >
               <Power className="size-3.5" aria-hidden="true" />

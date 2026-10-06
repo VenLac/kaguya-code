@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 测试用假 claude：按 FAKE_CLAUDE_SCENARIO 回放 stream-json 协议，并把收到的 argv / 首条 stdin 写进 FAKE_CLAUDE_LOG。
-import { appendFileSync, readFileSync } from "node:fs";
+import { appendFileSync, readFileSync, readdirSync, readlinkSync, lstatSync } from "node:fs";
 import { createInterface } from "node:readline";
 
 const scenario = process.env.FAKE_CLAUDE_SCENARIO ?? "text";
@@ -60,6 +60,24 @@ const textBlock = (index, chunks) => {
 };
 
 record({ argv: process.argv.slice(2), env: { CLAUDE_CONFIG_DIR: process.env.CLAUDE_CONFIG_DIR } });
+// 临时插件目录在 run 结束后会被删除，这里趁它还在把结构记下来供断言。
+const pluginDirIndex = process.argv.indexOf("--plugin-dir");
+if (pluginDirIndex !== -1) {
+  const root = process.argv[pluginDirIndex + 1];
+  const skills = Object.fromEntries(
+    readdirSync(`${root}/skills`).map((name) => {
+      const path = `${root}/skills/${name}`;
+      return [name, lstatSync(path).isSymbolicLink() ? readlinkSync(path) : "(copied)"];
+    }),
+  );
+  record({
+    pluginDir: {
+      root,
+      manifest: JSON.parse(readFileSync(`${root}/.claude-plugin/plugin.json`, "utf8")),
+      skills,
+    },
+  });
+}
 // 临时的 system prompt 文件在请求结束后会被删除，这里趁它还在把内容记下来供断言。
 const systemFileIndex = process.argv.indexOf("--system-prompt-file");
 if (systemFileIndex !== -1) {

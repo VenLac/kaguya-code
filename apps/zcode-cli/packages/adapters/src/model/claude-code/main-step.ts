@@ -14,6 +14,7 @@ import {
 } from "./model-helpers.js";
 import { createClaudePermissionHandler, type ClaudeRequestContext } from "./permission.js";
 import { buildClaudeContent } from "./prompt.js";
+import { createSkillsPlugin, extractKaguyaSkills } from "./skills.js";
 import type { ClaudeRunRequest } from "./process.js";
 import { ClaudeRun } from "./run.js";
 import { planClaudeSession } from "./session.js";
@@ -24,14 +25,15 @@ import type { ClaudeCodeLanguageModelOptions } from "./types.js";
 export async function streamMainStep(
   options: ClaudeCodeLanguageModelOptions,
   input: {
-  callOptions: LanguageModelV3CallOptions;
-  executable: string;
-  cwd: string;
-  context: ClaudeRequestContext;
-  plan: Awaited<ReturnType<typeof planClaudeSession>>;
-  sessionKey: string;
-  requestToolNames: ReadonlySet<string>;
-}): Promise<LanguageModelV3StreamResult> {
+    callOptions: LanguageModelV3CallOptions;
+    executable: string;
+    cwd: string;
+    context: ClaudeRequestContext;
+    plan: Awaited<ReturnType<typeof planClaudeSession>>;
+    sessionKey: string;
+    requestToolNames: ReadonlySet<string>;
+  },
+): Promise<LanguageModelV3StreamResult> {
   const { callOptions, sessionKey, requestToolNames } = input;
   const { runtime, logger } = options;
   const lastRole = callOptions.prompt.at(-1)?.role;
@@ -48,7 +50,7 @@ export async function streamMainStep(
         "与 Claude Code 的会话已中断（进程已退出），请重新发送上一条消息。",
       );
     }
-    run = startRun(options, input);
+    run = await startRun(options, input);
   }
   const activeRun = run;
 
@@ -103,16 +105,17 @@ export async function streamMainStep(
   return { stream };
 }
 
-function startRun(
+async function startRun(
   options: ClaudeCodeLanguageModelOptions,
   input: {
-  callOptions: LanguageModelV3CallOptions;
-  executable: string;
-  cwd: string;
-  context: ClaudeRequestContext;
-  plan: Awaited<ReturnType<typeof planClaudeSession>>;
-  sessionKey: string;
-}): ClaudeRun {
+    callOptions: LanguageModelV3CallOptions;
+    executable: string;
+    cwd: string;
+    context: ClaudeRequestContext;
+    plan: Awaited<ReturnType<typeof planClaudeSession>>;
+    sessionKey: string;
+  },
+): Promise<ClaudeRun> {
   const { callOptions, executable, cwd, context, plan, sessionKey } = input;
   const { config, env, runtime, logger } = options;
   const content = buildClaudeContent(callOptions.prompt, plan.promptMode);
@@ -122,16 +125,34 @@ function startRun(
       "没有可发送给 Claude 的用户输入。",
     );
   }
+  // Kaguya 的 skill 以临时插件交给 claude，让它用自己的 Skill 工具调用；run 结束时一并清理。
+  // 生成失败（权限、磁盘等）不影响回合本身：记录后以「没有 Kaguya skill」继续。
+  const skillsPlugin = await createSkillsPlugin(extractKaguyaSkills(callOptions.prompt)).catch(
+    (error: unknown) => {
+      logger?.warn("无法为 Claude 准备 Kaguya skill 插件，本回合不带 skill", {
+        module: "adapters.model",
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return undefined;
+    },
+  );
   const effort = options.reasoningLevel;
-  const args = buildClaudeArgs({
-    model: options.modelId,
-    ...(effort && CLAUDE_EFFORT_LEVELS.has(effort) ? { effort } : {}),
-    session: plan.session,
-    tools: "default",
-    ...(permissionModeFor(context.mode)
-      ? { permissionMode: permissionModeFor(context.mode) }
-      : {}),
-  });
+  let args: string[];
+  try {
+    args = buildClaudeArgs({
+      model: options.modelId,
+      ...(effort && CLAUDE_EFFORT_LEVELS.has(effort) ? { effort } : {}),
+      session: plan.session,
+      tools: "default",
+      ...(permissionModeFor(context.mode)
+        ? { permissionMode: permissionModeFor(context.mode) }
+        : {}),
+      ...(skillsPlugin ? { pluginDir: skillsPlugin.path } : {}),
+    });
+  } catch (error) {
+    await skillsPlugin?.cleanup();
+    throw error;
+  }
   logger?.info("Claude Code 请求开始", {
     event: "claude_code.request.started",
     module: "adapters.model",
@@ -161,7 +182,10 @@ function startRun(
   const run: ClaudeRun = new ClaudeRun({
     request,
     externalTools: runtime.externalTools,
-    onEnd: () => runtime.runs.delete(sessionKey, run),
+    onEnd: () => {
+      runtime.runs.delete(sessionKey, run);
+      void skillsPlugin?.cleanup();
+    },
   });
   runtime.runs.set(sessionKey, run);
   run.start();

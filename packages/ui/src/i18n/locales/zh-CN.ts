@@ -6506,6 +6506,7 @@ const zhCN: Record<string, string> = {
   "claudeCode.loginHint": "claude 还没有登录。请在终端运行 claude 完成登录，然后点“重新检测”。",
   "claudeCode.recheck": "重新检测",
   "claudeCode.enable": "启用",
+  "claudeCode.sync": "同步模型",
   "claudeCode.disable": "移除",
   "claudeCode.error": "出错了：{message}",
   "claudeCode.hint": "Claude 自己执行工具；每次需要权限时会在这里弹出确认。对话会保存在本机 ~/.claude/projects，也可以在终端里用 claude 继续。",

@@ -15,6 +15,8 @@ interface ClaudeArgsInput {
   permissionMode?: string;
   /** 一次性请求的 system 提示文件：替换 Claude Code 默认 system prompt（长文本不走命令行参数）。 */
   systemPromptFile?: string;
+  /** 含 Kaguya skill 的临时插件目录（--plugin-dir）。 */
+  pluginDir?: string;
 }
 
 /** 参数值会进入命令行（Windows 下可能经 cmd.exe），只接受保守字符集，其余直接拒绝。 */
@@ -64,6 +66,9 @@ export function buildClaudeArgs(input: ClaudeArgsInput): string[] {
       "--system-prompt-file",
       assertSafePathArg("--system-prompt-file", input.systemPromptFile),
     );
+  }
+  if (input.pluginDir) {
+    args.push("--plugin-dir", assertSafePathArg("--plugin-dir", input.pluginDir));
   }
   if (input.tools === "none") args.push("--tools", "");
   return args;

@@ -29,6 +29,11 @@ export interface IClaudeCodeService {
   getStatus(): Promise<ClaudeCodeStatus>;
   /** 检测到 claude 后注册模型来源；未安装时抛出带说明的错误。 */
   enable(): Promise<ClaudeCodeStatus>;
+  /**
+   * 重新向本机 claude 探测可用模型（真实模型 id、上下文窗口、最大输出）并同步到模型来源：
+   * 新模型会加入，已有模型（含旧版本留下的别名模型）会被更新为真实配置。
+   */
+  syncModels(): Promise<ClaudeCodeStatus>;
   /** 移除模型来源。不影响本机 claude 及其会话记录。 */
   disable(): Promise<ClaudeCodeStatus>;
 }

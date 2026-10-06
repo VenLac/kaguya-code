@@ -6828,6 +6828,7 @@ const enUS: Record<string, string> = {
   "claudeCode.loginHint": "claude is not signed in yet. Run claude in a terminal to sign in, then click Recheck.",
   "claudeCode.recheck": "Recheck",
   "claudeCode.enable": "Enable",
+  "claudeCode.sync": "Sync models",
   "claudeCode.disable": "Remove",
   "claudeCode.error": "Something went wrong: {message}",
   "claudeCode.hint": "Claude runs its own tools; each permission request is confirmed here. Conversations are stored locally in ~/.claude/projects and can also be continued from the terminal with claude.",
