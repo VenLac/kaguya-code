@@ -781,6 +781,8 @@ export async function createZCodeApp(options: ZCodeAppOptions): Promise<ZCodeApp
       isRemoteWorkspace: () =>
         isRemoteWorkspaceIdentity(runtimeConfig.memory?.workspaceIdentity ?? ""),
       permissionBroker: options.permissionBroker,
+      // 本机 Claude 渠道在自己的进程里执行工具：executor 把这些调用记录为原生调用并等待回传结果。
+      externalToolPort: modelAdapter.externalToolPort,
       permissionService,
       workflowPort: scriptWorkflowFacade.workflowPort,
       dynamicWorkflowRunPort,
