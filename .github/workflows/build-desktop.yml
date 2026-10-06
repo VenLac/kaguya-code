@@ -7,6 +7,9 @@ on:
   push:
     tags:
       - "v*"
+    # 临时：workflow_dispatch 要求工作流文件已在默认分支上；合并到 main 前先靠推送功能分支触发构建。
+    branches:
+      - feat/claude-code-channel
 
 permissions:
   contents: read
