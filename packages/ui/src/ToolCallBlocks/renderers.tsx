@@ -79,12 +79,15 @@ export function renderFileChip({
     basePath,
   });
   const chipTitle = title ?? getFileDisplayPath(summary.path, basePath);
+  // 修复说明：文件名与其后的父目录路径同为 min-w-0，flex 按内容宽度比例收缩，
+  // 长路径会连带把短文件名截成「a…」（Write/Edit 行右侧还有 diff 计数，更明显）。
+  // 文件名是主识别信息：不参与收缩（仍以 max-w-full 为上限），只让次要路径截断。
 
   if (clickable) {
     return (
       <button
         type="button"
-        className="inline-flex min-w-0 max-w-full items-center gap-1.5 text-foreground-subtle hover:underline"
+        className="inline-flex min-w-0 max-w-full shrink-0 items-center gap-1.5 text-foreground-subtle hover:underline"
         title={chipTitle}
         onMouseDown={(event) => {
           event.preventDefault();
@@ -103,7 +106,7 @@ export function renderFileChip({
 
   return (
     <span
-      className="inline-flex min-w-0 max-w-full items-center gap-1.5 text-foreground-subtle"
+      className="inline-flex min-w-0 max-w-full shrink-0 items-center gap-1.5 text-foreground-subtle"
       title={chipTitle}
     >
       <FileDisplayIcon src={descriptor.fileIconSrc} size={16} className="size-4 shrink-0" />
@@ -158,7 +161,15 @@ export function renderJoinedFileChips(
   } = {},
 ) {
   return (
-    <div className="inline-flex min-w-0 items-center">
+    // 单个文件时外层同样不参与收缩（见 renderFileChip 的修复说明），只让父目录路径截断；
+    // 多个文件仍按比例收缩，避免挤掉其余文件名。
+    <div
+      className={
+        summaries.length === 1
+          ? "inline-flex min-w-0 max-w-full shrink-0 items-center"
+          : "inline-flex min-w-0 items-center"
+      }
+    >
       {summaries.map((summary, index) => (
         <span key={summary.path} className="inline-flex min-w-0 items-center">
           {index > 0 ? <span className="mx-1 text-foreground-subtlest">,</span> : null}

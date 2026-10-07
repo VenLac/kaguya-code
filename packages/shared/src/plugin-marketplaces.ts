@@ -30,6 +30,20 @@ export const DEFAULT_ENABLED_OFFICIAL_PLUGIN_IDS: ReadonlySet<string> = new Set(
   // bootstrap 的「Settings 默认启用集合与 CLI 的官方插件声明一致」单测机械对照两者。
 ]);
 
+/**
+ * 对用户隐藏的官方插件：node-repl-host 是 Browser Use 与 Computer Use 共用的运行时宿主，
+ * 没有 skill / command / subagent，必须始终启用（见上面的默认启用集合）。设置页列出它会让用户
+ * 能把它关掉（Browser Use 随即失去宿主），@ 引用 Picker 列出它则毫无意义，两处共用这一判定。
+ * 只按官方市场里的具名 id 判断，不误伤第三方市场的同名插件。
+ */
+const HIDDEN_OFFICIAL_PLUGIN_IDS: ReadonlySet<string> = new Set([
+  "node-repl-host@zcode-plugins-official",
+]);
+
+export function isUserVisiblePluginId(pluginId: string): boolean {
+  return !HIDDEN_OFFICIAL_PLUGIN_IDS.has(pluginId);
+}
+
 export const DEFAULT_PLUGIN_MARKETPLACES: DefaultPluginMarketplace[] = [
   {
     // Kaguya Code 官方唯一市场：本地 seed 分片与 CDN 分片在 Agent storage 内合并。

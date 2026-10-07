@@ -58,6 +58,15 @@ import {
 } from "./mentions/activePromptInputToken.js";
 import { shouldSlashPanelProcessUpdate } from "./lib/slashPanelUpdateFilter.js";
 
+/** App `/` 面板里可见的 CLI 内置命令 → 本地化说明。未列出的命令沿用 CLI 原文。 */
+const BUILTIN_SLASH_DESCRIPTION_IDS: Readonly<Record<string, string>> = {
+  goal: "chat.slash.builtin.goal.description",
+  workflow: "chat.slash.builtin.workflow.description",
+  compact: "chat.slash.builtin.compact.description",
+  init: "chat.slash.builtin.init.description",
+  plan: "chat.slash.builtin.plan.description",
+};
+
 export function SlashCommandPlugin({
   workspacePath,
   workspaceIdentity,
@@ -95,16 +104,17 @@ export function SlashCommandPlugin({
   const activeTokenRef = useRef<ActivePromptInputTokenSnapshot | null>(null);
   const commandSuggestions = useMemo(() => {
     const excluded = new Set((excludedCommandNames ?? []).map(normalizeSlashCommandValue));
-    const cliSuggestions = buildSlashSuggestions(commands).filter(
-      (item) => !excluded.has(item.value),
-    );
+    const cliSuggestions = buildSlashSuggestions(commands, (name) => {
+      const id = BUILTIN_SLASH_DESCRIPTION_IDS[name];
+      return id ? intl.formatMessage({ id }) : undefined;
+    }).filter((item) => !excluded.has(item.value));
     // App 层命令追加在 CLI catalog 之后展示；CLI 已提供同名命令时以 CLI 为准，避免遮蔽。
     const cliValues = new Set(cliSuggestions.map((item) => item.value));
     const appSuggestions = buildAppSlashCommandSuggestions(appCommands ?? []).filter(
       (item) => !cliValues.has(item.value) && !excluded.has(item.value),
     );
     return [...cliSuggestions, ...appSuggestions];
-  }, [appCommands, commands, excludedCommandNames]);
+  }, [appCommands, commands, excludedCommandNames, intl]);
   const subagentSuggestions = useMemo(() => buildSubagentSuggestions(agents), [agents]);
   const skillSuggestions = useMemo(
     () =>

@@ -1020,10 +1020,22 @@ export const WorkspaceSidebar = memo(function WorkspaceSidebarComponent({
       <div className="pl-2.5 pr-3">
         <div className="flex min-w-0 items-center justify-between gap-2">
           <div className="flex min-w-0 shrink-0 items-center gap-1">
+            {/* 归档视图会整体替换任务列表；原先这里仍显示「分组/项目」切换，用户看不出自己
+                在归档视图里（空列表时只剩一句「暂无归档任务」）。归档时改为显示标题；Tabs 仅隐藏
+                不卸载，退出后 ResizeObserver 会重新测量指示条位置。 */}
+            {showArchivedTasks ? (
+              <span
+                data-testid="archived-tasks-title"
+                className="flex h-7 items-center gap-1.5 pl-1.5 text-ui-sm font-medium text-foreground"
+              >
+                <Archive aria-hidden="true" className="size-3.5 shrink-0 text-foreground-subtle" />
+                {intl.formatMessage({ id: "workspaceSidebar.archivedTitle" })}
+              </span>
+            ) : null}
             <Tabs
               value={activePrimaryTaskMode}
               onValueChange={handlePrimaryTaskModeChange}
-              className="w-fit shrink-0"
+              className={showArchivedTasks ? "hidden" : "w-fit shrink-0"}
               aria-label={intl.formatMessage({
                 id: "workspaceSidebar.organize",
               })}

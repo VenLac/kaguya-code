@@ -223,7 +223,7 @@ export function ReadFileChip({
     return (
       <button
         type="button"
-        className="inline-flex min-w-0 max-w-full cursor-pointer items-center gap-1.5 text-foreground-subtle hover:underline"
+        className="inline-flex min-w-0 max-w-full shrink-0 cursor-pointer items-center gap-1.5 text-foreground-subtle hover:underline"
         title={summary.path}
         onMouseDown={(event) => {
           event.preventDefault();
@@ -242,7 +242,8 @@ export function ReadFileChip({
 
   return (
     <span
-      className="inline-flex min-w-0 text-foreground-subtle max-w-full items-center gap-1.5"
+      // 与 renderFileChip 一致：文件名不随父目录路径一起收缩。
+      className="inline-flex min-w-0 max-w-full shrink-0 items-center gap-1.5 text-foreground-subtle"
       title={summary.path}
     >
       <FileDisplayIcon src={summary.fileIconSrc} size={16} className="size-4 shrink-0" />

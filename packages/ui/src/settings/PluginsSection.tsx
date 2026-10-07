@@ -22,7 +22,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.js";
 import { Switch } from "@/components/ui/switch.js";
 import { ControlHintTooltip } from "@/ControlHintTooltip.js";
-import { TID_PLUGIN_STORE_BROWSE } from "@zcode/shared";
+import { TID_PLUGIN_STORE_BROWSE, isUserVisiblePluginId } from "@zcode/shared";
 import type { ZCodePluginInfo, ZCodePluginScope, ZCodePluginUserConfigOption } from "@zcode/shared";
 import type { CreateTaskRequest } from "@/app-shell/types.js";
 import {
@@ -247,7 +247,10 @@ function PluginList({
   const visiblePlugins = useMemo(() => {
     if (!storeMatchesTarget) return [];
     return filterPluginsByQuery(
-      selectPluginsForScope(plugins, installedPlugins, configScope),
+      // 运行时宿主（node-repl-host）不对用户露出：列出来就能被关掉，Browser Use 随即失去宿主。
+      selectPluginsForScope(plugins, installedPlugins, configScope).filter((plugin) =>
+        isUserVisiblePluginId(plugin.id),
+      ),
       searchQuery,
       storeItemById,
       locale,

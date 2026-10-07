@@ -227,3 +227,25 @@ export function useWorkspaceServices(
     remoteTarget,
   ).services;
 }
+
+/**
+ * 有 workspacePath 时按工作区解析服务，否则取当前上下文的服务。
+ *
+ * 修复说明：调用方原先写成 `workspacePath ? useWorkspaceServices(...) : useServices()`，
+ * 属于条件调用 hook。workspacePath 从无到有（如 OnboardingDialog 等工作区就绪）时 hooks 数量与顺序
+ * 改变，React 报 Rules of Hooks 错误并让整个子树崩溃。这里两个 hook 都无条件调用
+ * （useWorkspaceServicesResolution 接受空路径），再按原语义选择结果。
+ */
+export function useOptionalWorkspaceServices(
+  workspacePath: string | null | undefined,
+  preferredRemoteSessionId?: string | null,
+  workspaceIdentity?: string | null,
+): IServiceAccessor {
+  const contextServices = useServices();
+  const workspaceServices = useWorkspaceServices(
+    workspacePath,
+    preferredRemoteSessionId,
+    workspaceIdentity,
+  );
+  return workspacePath ? workspaceServices : contextServices;
+}

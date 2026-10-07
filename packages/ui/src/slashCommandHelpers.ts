@@ -83,7 +83,17 @@ export function normalizeSlashCommandValue(name: string): string {
   return name.trim().replace(/^\/+/, "");
 }
 
-export function buildSlashSuggestions(commands: ZCodeSlashCommand[]): PromptInputSuggestionItem[] {
+/**
+ * 内置命令的说明由 CLI 以英文给出；中文等界面下与 App 层命令（如 `/side`）混排时语言不一致。
+ * 渲染层只对 `source !== "custom"` 的内置命令按名字查本地化说明，查不到就沿用 CLI 原文；
+ * 命令目录本身仍以 CLI catalog 为权威（不增删命令）。
+ */
+export type LocalizeBuiltinSlashDescription = (commandName: string) => string | undefined;
+
+export function buildSlashSuggestions(
+  commands: ZCodeSlashCommand[],
+  localizeBuiltin?: LocalizeBuiltinSlashDescription,
+): PromptInputSuggestionItem[] {
   return commands.flatMap((command) => {
     const value = normalizeSlashCommandValue(command.name);
     // UI 曾同时维护内建白名单、GLM `/goal` fallback 和 v4 追加目录，
@@ -92,14 +102,24 @@ export function buildSlashSuggestions(commands: ZCodeSlashCommand[]): PromptInpu
     if (!value) {
       return [];
     }
+    const localized = command.source === "custom" ? undefined : localizeBuiltin?.(value);
     return [
       {
         id: `slash:${value}`,
         trigger: "/",
         value,
         label: command.inputHint?.trim() || `/${value}`,
-        description: command.description,
-        keywords: [...new Set([value, command.name, command.description, command.inputHint ?? ""])],
+        description: localized ?? command.description,
+        // 本地化说明与 CLI 原文都参与搜索：中文界面里输入英文关键词也能命中。
+        keywords: [
+          ...new Set([
+            value,
+            command.name,
+            command.description,
+            ...(localized ? [localized] : []),
+            command.inputHint ?? "",
+          ]),
+        ],
       },
     ];
   });

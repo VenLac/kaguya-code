@@ -186,8 +186,11 @@ export function ChatErrorBanner({
       <div
         data-testid={TID_CHAT_ERROR_BANNER}
         data-error-code={error.code}
+        // 横幅浮在对话流上方（输入框区域内），对话未滚到底时正文会从它下面经过。
+        // 原先用 bg-surface（暗色下仅 5% 不透明）+ 毛玻璃，粗体标题会透上来与报错文字叠在一起；
+        // 按浮层规范改用不透明的 popover 表面。
         className={cn(
-          "w-full flex flex-wrap items-center gap-2 rounded-xl bg-surface backdrop-blur-md border border-border px-3 py-2",
+          "w-full flex flex-wrap items-center gap-2 rounded-xl border border-popover-border bg-popover px-3 py-2",
         )}
       >
         <div className="flex min-w-0 flex-1 items-center gap-2 text-ui-base text-foreground">

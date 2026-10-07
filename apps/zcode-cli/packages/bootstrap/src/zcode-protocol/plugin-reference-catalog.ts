@@ -3,6 +3,7 @@
 // 且 plugins.ts 已接近 max-lines 门禁。
 import {
   ZCODE_OFFICIAL_PLUGIN_MARKETPLACE_ID,
+  isUserVisiblePluginId,
   zcodeProtocolNotifications,
   zcodePluginsReferenceCatalogParamsSchema,
   zcodePluginsResolveSuggestedReferenceParamsSchema,
@@ -24,6 +25,17 @@ import {
   type ZCodeProtocolAgentServerContext,
 } from "./server-types.js";
 
+/**
+ * 能出现在 @ 引用 Picker 里的插件。
+ *
+ * 修复说明：node-repl-host 是 Browser Use / Computer Use 共用的运行时宿主，没有 skill、command、
+ * subagent，manifest 描述里也写明「Not user-facing」，但它默认启用，于是被列进 @ 菜单，引用它
+ * 没有任何意义。判定与设置页共用 shared 的 isUserVisiblePluginId（只排除官方市场的具名条目）。
+ */
+export function isUserReferenceablePlugin(entry: PluginReferenceCatalogEntry): boolean {
+  return isUserVisiblePluginId(entry.pluginId);
+}
+
 // Picker 权威：带 sessionId → 该 Session 创建时冻结的 identity catalog（session-owned）；
 // 不带 → workspace 当前 catalog（新建草稿）。session 不存在时按协议错误 fail closed，
 // 禁止静默回退 workspace authority——否则草稿/会话两种权威会被混淆。
@@ -42,7 +54,8 @@ export async function getPluginReferenceCatalog(
       authority: "session",
       plugins: record.app
         .getPluginReferenceCatalog()
-        .plugins.map((entry) => toReferenceCatalogEntry(entry, displayByPluginId, includeCategory)),
+        .plugins.filter(isUserReferenceablePlugin)
+        .map((entry) => toReferenceCatalogEntry(entry, displayByPluginId, includeCategory)),
     };
   }
   const outcome = resolveZCodePlugins({
@@ -53,9 +66,9 @@ export async function getPluginReferenceCatalog(
   );
   return {
     authority: "workspace",
-    plugins: buildPluginReferenceCatalog(outcome.plugins).plugins.map((entry) =>
-      toReferenceCatalogEntry(entry, displayByPluginId, includeCategory),
-    ),
+    plugins: buildPluginReferenceCatalog(outcome.plugins)
+      .plugins.filter(isUserReferenceablePlugin)
+      .map((entry) => toReferenceCatalogEntry(entry, displayByPluginId, includeCategory)),
   };
 }
 
