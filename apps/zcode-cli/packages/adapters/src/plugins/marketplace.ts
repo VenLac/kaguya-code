@@ -1978,7 +1978,40 @@ function parseMarketplaceManifest(value: unknown): PluginMarketplaceManifest | n
   });
 }
 
+/**
+ * 目录解析的唯一出口（官方 CDN、个人来源、本地目录、settings 内联都经过这里）。
+ * 过滤必须放在出口而不是 buildMarketplaceManifest 的某个分支里：已规范化的内联 manifest
+ * 会提前返回，若只在构建分支过滤，这条路径就会绕过。
+ */
 function normalizeMarketplaceManifest(
+  value: PluginMarketplaceManifest | Record<string, unknown>,
+): PluginMarketplaceManifest {
+  return withoutPlanExclusiveEntries(buildMarketplaceManifest(value));
+}
+
+/**
+ * 产品不再提供「编程套餐」专属插件：目录条目声明 `requiresPaidPlan: true` 时整条丢弃。
+ * 只认显式布尔 true（"true"、1 等歧义写法保留条目，避免目录写错误伤正常插件）。
+ * 磁盘上缓存的原始目录不改写，每次读取重新过滤；已安装插件不受影响。
+ * featured 同步剔除被丢弃的名称，避免精选位指向不存在的条目。
+ */
+function withoutPlanExclusiveEntries(manifest: PluginMarketplaceManifest): PluginMarketplaceManifest {
+  const dropped = new Set(
+    manifest.plugins
+      .filter((entry) => entry.raw.requiresPaidPlan === true)
+      .map((entry) => entry.name),
+  );
+  if (dropped.size === 0) return manifest;
+  const featured = manifest.featured?.filter((name) => !dropped.has(name));
+  const { featured: _featured, ...rest } = manifest;
+  return {
+    ...rest,
+    plugins: manifest.plugins.filter((entry) => !dropped.has(entry.name)),
+    ...(featured && featured.length > 0 ? { featured } : {}),
+  };
+}
+
+function buildMarketplaceManifest(
   value: PluginMarketplaceManifest | Record<string, unknown>,
 ): PluginMarketplaceManifest {
   if (isPluginMarketplaceManifest(value)) return value;
@@ -2103,9 +2136,6 @@ export function parseEntryStoreListing(
   if (examplePrompts && examplePrompts.length > 0) listing.examplePrompts = examplePrompts;
   const examplePromptsI18n = readStringListMap("examplePrompts_i18n");
   if (examplePromptsI18n) listing.examplePromptsI18n = examplePromptsI18n;
-  // 付费套餐提示只认显式布尔 true；字符串 "true"、1 等歧义写法一律按无需套餐处理，
-  // 避免目录写错就给免费插件挂上付费提示。
-  if (entry.requiresPaidPlan === true) listing.requiresPaidPlan = true;
   return Object.keys(listing).length > 0 ? listing : undefined;
 }
 

@@ -130,12 +130,6 @@ export interface PluginStoreListing {
   /** 详情页示例提示词胶囊；点击后新建会话预填。 */
   examplePrompts?: string[];
   examplePromptsI18n?: Record<string, string[]>;
-  /**
-   * 需要付费套餐才好用：目录条目声明 `requiresPaidPlan: true`，商店卡片与详情页
-   * 标题右侧展示提示图标。表达「使用条件」，不代表插件本身是收费商品，
-   * 因此不参与安装门禁与计费；命名不绑定具体套餐商品名，套餐改名不会让字段过期。
-   */
-  requiresPaidPlan?: boolean;
 }
 
 export interface PluginManifest {

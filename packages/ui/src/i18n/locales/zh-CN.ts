@@ -3756,8 +3756,6 @@ const zhCN: Record<string, string> = {
   "settings.plugins.store.viewMoreFew": "查看 {names}",
   "settings.plugins.store.showLess": "收起",
   "settings.plugins.store.install": "安装",
-  "settings.plugins.store.paidPlanBadge": "编程套餐",
-  "settings.plugins.store.requiresPaidPlan": "这个插件搭配编程套餐可以更好地工作",
   "settings.plugins.store.tryNow": "立即试用",
   "settings.plugins.store.sourceMissing": "市场来源已缺失。插件仍可使用，但暂时无法更新。",
   "settings.plugins.store.menu.label": "更多操作",

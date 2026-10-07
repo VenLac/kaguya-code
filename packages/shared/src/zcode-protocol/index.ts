@@ -3017,9 +3017,9 @@ export const zcodePluginStoreListingSchema = z
     examplePrompts: z.array(z.string()).optional(),
     examplePromptsI18n: z.record(z.string(), z.array(z.string())).optional(),
     /**
-     * 需要付费套餐才好用的插件：市场目录条目声明 `requiresPaidPlan: true`，
-     * UI 在标题右侧展示提示图标。描述的是「使用条件」而非「插件是收费商品」——
-     * 不参与安装门禁与计费，命名也不绑定具体套餐商品名。
+     * 已废弃，客户端忽略。当前 Agent 在目录解析阶段直接丢弃声明该字段的条目，不再下发；
+     * 保留是因为本 schema 为 `.strict()`，仍会下发它的旧版 Agent（如远程工作区）
+     * 若解析失败，会让整个插件列表不可用。待旧版 Agent 不再被支持后删除。
      */
     requiresPaidPlan: z.boolean().optional(),
   })

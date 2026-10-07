@@ -301,8 +301,6 @@ body {
   --color-plugin-node: color-mix(in oklab, var(--color-amber-600) 14%, transparent);
   --color-plugin-node-hover: color-mix(in oklab, var(--color-amber-600) 20%, transparent);
   --color-plugin-node-foreground: var(--color-amber-600);
-  --color-plugin-paid-plan-badge: #ffe3c8;
-  --color-plugin-paid-plan-badge-foreground: #4b280f;
 }
 
 .dark {
@@ -454,8 +452,6 @@ body {
   --color-plugin-node: color-mix(in oklab, var(--color-amber-400) 18%, transparent);
   --color-plugin-node-hover: color-mix(in oklab, var(--color-amber-400) 24%, transparent);
   --color-plugin-node-foreground: var(--color-amber-300);
-  --color-plugin-paid-plan-badge: #5a341b;
-  --color-plugin-paid-plan-badge-foreground: #ffd8b8;
 }
 
 .theme-zai-light {
@@ -599,8 +595,6 @@ body {
   --color-plugin-node: rgba(184, 122, 26, 0.1);
   --color-plugin-node-hover: rgba(184, 122, 26, 0.16);
   --color-plugin-node-foreground: #b87a1a;
-  --color-plugin-paid-plan-badge: #ffe3c8;
-  --color-plugin-paid-plan-badge-foreground: #4b280f;
 }
 
 .theme-zai-dark {
@@ -745,8 +739,6 @@ body {
   --color-plugin-node: rgba(224, 174, 112, 0.16);
   --color-plugin-node-hover: rgba(224, 174, 112, 0.22);
   --color-plugin-node-foreground: #efc58f;
-  --color-plugin-paid-plan-badge: #5a341b;
-  --color-plugin-paid-plan-badge-foreground: #ffd8b8;
 }
 
 /*

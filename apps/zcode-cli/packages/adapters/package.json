@@ -98,6 +98,7 @@
     "lint": "oxlint src",
     "lint:fix": "oxlint --write src",
     "test:claude-code": "node --import tsx --test \"test/claude-code/*.test.ts\"",
+    "test:plugins": "node --import tsx --test \"test/plugins/*.test.ts\"",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
