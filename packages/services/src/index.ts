@@ -217,6 +217,17 @@ export {
 } from "./memory/memory.js";
 export type { ProjectMemoryFileSummary, ProjectMemoryWorkspaceSummary } from "./memory/memory.js";
 
+// User instructions service — 全局 AGENTS.md（~/.zcode/AGENTS.md）读写；
+// IUserInstructionsService 同时是类型与描述符。
+export {
+  IUserInstructionsService,
+  USER_INSTRUCTIONS_MAX_BYTES,
+} from "./user-instructions/userInstructions.js";
+export type {
+  UserInstructionsSnapshot,
+  UserInstructionsWriteResult,
+} from "./user-instructions/userInstructions.js";
+
 export type { SessionRealtimePort } from "./session/sessionRealtimePort.js";
 
 // FileWatcher service — IFileWatcherService is both a type (interface) and value (descriptor)

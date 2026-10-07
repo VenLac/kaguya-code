@@ -70,6 +70,8 @@ import { PluginsSection } from "@/settings/PluginsSection.js";
 import { HooksSection } from "@/settings/HooksSection.js";
 import { WorkspaceFileSearchSection } from "@/settings/WorkspaceFileSearchSection.js";
 import { MemorySettingsSection } from "@/settings/MemorySettingsSection.js";
+import { UserInstructionsSection } from "@/settings/UserInstructionsSection.js";
+import { runAfterSettingsLeaveConfirmed } from "@/lib/settingsLeaveGuard.js";
 import { BrowserSettingsSection } from "@/settings/BrowserSettingsSection.js";
 import { ComputerUseSection } from "@/settings/ComputerUseSection.js";
 import { ShortcutSettingsSection } from "@/settings/ShortcutSettingsSection.js";
@@ -1407,21 +1409,23 @@ export function SettingsPage({
                       })}
                       className="m-1 w-[calc(100%-0.5rem)] justify-start gap-2 rounded-xl px-1.5 text-foreground-subtle hover:bg-surface-hover hover:text-foreground max-lg:m-1 max-lg:size-10 max-lg:justify-center max-lg:px-0"
                       onClick={() => {
-                        runUserAction({
-                          input: {
-                            featureId: "settings.navigation",
-                            action: "back_to_workspace",
-                            trigger: "button",
-                          },
-                          operation: () => {
-                            if (pluginNavigationOrigin === "plugin-store") {
-                              requestPluginStoreOpen("user");
-                            }
-                            onBack?.();
-                          },
-                          completed: { resultSource: "local_commit" },
-                          failureStage: "navigation_commit",
-                        });
+                        runAfterSettingsLeaveConfirmed(() =>
+                          runUserAction({
+                            input: {
+                              featureId: "settings.navigation",
+                              action: "back_to_workspace",
+                              trigger: "button",
+                            },
+                            operation: () => {
+                              if (pluginNavigationOrigin === "plugin-store") {
+                                requestPluginStoreOpen("user");
+                              }
+                              onBack?.();
+                            },
+                            completed: { resultSource: "local_commit" },
+                            failureStage: "navigation_commit",
+                          }),
+                        );
                       }}
                     >
                       <ArrowLeft className="size-4" />
@@ -1481,20 +1485,27 @@ export function SettingsPage({
                               aria-current={isActive ? "page" : undefined}
                               data-testid={testId(TID_SETTINGS_SECTION_NAV, id)}
                               onClick={() => {
-                                runUserAction({
-                                  input: {
-                                    featureId: "settings.navigation",
-                                    action: "open_section",
-                                    trigger: "button",
-                                  },
-                                  operation: () => {
-                                    setPluginNavigationOrigin(undefined);
-                                    setSettingsSectionNavigationVersion((version) => version + 1);
-                                    setActiveSettingsSection(id);
-                                  },
-                                  completed: { resultSource: "local_commit", sectionId: id },
-                                  failureStage: "navigation_commit",
-                                });
+                                const openSection = () =>
+                                  runUserAction({
+                                    input: {
+                                      featureId: "settings.navigation",
+                                      action: "open_section",
+                                      trigger: "button",
+                                    },
+                                    operation: () => {
+                                      setPluginNavigationOrigin(undefined);
+                                      setSettingsSectionNavigationVersion((version) => version + 1);
+                                      setActiveSettingsSection(id);
+                                    },
+                                    completed: { resultSource: "local_commit", sectionId: id },
+                                    failureStage: "navigation_commit",
+                                  });
+                                // 点击当前分区不会离开，不触发未保存确认。
+                                if (isActive) {
+                                  openSection();
+                                } else {
+                                  runAfterSettingsLeaveConfirmed(openSection);
+                                }
                               }}
                             >
                               <span className="truncate text-ui-base text-foreground">{label}</span>
@@ -1535,7 +1546,9 @@ export function SettingsPage({
                   localeMenuValue={localePreference}
                   onLocaleChange={handleFooterLocaleChange}
                   onThemeChange={handleFooterThemeChange}
-                  onSettingsButtonClick={onBack}
+                  onSettingsButtonClick={
+                    onBack ? () => runAfterSettingsLeaveConfirmed(onBack) : undefined
+                  }
                   onUsageClick={handleOpenUsageSettings}
                   onUpgradeClick={handleOpenCodingPlanUpgradeSettings}
                   settingsButtonMode="back"
@@ -1829,6 +1842,11 @@ export function SettingsPage({
                               projectMemoryViewerAvailable={Boolean(isDesktop)}
                               workspaceDisplayNames={memoryWorkspaceDisplayNames}
                             />
+                          </ServiceProvider>
+                        ) : activeSection === "instructions" ? (
+                          <ServiceProvider services={localHostServices}>
+                            {/* 全局指令与 Memory 一致，始终编辑本地 Host 所在机器上的文件。 */}
+                            <UserInstructionsSection />
                           </ServiceProvider>
                         ) : activeSection === "plugin" ? (
                           <PluginsSection

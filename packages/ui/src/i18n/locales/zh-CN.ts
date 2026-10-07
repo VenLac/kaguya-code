@@ -2010,6 +2010,28 @@ const zhCN: Record<string, string> = {
   "settings.nativeSearchEnhancementsDescription":
     "在新建会话或应用重启后恢复的会话中使用增强 Find 和 Grep。当前会话保持现有设置；Windows 的 Find 保持不变。",
   "settings.memory": "记忆",
+  "settings.userInstructions.title": "全局指令",
+  "settings.userInstructions.description":
+    "写在这里的内容会作为全局 AGENTS.md 提供给每个会话，适合放你在所有项目里都希望 Agent 遵守的偏好和规则。项目自己的 AGENTS.md 仍然生效。",
+  "settings.userInstructions.placeholder": "例如：回答使用中文；提交信息遵循 Conventional Commits……",
+  "settings.userInstructions.size": "{used} KB / {max} KB",
+  "settings.userInstructions.notCreated": "文件尚未创建，保存后创建",
+  "settings.userInstructions.appliesToNewSessions":
+    "保存后只对新建会话生效，已在运行的会话不会改变。这里编辑的是当前设备（Web 版为服务所在机器）上的文件；远程工作区使用其所在机器上的全局指令。",
+  "settings.userInstructions.saved": "全局指令已保存",
+  "settings.userInstructions.saveFailed": "保存失败：{error}",
+  "settings.userInstructions.loadFailed": "读取全局指令失败：{error}",
+  "settings.userInstructions.tooLarge":
+    "内容 {bytes} KB，超过 {max} KB 的上限，超出的部分不会被 Agent 读取，请精简后再保存。",
+  "settings.userInstructions.revert": "还原",
+  "settings.userInstructions.unsaved.title": "放弃未保存的修改？",
+  "settings.userInstructions.unsaved.description": "全局指令有尚未保存的修改，离开后将丢失。",
+  "settings.userInstructions.unsaved.discard": "放弃修改",
+  "settings.userInstructions.conflict.title": "文件已被其他程序修改",
+  "settings.userInstructions.conflict.description":
+    "自你打开以来，磁盘上的全局 AGENTS.md 发生了变化。你可以用当前编辑内容覆盖它，或载入磁盘上的版本（会放弃你的修改）。继续编辑则不会写入任何内容。",
+  "settings.userInstructions.conflict.overwrite": "覆盖保存",
+  "settings.userInstructions.conflict.reload": "载入磁盘版本",
   "settings.memory.workspaceMemory": "工作区记忆",
   "settings.memoryDescription":
     "在工作区中保存并复用长期上下文，新会话生效。开启后可能增加模型调用和 Token 成本。",

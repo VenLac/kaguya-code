@@ -2140,6 +2140,30 @@ const enUS: Record<string, string> = {
   "settings.nativeSearchEnhancementsDescription":
     "Use enhanced Find and Grep in new sessions and sessions restored after an app restart. Active sessions keep their current setting; Find remains unchanged on Windows.",
   "settings.memory": "Memory",
+  "settings.userInstructions.title": "Global Instructions",
+  "settings.userInstructions.description":
+    "Content here is provided to every session as your global AGENTS.md. Use it for preferences and rules you want the agent to follow in every project. A project's own AGENTS.md still applies.",
+  "settings.userInstructions.placeholder":
+    "For example: reply in English; follow Conventional Commits for commit messages…",
+  "settings.userInstructions.size": "{used} KB / {max} KB",
+  "settings.userInstructions.notCreated": "File not created yet; saving will create it",
+  "settings.userInstructions.appliesToNewSessions":
+    "Changes apply to new sessions only; sessions that are already running are not affected. This edits the file on this device (the server machine for the Web version); remote workspaces use the global instructions on their own machine.",
+  "settings.userInstructions.saved": "Global instructions saved",
+  "settings.userInstructions.saveFailed": "Could not save: {error}",
+  "settings.userInstructions.loadFailed": "Could not read global instructions: {error}",
+  "settings.userInstructions.tooLarge":
+    "Content is {bytes} KB, over the {max} KB limit. Anything past the limit is not read by the agent. Shorten it before saving.",
+  "settings.userInstructions.revert": "Revert",
+  "settings.userInstructions.unsaved.title": "Discard unsaved changes?",
+  "settings.userInstructions.unsaved.description":
+    "Your global instructions have unsaved changes that will be lost if you leave.",
+  "settings.userInstructions.unsaved.discard": "Discard changes",
+  "settings.userInstructions.conflict.title": "The file was changed by another program",
+  "settings.userInstructions.conflict.description":
+    "The global AGENTS.md on disk changed after you opened it. You can overwrite it with what you have here, or load the version on disk (your edits will be discarded). Keep editing to write nothing.",
+  "settings.userInstructions.conflict.overwrite": "Overwrite",
+  "settings.userInstructions.conflict.reload": "Load disk version",
   "settings.memory.workspaceMemory": "Workspace Memory",
   "settings.memoryDescription":
     "Save and reuse long-term context in workspaces. Applies to new sessions and may increase model requests and token costs.",

@@ -33,6 +33,7 @@ import {
   ICommandsService,
   IHooksService,
   IMemoryService,
+  IUserInstructionsService,
   ISettingsSyncService,
   IPromptAttachmentTransferService,
   type IServiceAccessor,
@@ -63,6 +64,7 @@ import {
   createServiceLogger,
   createSubagentsService,
   createMemoryService,
+  createUserInstructionsService,
   createRemoteConversationShareArtifactSource,
   OAuthCredentialRepo,
 } from "@zcode/services/node";
@@ -374,6 +376,8 @@ export function createRemoteWorkspaceServiceCollection(params: {
     .register(ISubagentsService, createSubagentsService({ isDesktopRuntime: true }))
     .register(IHooksService, params.connectionServices.hooksService)
     .register(IMemoryService, createMemoryService())
+    // 与 Memory 一致：全局指令编辑只作用于本地 Host，远程工作区的 Agent 读取远端自己的文件。
+    .register(IUserInstructionsService, createUserInstructionsService())
     .register(
       ISettingsSyncService,
       createSettingsSyncService({ settingService: localSettingService }),

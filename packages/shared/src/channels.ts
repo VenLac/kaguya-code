@@ -141,6 +141,8 @@ export const ServiceChannels = {
   Hooks: "hooks",
   /** Memory 管理服务 */
   Memory: "memory",
+  /** 全局用户指令（~/.zcode/AGENTS.md）读写服务 */
+  UserInstructions: "user-instructions",
   /** 首次启动设置同步服务 */
   SettingsSync: "settings-sync",
   /** Bots 远程聊天控制服务 */

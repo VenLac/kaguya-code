@@ -369,6 +369,14 @@ export const TID_RESOURCE_MANAGER_STORAGE_CONFIRM_CANCEL =
   "resource-manager-storage-confirm-cancel";
 /** Memory 设置模块中的总开关 */
 export const TID_SETTINGS_MEMORY_SWITCH = "settings-memory-switch";
+export const TID_SETTINGS_USER_INSTRUCTIONS_EDITOR = "settings-user-instructions-editor";
+export const TID_SETTINGS_USER_INSTRUCTIONS_SAVE = "settings-user-instructions-save";
+export const TID_SETTINGS_USER_INSTRUCTIONS_REVERT = "settings-user-instructions-revert";
+export const TID_SETTINGS_USER_INSTRUCTIONS_CONFLICT = "settings-user-instructions-conflict";
+export const TID_SETTINGS_USER_INSTRUCTIONS_CONFLICT_OVERWRITE =
+  "settings-user-instructions-conflict-overwrite";
+export const TID_SETTINGS_USER_INSTRUCTIONS_CONFLICT_RELOAD =
+  "settings-user-instructions-conflict-reload";
 /** Memory 设置模块刷新按钮 */
 export const TID_SETTINGS_MEMORY_REFRESH = "settings-memory-refresh";
 /** Memory Workspace Scope 菜单触发器 */
