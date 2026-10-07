@@ -1987,11 +1987,10 @@ app.whenReady().then(async () => {
   logWindowsBundledRuntimeIntegrityDiagnostic();
 
   // 启动自动更新检查（后台执行，不阻塞主界面）
-  // Preview 身份无论连接哪个后端都不自动更新：stable feed 上只分发正式 Kaguya Code 安装包，
-  // 不向 Preview 渠道提供更新。
+  // 更新源是 GitHub Release（VenLac/kaguya-code），匿名读取，不向上游发送设备标识。
+  // 仅跟随 Latest 正式版，预发布标签不会被检测到。
   void initAutoUpdater({
-    // Kaguya Code 没有更新源：自动更新固定关闭，也就不会向上游发送设备标识。
-    enabled: false,
+    enabled: true,
     onBeforeQuitAndInstall: async () => {
       notifyStabilityLifecycle("update_install");
       await prepareAppQuit("auto-update quitAndInstall", "update-install");

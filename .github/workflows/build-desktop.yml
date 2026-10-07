@@ -126,6 +126,7 @@ jobs:
             packages/desktop/dist/*.exe
             packages/desktop/dist/*.dmg
             packages/desktop/dist/*.zip
+            packages/desktop/dist/*.blockmap
             packages/desktop/dist/latest*.yml
 
   release:
@@ -136,6 +137,8 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           path: release
@@ -145,9 +148,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # 各平台都会产出 latest*.yml，同名文件互相覆盖没有意义，只上传安装包本身。
+          # 安装包与 blockmap 直接上传；更新清单（latest*.yml）是自动更新的入口，必须随 Release 发布。
           mkdir -p assets
           find release -type f ! -name 'latest*.yml' -exec cp {} assets/ \;
+
+          # 两个 macOS runner 都会产出 latest-mac.yml，直接上传会互相覆盖，
+          # 先把同名清单合并（files 取并集），再校验清单里的每个文件都在待上传资产中。
+          node scripts/merge-update-manifests.mjs release manifests --assets assets
+          cp manifests/*.yml assets/
 
           # 带连字符的标签是预发布，不占用 Latest。
           if [[ "${GITHUB_REF_NAME}" == *-* ]]; then

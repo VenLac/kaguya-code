@@ -23,6 +23,7 @@
     "bundle": "node scripts/bundle.mjs",
     "audit:bundle-size": "node scripts/audit-bundle-size.mjs",
     "postinstall": "node scripts/node-pty-rebuild.mjs",
+    "test": "node --import tsx --test \"test/*.test.ts\"",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix"
   },

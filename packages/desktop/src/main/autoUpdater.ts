@@ -20,6 +20,7 @@ import pkg, { CancellationToken } from "electron-updater";
 import semver from "semver";
 import { logger } from "./logger.js";
 import { getElectronReleasePlatform, ManifestUpdateProvider } from "./manifestUpdateProvider.js";
+import { resolveUpdateFeedConfig, type UpdateFeedConfig } from "./updateFeedConfig.js";
 const { autoUpdater } = pkg;
 
 export const CHECK_FOR_UPDATE_MENU_ID = "check-for-update";
@@ -714,10 +715,18 @@ export function resolveUpdateFeedSourceFromStartupConfig(
   return { url: feedUrl };
 }
 
+// 预览通道只对 manifest provider 有意义。GitHub 源只跟随 Latest 正式版（allowPrerelease=false），
+// 因此无论 receivePreviewUpdates 为何值都按 stable 处理，避免界面状态声称在跟随 preview。
+let activeUpdateFeedKind: UpdateFeedConfig["kind"] = "github";
+
+function toEffectiveReleaseChannel(requested: ElectronReleaseChannel): ElectronReleaseChannel {
+  return activeUpdateFeedKind === "github" ? "stable" : requested;
+}
+
 async function resolveUpdateReleaseChannel(
   settingService: SettingServiceLike | undefined,
 ): Promise<ElectronReleaseChannel> {
-  if (!settingService) {
+  if (!settingService || activeUpdateFeedKind === "github") {
     return "stable";
   }
 
@@ -751,13 +760,26 @@ async function syncAutoUpdateCheckChannelFromSettings(
   activeAutoUpdateCheckChannel = nextChannel;
 }
 
-function applyManifestUpdateProvider(options: InitAutoUpdaterOptions): void {
-  const manifestUrl = options.updateFeedSource?.url.trim();
+function applyUpdateFeed(options: InitAutoUpdaterOptions): void {
+  const feed = resolveUpdateFeedConfig({
+    isPackaged: app.isPackaged,
+    updateFeedUrl: options.updateFeedSource?.url,
+  });
+  activeUpdateFeedKind = feed.kind;
+  // 只跟随 Latest 正式版；预发布标签由 CI 标记为非 Latest，不会被检测到。
+  autoUpdater.allowPrerelease = false;
+
+  if (feed.kind === "github") {
+    autoUpdater.setFeedURL({ provider: "github", owner: feed.owner, repo: feed.repo });
+    logger.info(`[auto-update] github release provider applied repo=${feed.owner}/${feed.repo}`);
+    return;
+  }
+
   autoUpdater.setFeedURL({
     provider: "custom",
     updateProvider: ManifestUpdateProvider,
     endpointOrigin: DEFAULT_ZCODE_ENDPOINT_ORIGIN,
-    ...(manifestUrl ? { manifestUrl } : {}),
+    manifestUrl: feed.manifestUrl,
     releasePlatform: getElectronReleasePlatform(),
     deviceMid: options.deviceMid,
     resolveEndpointOrigin:
@@ -768,9 +790,7 @@ function applyManifestUpdateProvider(options: InitAutoUpdaterOptions): void {
     },
   });
   logger.info(
-    manifestUrl
-      ? `[auto-update] service manifest provider applied platform=${getElectronReleasePlatform()} manifestUrl=${redactUpdateFeedUrlForLog(manifestUrl)}`
-      : `[auto-update] service manifest provider applied platform=${getElectronReleasePlatform()}`,
+    `[auto-update] service manifest provider applied platform=${getElectronReleasePlatform()} manifestUrl=${redactUpdateFeedUrlForLog(feed.manifestUrl)}`,
   );
 }
 
@@ -1353,7 +1373,7 @@ export function refreshAutoUpdaterReleaseChannel(
   receivePreviewUpdates: boolean,
   reason = "settings receivePreviewUpdates changed",
 ) {
-  const nextChannel: ElectronReleaseChannel = receivePreviewUpdates ? "preview" : "stable";
+  const nextChannel = toEffectiveReleaseChannel(receivePreviewUpdates ? "preview" : "stable");
 
   if (!canUseAutoUpdaterInCurrentRuntime()) {
     logger.info(`[auto-update] skip ${reason}: not packaged`);
@@ -1504,7 +1524,7 @@ export async function initAutoUpdater(options: InitAutoUpdaterOptions = {}): Pro
   // 这里仅在 Windows 关闭“退出即自动安装”，要求用户显式点更新；其他平台保持原有行为，避免改动既有升级链路。
   autoUpdater.autoInstallOnAppQuit = process.platform !== "win32";
   autoUpdater.logger = logger;
-  applyManifestUpdateProvider(options);
+  applyUpdateFeed(options);
 
   const triggerCheckForUpdates = (reason: string) => {
     if (checkForUpdatesInFlight) {

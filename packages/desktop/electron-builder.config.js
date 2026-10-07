@@ -236,9 +236,14 @@ const PACKAGING_PRUNE_PATTERNS = [
   "!**/SECURITY*",
 ];
 
+// GitHub 上传 Release 资产时会把文件名里的空格改成 ".", 而 latest*.yml 记录的是原始文件名，
+// 带空格的产物名会让自动更新下载 404。产物名里的 productName 因此统一把空白换成 "-"，
+// 只影响文件名，不影响安装包显示名与 appId。
+const desktopArtifactProductName = desktopProductIdentity.productName.replace(/\s+/g, "-");
+
 function buildDesktopArtifactName(platformName, extension = "${ext}") {
   // 测试环境产物必须和正式安装包文件名区分，避免上传、下载或人工验收时混用。
-  return `\${productName}-\${version}-${platformName}-\${arch}${desktopArtifactEnvSuffix}.${extension}`;
+  return `${desktopArtifactProductName}-\${version}-${platformName}-\${arch}${desktopArtifactEnvSuffix}.${extension}`;
 }
 
 function runAsarCommand(args) {
@@ -756,14 +761,11 @@ export default {
     installerHeaderIcon: "build/icon_installer.ico",
   },
   detectUpdateChannel: false,
+  // 更新源是 GitHub Release。CI 使用 --publish never，这里只决定产物里嵌入的 app-update.yml
+  // 与 latest*.yml 的格式；运行时的 feed 由 autoUpdater.ts 的 resolveUpdateFeedConfig 决定。
   publish: {
-    provider: "generic",
-    // 当前 OSS/CDN 对多 Range 请求返回 206，但 Content-Type 仍是 application/x-msdownload，
-    // electron-updater 会因缺少 multipart/byteranges 直接回退整包下载。关闭 multiple range 后仍走差分，
-    // 只是按单 Range 顺序拉取差异块，避免 Windows 用户更新时从约 15MB 退化成 300MB+ 全量包。
-    useMultipleRangeRequest: false,
-    // 新客户端运行时使用服务端 manifest provider；这里仅保留 electron-builder 必需的
-    // generic publish 占位，避免打包产物继续携带可配置的旧 stable feed。
-    url: "http://localhost:8081",
+    provider: "github",
+    owner: "VenLac",
+    repo: "kaguya-code",
   },
 };
