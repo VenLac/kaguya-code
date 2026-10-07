@@ -274,6 +274,66 @@ export const OFFICIAL_PLUGIN_DEFINITIONS: readonly OfficialPluginDefinition[] = 
     ],
   },
   {
+    // 纯内容型插件（只有 skill + references，无 MCP / 无系统依赖），默认启用。
+    // 无 icon：UI 对缺失图标安全降级为默认图标，不依赖尚未发布的 CDN 资源。
+    // requiredSeedPaths 钉住主 skill 与全部 reference，seed 缺文件时拒绝生成残缺插件，
+    // 否则 skill 会在运行时按路径读取不存在的 reference 而静默失效。
+    defaultEnabled: true,
+    listing: {
+      author: { name: "VenLac" },
+      category: "developer-tools",
+      displayName: "Frontend Design",
+      displayName_i18n: { "zh-CN": "前端设计" },
+      description_i18n: {
+        "zh-CN": "风格由模型自由选择，选定后给出该风格的执行指南，并在渲染后实测对比度、字号与首屏内容。",
+      },
+      examplePrompts: [
+        "Design a landing page for an independent coffee roaster",
+        "Review this settings page and tell me what to fix first",
+      ],
+      examplePrompts_i18n: {
+        "zh-CN": ["为一家独立咖啡烘焙品牌设计一个落地页", "评审这个设置页，告诉我最该先改什么"],
+      },
+    },
+    name: "frontend-design",
+    requiredSeedPaths: [
+      "skills/frontend-design/SKILL.md",
+      "skills/frontend-design/references/color.md",
+      "skills/frontend-design/references/components-states.md",
+      "skills/frontend-design/references/context-and-constraints.md",
+      "skills/frontend-design/references/craft-floor.md",
+      "skills/frontend-design/references/hierarchy-layout.md",
+      "skills/frontend-design/references/motion-responsive.md",
+      "skills/frontend-design/references/review-checklist.md",
+      "skills/frontend-design/references/stacks.md",
+      "skills/frontend-design/references/styles/README.md",
+      "skills/frontend-design/references/styles/bento-grid.md",
+      "skills/frontend-design/references/styles/brutalist.md",
+      "skills/frontend-design/references/styles/corporate-clean.md",
+      "skills/frontend-design/references/styles/cyberpunk-neon.md",
+      "skills/frontend-design/references/styles/dark-technical.md",
+      "skills/frontend-design/references/styles/data-dense.md",
+      "skills/frontend-design/references/styles/editorial.md",
+      "skills/frontend-design/references/styles/glassmorphism.md",
+      "skills/frontend-design/references/styles/gradient-aurora.md",
+      "skills/frontend-design/references/styles/luxury-refined.md",
+      "skills/frontend-design/references/styles/minimal-swiss.md",
+      "skills/frontend-design/references/styles/playful-pop.md",
+      "skills/frontend-design/references/styles/retro-pixel.md",
+      "skills/frontend-design/references/styles/soft-ui.md",
+      "skills/frontend-design/references/styles/warm-organic.md",
+      "skills/frontend-design/references/typography.md",
+      "skills/frontend-design/references/verify-in-browser.md",
+    ],
+    rootCandidates: [
+      "packages/frontend-design-plugin",
+      "../frontend-design-plugin",
+      "../../frontend-design-plugin",
+      "../../../frontend-design-plugin",
+    ],
+    version: "0.2.0",
+  },
+  {
     defaultEnabled: true,
     listing: {
       author: ZAI_AUTHOR,

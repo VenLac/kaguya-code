@@ -14,6 +14,7 @@ const OFFICIAL_BUILTIN_PLUGIN_NAMES = new Set([
   "browser-use",
   "document-skills",
   "documents",
+  "frontend-design",
   "pdf",
   "presentations",
   "spreadsheets",
@@ -31,6 +32,7 @@ const OFFICIAL_PLUGIN_PATH_MARKERS = [
   "/browser-use-plugin/",
   "/document-skills-plugin/",
   "/documents-plugin/",
+  "/frontend-design-plugin/",
   "/pdf-plugin/",
   "/presentations-plugin/",
   "/spreadsheets-plugin/",
@@ -57,6 +59,12 @@ const BUILTIN_SKILL_DESCRIPTIONS: Record<string, Record<Locale, string>> = {
     "zh-CN": "控制 Kaguya Code 内置浏览器，用于打开、检查、点击、输入、截图或验证网页和本地开发页面。",
     "en-US":
       "Control Kaguya Code's built-in browser to open, inspect, click, type, screenshot, or verify webpages and local development targets.",
+  },
+  "frontend-design": {
+    "zh-CN":
+      "指导前端设计：风格由你自由选择（或沿用用户、项目已有风格），选定后提供该风格的执行指南，并用渲染后的实测守住可读性底线。新建、重做、美化界面或做设计评审时使用。",
+    "en-US":
+      "Guides frontend design in any style: you choose the style (or follow the user's or the project's), then get an execution guide for that style and a measured readability floor. Use when building, redesigning, polishing or reviewing an interface.",
   },
   "dispatching-parallel-agents": {
     "zh-CN": "面对 2 个以上彼此独立、无共享状态或顺序依赖的任务时使用。",

@@ -43,6 +43,45 @@ export const officialSeaPlugins = [
     // 导致发布产物不 seed browser-use，进而无法装配宿主 node_repl MCP。
     version: "0.5.1",
   },
+  {
+    // 纯内容型插件，无 runtime 产物。版本须与 official-plugin-definitions.ts 精确一致，
+    // 否则 runtime 与 SEA 清单匹配失败，发布物不会 seed 该插件。
+    marketplace: "zcode-plugins-official",
+    name: "frontend-design",
+    packageName: "frontend-design-plugin",
+    requiresRuntime: false,
+    requiredSeedPaths: [
+      "skills/frontend-design/SKILL.md",
+      "skills/frontend-design/references/color.md",
+      "skills/frontend-design/references/components-states.md",
+      "skills/frontend-design/references/context-and-constraints.md",
+      "skills/frontend-design/references/craft-floor.md",
+      "skills/frontend-design/references/hierarchy-layout.md",
+      "skills/frontend-design/references/motion-responsive.md",
+      "skills/frontend-design/references/review-checklist.md",
+      "skills/frontend-design/references/stacks.md",
+      "skills/frontend-design/references/styles/README.md",
+      "skills/frontend-design/references/styles/bento-grid.md",
+      "skills/frontend-design/references/styles/brutalist.md",
+      "skills/frontend-design/references/styles/corporate-clean.md",
+      "skills/frontend-design/references/styles/cyberpunk-neon.md",
+      "skills/frontend-design/references/styles/dark-technical.md",
+      "skills/frontend-design/references/styles/data-dense.md",
+      "skills/frontend-design/references/styles/editorial.md",
+      "skills/frontend-design/references/styles/glassmorphism.md",
+      "skills/frontend-design/references/styles/gradient-aurora.md",
+      "skills/frontend-design/references/styles/luxury-refined.md",
+      "skills/frontend-design/references/styles/minimal-swiss.md",
+      "skills/frontend-design/references/styles/playful-pop.md",
+      "skills/frontend-design/references/styles/retro-pixel.md",
+      "skills/frontend-design/references/styles/soft-ui.md",
+      "skills/frontend-design/references/styles/warm-organic.md",
+      "skills/frontend-design/references/typography.md",
+      "skills/frontend-design/references/verify-in-browser.md",
+    ],
+    rootPath: join("packages", "frontend-design-plugin"),
+    version: "0.2.0",
+  },
 ];
 
 export const collectSeaOfficialPluginAssets = async ({

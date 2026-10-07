@@ -1,0 +1,10 @@
+{
+  "name": "frontend-design",
+  "version": "0.2.0",
+  "description": "Guides frontend design in any style: you choose the style (or follow the user's or the project's), then get an execution guide for that style and a measured readability floor, with an in-browser audit for contrast, tiny text, overflow and first-view content.",
+  "author": {
+    "name": "VenLac"
+  },
+  "license": "MIT",
+  "skills": "skills"
+}
