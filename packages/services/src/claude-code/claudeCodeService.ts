@@ -6,7 +6,7 @@ import {
 import type { ModelConfigObject, ProviderConfigObject } from "@zcode/provider";
 import { createServiceLogger } from "../logger/serviceLogger.js";
 import type { IProviderSettingsService } from "../model-provider/providerFacadeServices.js";
-import type { ClaudeCodeStatus, IClaudeCodeService } from "./claudeCode.js";
+import type { ClaudeCodeModelInfo, ClaudeCodeStatus, IClaudeCodeService } from "./claudeCode.js";
 import {
   probeClaudeCode,
   probeClaudeModels,
@@ -63,6 +63,30 @@ export function buildClaudeCodeProviderConfig(): ProviderConfigObject {
   } as ProviderConfigObject;
 }
 
+interface ModelViewLike {
+  readonly modelId: unknown;
+  readonly enabled?: boolean;
+  readonly effectiveConfig?: {
+    readonly properties?: { readonly contextWindow?: unknown };
+    readonly optionSpecs?: { readonly maxOutputTokens?: { readonly max?: unknown } };
+  };
+}
+
+const positiveNumber = (value: unknown): number | undefined =>
+  typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined;
+
+/** 模型来源视图里的模型 → 设置卡片展示用的摘要（上下文窗口/最大输出取生效配置）。 */
+function toModelInfo(model: ModelViewLike): ClaudeCodeModelInfo {
+  const contextWindow = positiveNumber(model.effectiveConfig?.properties?.contextWindow);
+  const maxOutputTokens = positiveNumber(model.effectiveConfig?.optionSpecs?.maxOutputTokens?.max);
+  return {
+    id: String(model.modelId),
+    enabled: model.enabled !== false,
+    ...(contextWindow ? { contextWindow } : {}),
+    ...(maxOutputTokens ? { maxOutputTokens } : {}),
+  };
+}
+
 export interface CreateClaudeCodeServiceOptions {
   readonly providerSettings: IProviderSettingsService;
   /** 测试注入：替换对本机 claude 的探测。 */
@@ -92,7 +116,13 @@ export function createClaudeCodeService(
     return {
       ...probed,
       enabled: provider !== null,
-      ...(provider ? { providerId: provider.providerId, modelCount: provider.models.length } : {}),
+      ...(provider
+        ? {
+            providerId: provider.providerId,
+            modelCount: provider.models.length,
+            models: provider.models.map((model) => toModelInfo(model as ModelViewLike)),
+          }
+        : {}),
       ...(lastError ? { error: lastError } : {}),
     };
   };

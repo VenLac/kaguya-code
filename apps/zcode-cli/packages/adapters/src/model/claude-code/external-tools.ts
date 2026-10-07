@@ -70,10 +70,16 @@ export class ExternalToolRegistry implements ExternalToolExecutionPort {
     entry.outcome.resolve(mapClaudeToolOutcome(input));
   }
 
-  /** claude 进程结束/被取消时，把还没出结果的调用收口为失败，不让 executor 永远等下去。 */
-  failPending(reason: string): void {
-    for (const entry of this.entries.values()) {
-      if (entry.settled) continue;
+  /**
+   * claude 进程结束/被取消时，把它登记的、还没出结果的调用收口为失败，不让 executor 永远等下去。
+   *
+   * 修复说明：登记表由模型执行层持有，同一 agent 进程里的所有会话共用；原先不分来源全部收口，
+   * 一个会话的 run 结束会把其他会话正在执行的工具调用也判为失败。现在只处理调用方给出的 id。
+   */
+  failPending(toolUseIds: Iterable<string>, reason: string): void {
+    for (const toolUseId of toolUseIds) {
+      const entry = this.entries.get(toolUseId);
+      if (!entry || entry.settled) continue;
       entry.settled = true;
       entry.started.resolve();
       entry.outcome.resolve({ success: false, error: reason });

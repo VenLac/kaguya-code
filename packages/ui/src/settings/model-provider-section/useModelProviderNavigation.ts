@@ -9,6 +9,7 @@ import type {
 } from "@zcode/shared";
 import {
   BUILTIN_MODEL_PROVIDER_IDS,
+  isClaudeCodeBaseUrl,
   isStartPlanModelProviderId,
   resolveModelProviderFamilySpecByProviderId,
   resolveProviderFamilyDomainFromOAuthProvider,
@@ -85,9 +86,17 @@ export function useModelProviderNavigation({
   setSelectedNodeKey,
   intl,
 }: UseModelProviderNavigationOptions) {
+  // Claude Code（本机）渠道注册的来源只靠哨兵 baseUrl 识别：放进「自定义供应商」会暴露哨兵 URL、
+  // API 格式与占位 key 且可编辑（改了就坏），所以只在「账号渠道」里出现一次。
+  const claudeCodeProvider = useMemo(
+    () => modelProviders.find((provider) => isClaudeCodeBaseUrl(provider.config.api?.baseUrl)),
+    [modelProviders],
+  );
   const customProviders = useMemo(() => {
     const allCustomProviders = modelProviders.filter(
-      (provider) => provider.config.group === "standard-personal",
+      (provider) =>
+        provider.config.group === "standard-personal" &&
+        !isClaudeCodeBaseUrl(provider.config.api?.baseUrl),
     );
     // 这里复用模型菜单的展示排序，确保设置页和聊天框供应商顺序一致。
     return sortModelProvidersForDisplay(allCustomProviders, displayOrder);
@@ -210,7 +219,7 @@ export function useModelProviderNavigation({
             key: CLAUDE_CODE_NAV_KEY,
             type: "claudeCode" as const,
             label: intl.formatMessage({ id: "claudeCode.title" }),
-            statusActive: false,
+            statusActive: claudeCodeProvider?.executable === true,
           },
         ],
       },
@@ -219,6 +228,7 @@ export function useModelProviderNavigation({
     return groups;
   }, [
     customProviders,
+    claudeCodeProvider,
     codingPlanItems,
     connectionModeCodingPlanItems,
     // 左侧导航分组标题在这个 memo 内格式化。

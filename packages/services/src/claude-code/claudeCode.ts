@@ -1,6 +1,14 @@
 import { ServiceChannels } from "@zcode/shared";
 import { createServiceDescriptor } from "../descriptors.js";
 
+/** 已注册到模型来源里的一个 Claude 模型（来自模型来源视图，不另存）。 */
+export interface ClaudeCodeModelInfo {
+  readonly id: string;
+  readonly contextWindow?: number;
+  readonly maxOutputTokens?: number;
+  readonly enabled: boolean;
+}
+
 /** 本机 Claude Code 的可用状态。不包含任何凭证、邮箱或组织信息。 */
 export interface ClaudeCodeStatus {
   /** 是否找到本机的 `claude` 命令。 */
@@ -17,6 +25,8 @@ export interface ClaudeCodeStatus {
   readonly enabled: boolean;
   readonly providerId?: string;
   readonly modelCount?: number;
+  /** 已注册的模型；未启用时为空。 */
+  readonly models?: readonly ClaudeCodeModelInfo[];
   /** 最近一次操作失败的原因。 */
   readonly error?: string;
 }

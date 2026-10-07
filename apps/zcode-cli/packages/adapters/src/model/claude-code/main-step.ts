@@ -13,7 +13,7 @@ import {
   permissionModeFor,
 } from "./model-helpers.js";
 import { createClaudePermissionHandler, type ClaudeRequestContext } from "./permission.js";
-import { buildClaudeContent } from "./prompt.js";
+import { buildClaudeContent, isToolContinuation } from "./prompt.js";
 import { createSkillsPlugin, extractKaguyaSkills } from "./skills.js";
 import type { ClaudeRunRequest } from "./process.js";
 import { ClaudeRun } from "./run.js";
@@ -36,15 +36,15 @@ export async function streamMainStep(
 ): Promise<LanguageModelV3StreamResult> {
   const { callOptions, sessionKey, requestToolNames } = input;
   const { runtime, logger } = options;
-  const lastRole = callOptions.prompt.at(-1)?.role;
+  const continuing = isToolContinuation(callOptions.prompt);
 
   let run = runtime.runs.get(sessionKey);
-  if (run?.open && lastRole === "tool") {
+  if (run?.open && continuing) {
     // 上一步以工具调用结束，Kaguya 已记录完工具结果：继续读同一个 claude 进程的下一条消息。
   } else {
     // 新的用户输入（或旧 run 已失效）：结束遗留 run，按计划起新进程。
     run?.cancel(new DOMException("Superseded by a new request", "AbortError"));
-    if (lastRole === "tool") {
+    if (continuing) {
       throw new ClaudeCodeError(
         ClaudeCodeErrorCode.ProtocolError,
         "与 Claude Code 的会话已中断（进程已退出），请重新发送上一条消息。",

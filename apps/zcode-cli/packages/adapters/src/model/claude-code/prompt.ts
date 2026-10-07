@@ -118,6 +118,28 @@ function transcriptOf(messages: LanguageModelV3Message[]): string {
     : text;
 }
 
+/**
+ * core 发起的这一步是不是在续接上一步的工具调用：最后一条 assistant 之后只有 tool 消息，
+ * 以及 Kaguya 自己注入的纯 `<system-reminder>` 用户消息。
+ *
+ * 修复说明：最初只判断「最后一条是 tool」。core 会在工具结果后插入 TodoWrite 等提醒（user 消息），
+ * 于是被误判为新的用户输入——正在执行的 claude 进程被取消、提醒又被过滤成空内容，
+ * 回合以「没有可发送给 Claude 的用户输入」失败。提醒对 claude 无用（发送时本就会被过滤），
+ * 所以判断时一并跳过；含真实文本或附件的用户消息仍视为新输入。
+ */
+export function isToolContinuation(prompt: LanguageModelV3Prompt): boolean {
+  let sawTool = false;
+  for (let index = prompt.length - 1; index >= 0; index -= 1) {
+    const message = prompt[index]!;
+    if (message.role === "tool") {
+      sawTool = true;
+    } else if (message.role !== "user" || userBlocks(message).length > 0) {
+      return sawTool && message.role === "assistant";
+    }
+  }
+  return false;
+}
+
 /** 把 AI SDK prompt 映射为发给 claude 的 user 消息内容块。 */
 export function buildClaudeContent(
   prompt: LanguageModelV3Prompt,

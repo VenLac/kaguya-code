@@ -12,6 +12,7 @@ import {
   parseClaudeCliLine,
   type ClaudeCliMessage,
   type ClaudePermissionRequest,
+  type ClaudePermissionSuggestion,
 } from "./protocol.js";
 
 export type ClaudeUserContentBlock =
@@ -23,6 +24,8 @@ export interface ClaudePermissionAnswer {
   /** deny 时回给模型的原因；allow 时可带用户修改后的入参。 */
   message?: string;
   updatedInput?: unknown;
+  /** allow 时让 claude 记住的权限规则（「始终允许」），由 claude 自己落盘。 */
+  updatedPermissions?: ClaudePermissionSuggestion[];
 }
 
 export interface ClaudeRunRequest {
@@ -69,7 +72,13 @@ function encodePermissionResponse(
 ): string {
   const response =
     answer.behavior === "allow"
-      ? { behavior: "allow", updatedInput: answer.updatedInput ?? originalInput }
+      ? {
+          behavior: "allow",
+          updatedInput: answer.updatedInput ?? originalInput,
+          ...(answer.updatedPermissions?.length
+            ? { updatedPermissions: answer.updatedPermissions }
+            : {}),
+        }
       : { behavior: "deny", message: answer.message ?? "The user denied this tool call." };
   return `${JSON.stringify({
     type: "control_response",

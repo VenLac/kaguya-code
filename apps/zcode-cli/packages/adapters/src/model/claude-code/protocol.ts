@@ -32,6 +32,15 @@ export type ClaudeStreamEvent =
   | { type: "message_delta"; stopReason?: string; usage?: ClaudeUsage }
   | { type: "message_start" | "message_stop" | "other" };
 
+/**
+ * claude 随 can_use_tool 给出的「始终允许」建议（与它在终端里「不再询问」时写入的规则同形）。
+ * 只按 type 区分；其余字段原样保留，回传 `updatedPermissions` 时不做改写（除 destination）。
+ */
+export type ClaudePermissionSuggestion = { type: string; destination?: string } & Record<
+  string,
+  unknown
+>;
+
 export interface ClaudePermissionRequest {
   requestId: string;
   toolName: string;
@@ -39,6 +48,17 @@ export interface ClaudePermissionRequest {
   input: unknown;
   description?: string;
   displayName?: string;
+  suggestions?: ClaudePermissionSuggestion[];
+}
+
+function parsePermissionSuggestions(value: unknown): ClaudePermissionSuggestion[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const suggestions = value.flatMap((item) => {
+    const record = asRecord(item);
+    const type = asString(record?.type);
+    return record && type ? [{ ...record, type } as ClaudePermissionSuggestion] : [];
+  });
+  return suggestions.length > 0 ? suggestions : undefined;
 }
 
 export type ClaudeCliMessage =
@@ -243,6 +263,7 @@ export function parseClaudeCliLine(line: string): ClaudeCliMessage | undefined {
       if (request?.subtype !== "can_use_tool" || !requestId || !toolName) {
         return { kind: "unknown", type: `control_request/${asString(request?.subtype) ?? ""}` };
       }
+      const suggestions = parsePermissionSuggestions(request.permission_suggestions);
       return {
         kind: "permission_request",
         request: {
@@ -252,6 +273,7 @@ export function parseClaudeCliLine(line: string): ClaudeCliMessage | undefined {
           input: request.input,
           description: asString(request.description),
           displayName: asString(request.display_name),
+          ...(suggestions ? { suggestions } : {}),
         },
       };
     }

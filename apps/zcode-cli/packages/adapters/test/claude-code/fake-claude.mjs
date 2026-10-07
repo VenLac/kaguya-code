@@ -158,6 +158,9 @@ if (scenario === "text") {
         tool_use_id: "toolu_1",
         input: toolInput,
         description: "Do it",
+        ...(process.env.FAKE_CLAUDE_SUGGESTIONS
+          ? { permission_suggestions: JSON.parse(process.env.FAKE_CLAUDE_SUGGESTIONS) }
+          : {}),
       },
     });
   }

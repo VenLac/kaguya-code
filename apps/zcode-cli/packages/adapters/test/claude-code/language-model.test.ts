@@ -33,6 +33,8 @@ interface Setup {
   broker?: PermissionBrokerPort;
   tool?: string;
   runtime?: ClaudeCodeRuntime;
+  /** claude 随 can_use_tool 给出的 permission_suggestions。 */
+  suggestions?: unknown[];
 }
 
 function newLog(): string {
@@ -50,6 +52,7 @@ function makeModel(setup: Setup, log: string) {
       FAKE_CLAUDE_SCENARIO: setup.scenario,
       FAKE_CLAUDE_LOG: log,
       FAKE_CLAUDE_TOOL: setup.tool,
+      FAKE_CLAUDE_SUGGESTIONS: setup.suggestions ? JSON.stringify(setup.suggestions) : undefined,
       CLAUDE_CONFIG_DIR: configDir,
     },
     config: { workingDirectory: workDir, executablePath: FAKE, permissionBroker: setup.broker },
@@ -238,6 +241,114 @@ test("工具回合：步骤 1 以 tool-calls 结束并发出原生工具调用�
   const logged = await readLog(log);
   assert.equal(logged.filter((l) => l.argv).length, 1, "两个步骤共用同一个 claude 进程");
   assert.equal(logged.find((l) => l.permissionAnswer).permissionAnswer.behavior, "allow");
+});
+
+test("工具结果后 core 插入的纯 system-reminder 用户消息不算新输入：续接同一个 claude 进程，不取消它", async () => {
+  const broker: PermissionBrokerPort = {
+    async requestPermission() {
+      return { decision: "allow" };
+    },
+  };
+  const log = newLog();
+  const { model, runtime } = makeModel({ scenario: "tool", tool: "Write", broker }, log);
+  await drain((await model.doStream(callOptions(userPrompt()))).stream);
+  assert.equal((await executeLikeCore(runtime)).success, true);
+
+  const withReminder: LanguageModelV3Prompt = [
+    ...afterToolPrompt(),
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "<system-reminder>\nThe TodoWrite tool hasn't been used recently.\n</system-reminder>" },
+      ],
+    },
+  ];
+  const step2 = await drain((await model.doStream(callOptions(withReminder))).stream);
+  assert.equal(errorOf(step2), undefined);
+  assert.equal(textOf(step2), "Done.");
+  assert.equal(finishOf(step2)?.finishReason.unified, "stop");
+  assert.equal((await readLog(log)).filter((l) => l.argv).length, 1, "仍是同一个 claude 进程");
+});
+
+const CLAUDE_SUGGESTIONS = [
+  {
+    type: "addRules",
+    rules: [{ toolName: "Write", ruleContent: "/w/a.txt" }],
+    behavior: "allow",
+    destination: "localSettings",
+  },
+  { type: "addDirectories", directories: ["/w"], destination: "session" },
+  { type: "setMode", mode: "acceptEdits", destination: "session" },
+];
+
+test("始终允许（项目级）：claude 的 addRules 建议成为卡片规则；选中后把建议回传为 updatedPermissions，不回传 setMode", async () => {
+  const requests: PermissionBrokerRequest[] = [];
+  const broker: PermissionBrokerPort = {
+    async requestPermission(request) {
+      requests.push(request);
+      return { decision: "allow", permissionUpdates: request.suggestedPermissionUpdates };
+    },
+  };
+  const log = newLog();
+  const { model, runtime } = makeModel(
+    { scenario: "tool", tool: "Write", broker, suggestions: CLAUDE_SUGGESTIONS },
+    log,
+  );
+  await drain((await model.doStream(callOptions(userPrompt()))).stream);
+  await executeLikeCore(runtime);
+  assert.deepEqual(requests[0]?.suggestedPermissionUpdates, [
+    { type: "addRules", behavior: "allow", rules: [{ toolName: "Write", ruleContent: "/w/a.txt" }] },
+  ]);
+  assert.equal(requests[0]?.optionsPolicy, undefined);
+  const answer = (await readLog(log)).find((l) => l.permissionAnswer).permissionAnswer;
+  assert.deepEqual(answer.updatedPermissions, CLAUDE_SUGGESTIONS.slice(0, 2));
+  await drain((await model.doStream(callOptions(afterToolPrompt()))).stream);
+});
+
+test("始终允许（会话级）：回传的规则 destination 改为 session", async () => {
+  const broker: PermissionBrokerPort = {
+    async requestPermission() {
+      return {
+        decision: "allow",
+        sessionPermissionUpdates: [{ type: "addRules", behavior: "allow", rules: [{ toolName: "Write" }] }],
+      };
+    },
+  };
+  const log = newLog();
+  const { model, runtime } = makeModel(
+    { scenario: "tool", tool: "Write", broker, suggestions: CLAUDE_SUGGESTIONS },
+    log,
+  );
+  await drain((await model.doStream(callOptions(userPrompt()))).stream);
+  await executeLikeCore(runtime);
+  const answer = (await readLog(log)).find((l) => l.permissionAnswer).permissionAnswer;
+  assert.deepEqual(
+    answer.updatedPermissions.map((p: { type: string; destination: string }) => [p.type, p.destination]),
+    [
+      ["addRules", "session"],
+      ["addDirectories", "session"],
+    ],
+  );
+  await drain((await model.doStream(callOptions(afterToolPrompt()))).stream);
+});
+
+test("claude 没给可记住的规则：不展示「始终允许」（no-always-allow），仅允许一次时不回传规则", async () => {
+  const requests: PermissionBrokerRequest[] = [];
+  const broker: PermissionBrokerPort = {
+    async requestPermission(request) {
+      requests.push(request);
+      return { decision: "allow" };
+    },
+  };
+  const log = newLog();
+  const { model, runtime } = makeModel({ scenario: "tool", tool: "Write", broker }, log);
+  await drain((await model.doStream(callOptions(userPrompt()))).stream);
+  await executeLikeCore(runtime);
+  assert.equal(requests[0]?.optionsPolicy, "no-always-allow");
+  assert.equal(requests[0]?.suggestedPermissionUpdates, undefined);
+  const answer = (await readLog(log)).find((l) => l.permissionAnswer).permissionAnswer;
+  assert.equal(answer.updatedPermissions, undefined);
+  await drain((await model.doStream(callOptions(afterToolPrompt()))).stream);
 });
 
 test("用户拒绝：拒绝原因回传 claude，core 拿到失败结果，回合仍正常结束", async () => {

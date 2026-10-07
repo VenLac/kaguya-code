@@ -59,12 +59,26 @@ test("进程结束时未出结果的调用收口为失败，executor 不会永�
   register(registry, "a");
   register(registry, "b");
   registry.resolveResult("a", { content: "ok", isError: false, toolUseResult: undefined });
-  registry.failPending("claude exited");
+  registry.failPending(["a", "b"], "claude exited");
   assert.equal((await registry.claim("a")!.waitForOutcome()).success, true, "已有结果的不受影响");
   assert.deepEqual(await registry.claim("b")!.waitForOutcome(), {
     success: false,
     error: "claude exited",
   });
+});
+
+test("只收口给定的调用：同一登记表里其他会话（其他 run）正在执行的调用不受影响", async () => {
+  const registry = new ExternalToolRegistry();
+  register(registry, "mine");
+  register(registry, "other-session");
+  registry.failPending(["mine"], "claude exited");
+  assert.equal((await registry.claim("mine")!.waitForOutcome()).success, false);
+  registry.resolveResult("other-session", { content: "ok", isError: false, toolUseResult: undefined });
+  assert.equal(
+    (await registry.claim("other-session")!.waitForOutcome()).success,
+    true,
+    "其他 run 的调用仍等待自己的结果",
+  );
 });
 
 test("权限请求等待工具行出现（markStarted）后再放行；未登记的立即放行", async () => {

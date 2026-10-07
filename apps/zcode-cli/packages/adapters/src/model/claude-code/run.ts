@@ -62,6 +62,8 @@ interface ClaudeRunDeps {
 export class ClaudeRun {
   private readonly queue = new MessageQueue();
   private readonly abort = new AbortController();
+  /** 本 run 登记过的工具调用；结束时只收口这些，不影响其他会话的 run。 */
+  private readonly toolUseIds = new Set<string>();
   private isOpen = true;
 
   constructor(private readonly deps: ClaudeRunDeps) {}
@@ -97,7 +99,7 @@ export class ClaudeRun {
     } finally {
       this.isOpen = false;
       // 进程已结束：还没出结果的工具调用不会再有结果了，收口为失败。
-      this.deps.externalTools.failPending("Claude Code 在工具返回结果前结束。");
+      this.deps.externalTools.failPending(this.toolUseIds, "Claude Code 在工具返回结果前结束。");
       this.deps.onEnd();
     }
   }
@@ -107,6 +109,7 @@ export class ClaudeRun {
     if (message.kind === "assistant" && !message.parentToolUseId) {
       for (const block of message.blocks) {
         if (block.type !== "tool_use" || isHiddenClaudeTool(block.name)) continue;
+        this.toolUseIds.add(block.id);
         this.deps.externalTools.register(
           block.id,
           block.name,

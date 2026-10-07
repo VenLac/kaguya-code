@@ -39,7 +39,10 @@ function createFakeProviderSettings(initialModels: string[] = []) {
   let revision = 1;
   const view = () => ({
     revision,
-    providers: providers.map((p) => ({ ...p, models: p.models.map((m) => ({ ...m })) })),
+    providers: providers.map((p) => ({
+      ...p,
+      models: p.models.map((m) => ({ ...m, effectiveConfig: m.config ?? {}, enabled: true })),
+    })),
   });
   const fake = {
     async getView() {
@@ -171,6 +174,16 @@ test("启用：按实测注册真实模型 id 与配置", async () => {
   const status = await service.enable();
   assert.equal(status.enabled, true);
   assert.equal(status.modelCount, 3);
+  assert.deepEqual(
+    status.models?.find((m) => m.id === "claude-haiku-4-5-20251001"),
+    {
+      id: "claude-haiku-4-5-20251001",
+      enabled: true,
+      contextWindow: 200_000,
+      maxOutputTokens: 32_000,
+    },
+    "状态里带出已注册模型及其上下文/最大输出，供设置卡片展示",
+  );
   assert.equal(providers[0]?.providerName, CLAUDE_CODE_PROVIDER_NAME);
   const byId = Object.fromEntries(providers[0]!.models.map((m) => [m.modelId, m.config]));
   assert.deepEqual(Object.keys(byId).sort(), [

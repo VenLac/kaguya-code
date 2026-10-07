@@ -11,15 +11,12 @@ import { readdir, stat } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-/**
- * 渠道哨兵 baseUrl。`.invalid` 是 RFC 2606 保留 TLD，永远不会被解析：
- * 即使识别失败而误走了 HTTP 通路，请求也只会在 DNS 阶段失败，不会泄露到任何真实主机。
- */
-export const CLAUDE_CODE_BASE_URL = "https://claude-code.invalid";
-/** provider 配置要求 apiKey 非空；本渠道不使用任何密钥，占位值仅用于通过校验。 */
-export const CLAUDE_CODE_PLACEHOLDER_API_KEY = "claude-code-local";
+export {
+  CLAUDE_CODE_BASE_URL,
+  CLAUDE_CODE_PLACEHOLDER_API_KEY,
+  isClaudeCodeBaseUrl,
+} from "../claude-code-channel.js";
 
-const CLAUDE_CODE_HOSTNAME = "claude-code.invalid";
 const CLAUDE_CONFIG_DIR_ENV = "CLAUDE_CONFIG_DIR";
 const CLAUDE_DEFAULT_CONFIG_DIR_NAME = ".claude";
 const CLAUDE_PROJECTS_DIR_NAME = "projects";
@@ -29,16 +26,6 @@ const CLAUDE_PROJECT_DIR_UNSAFE = /[^a-zA-Z0-9]/g;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type EnvRecord = Record<string, string | undefined>;
-
-export function isClaudeCodeBaseUrl(baseUrl: string | undefined): boolean {
-  const trimmed = baseUrl?.trim();
-  if (!trimmed) return false;
-  try {
-    return new URL(trimmed).hostname.toLowerCase() === CLAUDE_CODE_HOSTNAME;
-  } catch {
-    return false;
-  }
-}
 
 export function isClaudeSessionId(value: string): boolean {
   return UUID_PATTERN.test(value);
